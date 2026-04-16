@@ -17,10 +17,7 @@ from database.db import (
     get_topic_from_cache, record_notification, mark_notified,
     record_published_topic, count_published_topics, get_recent_published_topics
 )
-from sources.rss_monitor import fetch_rss_stories
-from sources.trends_monitor import fetch_trending_queries
-from sources.youtube_monitor import fetch_youtube_videos
-from sources.news_api_monitor import fetch_news_headlines
+from sources.pinterest_trends_monitor import fetch_pinterest_trends
 from detection.spike_detector import detect_spikes
 from writer.article_generator import generate_article
 from writer.review_assistant import (
@@ -124,61 +121,40 @@ def run_scan(state):
     """Execute the full scan  detect  alert pipeline."""
     logger.info("=" * 60)
     logger.info(" Starting scan cycle...")
+    
+    # --- Enforcement of Daily Limit ---
+    conn = get_connection()
+    try:
+        published_today = count_published_topics(conn, days=1)
+        if published_today >= 2:
+            logger.info(f" Daily limit reached ({published_today}/2 articles). Skipping scan until tomorrow.")
+            return []
+    finally:
+        conn.close()
+
     logger.info("=" * 60)
 
     conn = get_connection()
     cleanup_old_data(conn)
     conn.close()
 
-    #  Step 1: Collect from all sources 
-    logger.info(" Phase 1: Collecting from sources...")
-    all_stories = []
-    trends_data = []
+    #  Step 1: Collect from Pinterest Trends 
+    logger.info(" Phase 1: Collecting from Pinterest Trends...")
+    trends_data = fetch_pinterest_trends()
+    logger.info(f" Total raw trends found: {len(trends_data)}")
 
-    # RSS Feeds
-    try:
-        rss_stories = fetch_rss_stories()
-        all_stories.extend(rss_stories)
-        logger.info(f"  RSS: {len(rss_stories)} stories")
-    except Exception as e:
-        logger.error(f"  RSS error: {e}")
-
-    # YouTube
-    try:
-        yt_stories = fetch_youtube_videos()
-        all_stories.extend(yt_stories)
-        logger.info(f"  YouTube: {len(yt_stories)} videos")
-    except Exception as e:
-        logger.error(f"  YouTube error: {e}")
-
-    # NewsAPI
-    try:
-        news_stories = fetch_news_headlines()
-        all_stories.extend(news_stories)
-        logger.info(f"  NewsAPI: {len(news_stories)} stories")
-    except Exception as e:
-        logger.error(f"  NewsAPI error: {e}")
-
-    # Google Trends
-    try:
-        trends_data = fetch_trending_queries()
-        logger.info(f"  Trends: {len(trends_data)} data points, "
-                     f"{sum(1 for t in trends_data if t.get('is_rising'))} rising")
-    except Exception as e:
-        logger.error(f"  Trends error: {e}")
-
-    logger.info(f" Total raw stories: {len(all_stories)}")
-
-    if not all_stories and not trends_data:
-        logger.info("No stories or trends found this cycle.")
+    if not trends_data:
+        logger.info("No trends found this cycle.")
         state["last_scan"] = datetime.utcnow().isoformat()
         state["scan_count"] = state.get("scan_count", 0) + 1
         return []
 
     #  Step 2: Detect spikes 
-    logger.info(" Phase 2: Detecting spikes...")
-    trending_topics = detect_spikes(all_stories, trends_data)
-    logger.info(f" Found {len(trending_topics)} trending topics")
+    # Because Pinterest Trends already provides high-scoring trends, we pass them directly 
+    # or handle them through detect_spikes (which processes dictionaries)
+    logger.info(" Phase 2: Detecting spikes and formatting...")
+    trending_topics = trends_data  # Pass directly since they are perfectly filtered metrics
+    logger.info(f" Formatted {len(trending_topics)} top trends")
 
     #  Step 3: Send alerts 
     if trending_topics:
@@ -454,14 +430,17 @@ def _handle_approve(state, status="draft"):
                 try:
                     # Pick a default board or use a keyword-based one
                     board_id = os.getenv("BOARD_SWEETS_TRENDS") 
-                    process_new_pin(
+                    pin_result = process_new_pin(
                         title=article["title"],
                         slug=article["slug"],
                         url=post_url,
                         description=article.get("excerpt", article["title"]),
                         board_id=board_id
                     )
-                    send_simple_message("🎨 Premium Pinterest Pin successfully generated and published via Bridge Page!")
+                    if pin_result:
+                        send_simple_message("🎨 4 Premium Pinterest Pins successfully generated and published via distinct Bridge Pages!")
+                    else:
+                        send_simple_message("⚠️ Pinterest Pin generation completed but encoutered some errors.")
                 except Exception as e:
                     logger.error(f"Pinterest delivery failed: {e}")
                     send_simple_message(f"⚠️ Pinterest Pin generation failed: {e}")

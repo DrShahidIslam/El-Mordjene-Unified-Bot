@@ -237,24 +237,42 @@ def publish_pin(image_path, title, description, bridge_url, board_id):
     return False
 
 def process_new_pin(title, slug, url, description, board_id):
-    """Master flow for a single pin"""
-    print(f"--- Unified Flow: {title} ---")
+    """Master flow for generating multiple pins per article (4x multiplier)"""
+    print(f"--- Unified Flow: {title} (Generating 4 Variations) ---")
     
-    raw_img = f"temp_raw_{slug}.jpg"
-    final_img = f"final_pin_{slug}.jpg"
+    # Four distinct stylistic angles to give Pinterest variation
+    angles = [
+        "A luxury close-up editorial shot, macro",
+        "A beautiful overhead flat-lay photography composition",
+        "A bright minimalist lifestyle setting",
+        "A dramatic moody lighting rustic shot"
+    ]
     
-    # 1. Image Generation
-    if generate_image(f"A luxury close-up editorial shot of {title}", raw_img):
-        # 2. Design
-        design_pin(raw_img, title, final_img)
+    success_count = 0
+    for i, angle in enumerate(angles):
+        iter_slug = f"{slug}-pin-{i+1}"
+        raw_img = f"temp_raw_{iter_slug}.jpg"
+        final_img = f"final_pin_{iter_slug}.jpg"
         
-        # 3. Unique Bridge Page
-        bridge_url = create_unique_bridge_page(slug, title, url, description)
+        print(f"  -> Variation {i+1}: {angle}")
         
-        # 4. Pinterest Publish
-        success = publish_pin(final_img, title, description, bridge_url, board_id)
-        
-        # Cleanup
-        if os.path.exists(raw_img): os.remove(raw_img)
-        return success
-    return False
+        # 1. Image Generation
+        pin_prompt = f"{angle} of {title}"
+        if generate_image(pin_prompt, raw_img):
+            # 2. Design
+            design_pin(raw_img, title, final_img)
+            
+            # 3. Unique Bridge Page (Multiple unique pages per article)
+            bridge_url = create_unique_bridge_page(iter_slug, title, url, description)
+            
+            # 4. Pinterest Publish
+            if publish_pin(final_img, title, description, bridge_url, board_id):
+                success_count += 1
+            
+            # Cleanup
+            if os.path.exists(raw_img): os.remove(raw_img)
+            if os.path.exists(final_img): os.remove(final_img) # clean final too to save space
+            
+    print(f"--- Completed: {success_count}/4 Pins Published ---")
+    return success_count > 0
+
