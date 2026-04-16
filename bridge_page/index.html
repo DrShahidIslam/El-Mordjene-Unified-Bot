@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discovery Gallery - El Mordjene</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8f1f28;
+            --accent: #d87439;
+            --bg: #fffaf5;
+            --text: #2a1910;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(143, 31, 40, 0.05);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #post-content {
+            display: none;
+        }
+
+        #loader {
+            padding: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 30px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: var(--accent);
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>EL MORDJENE</h1>
+        <p>Discovery Gallery</p>
+    </header>
+
+    <div class="container">
+        <div id="loader">Discovering the best content for you...</div>
+        
+        <div id="post-content">
+            <h2 id="post-title">Exploring Delicious Secrets</h2>
+            <p id="post-excerpt">We've found a special treat for you. Click below to view the full details including recipes and tips.</p>
+            <a href="#" id="post-link" class="btn">READ MORE</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 El Mordjene discovery portal.
+    </div>
+
+    <script>
+        // Mapping of slugs to URLs (This will be updated by the bot)
+        const POST_MAP = {
+            // "slug-example": "https://el-mordjene.info/some-post/",
+            "DEFAULT": "https://el-mordjene.info"
+        };
+
+        function init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const target = POST_MAP[id] || POST_MAP["DEFAULT"];
+            
+            // For a truly "premium" bridge, we wait a tiny bit to show the professional landing page
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('post-content').style.display = 'block';
+                document.getElementById('post-link').href = target;
+                
+                // Optional: Auto-redirect after 3 seconds if you want
+                // setTimeout(() => { window.location.href = target; }, 3000);
+            }, 800);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
