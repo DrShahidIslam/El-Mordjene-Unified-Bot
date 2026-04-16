@@ -193,6 +193,20 @@ def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
             new_content = content.replace(inject_marker, f"{inject_marker}\n{card_html}")
             html_file.write_text(new_content, encoding="utf-8")
             
+    # --- Auto-Archive Homepage Linking ---
+    # To prevent orphaned pages and build beautiful internal links on the root homepage
+    root_index = Path("index.html")
+    if root_index.exists():
+        index_content = root_index.read_text(encoding="utf-8")
+        archive_marker = "<!-- ARCHIVE BEGIN -->"
+        link_html = f'<a href="bridge_page/discovery/{week_slug}.html" style="font-size: 1.1rem; color: #8b2b2b; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #eae0d8; border-radius: 4px; display: inline-block; width: 300px; text-align: center;">Week {week_num}, {year} Edition &rarr;</a>'
+        
+        # Only inject if this exact week isn't already archived
+        if week_slug not in index_content and archive_marker in index_content:
+            new_index_content = index_content.replace(archive_marker, f"{archive_marker}\n            {link_html}")
+            root_index.write_text(new_index_content, encoding="utf-8")
+            print(f"Updated index.html archive with {week_slug}")
+            
     # Format the final Pinterest link resolving cleanly to github pages hash
     return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/discovery/{week_slug}.html#{slug}"
 
