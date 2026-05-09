@@ -154,7 +154,7 @@ def run_scan(state):
                 # Find the URL for the existing post
                 # We'll look in published_posts.json or db
                 published_list = _load_published_posts()
-                existing_url = next((p["url"] for p in published_list.values() if p["title"] == match_title), "")
+                existing_url = next((p["url"] for p in published_list.values() if p.get("anchor") == match_title), "")
                 topic["wp_url"] = existing_url
                 topic["published_at"] = datetime.utcnow().isoformat()
                 topic["note"] = f"Auto-linked to existing: {match_title}"
