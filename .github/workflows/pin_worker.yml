@@ -5,6 +5,9 @@ on:
     - cron: '0 */3 * * *'  # Runs every 3 hours (8 times a day)
   workflow_dispatch:      # Manual trigger
 
+permissions:
+  contents: write
+
 jobs:
   pin:
     runs-on: ubuntu-latest
