@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Food Trends Automation</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon">F</div>
+            <div class="logo-text">Food Trends</div>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#" class="nav-link active">Dashboard</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Trend Analysis</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Pin Queue</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Asset Library</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Analytics</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Settings</a></li>
+        </ul>
+        <div class="account-status">
+            <div class="card" style="padding: 16px; background: #f8f9fa;">
+                <div style="font-size: 12px; color: #666; margin-bottom: 8px;">PINTEREST STATUS</div>
+                <div id="pinterest-status" style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #dc3545;">
+                    <span style="width: 8px; height: 8px; background: #dc3545; border-radius: 50%;"></span>
+                    Disconnected
+                </div>
+                <button onclick="connectPinterest()" id="btn-connect" class="btn btn-primary" style="width: 100%; margin-top: 12px; padding: 8px; font-size: 13px;">Connect Account</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header-row">
+            <h1>Dashboard Overview</h1>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-outline" onclick="syncTrends()">Sync Trends</button>
+                <button class="btn btn-primary" onclick="showGenerator()">+ Generate Pins</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="card">
+                <div class="stat-label">Total Pins Published</div>
+                <div class="stat-value">1,284</div>
+            </div>
+            <div class="card">
+                <div class="stat-label">Monthly Impressions</div>
+                <div class="stat-value">42.5K</div>
+            </div>
+            <div class="card">
+                <div class="stat-label">Active Trends Tracked</div>
+                <div class="stat-value">18</div>
+            </div>
+            <div class="card">
+                <div class="stat-label">Scheduled Tomorrow</div>
+                <div class="stat-value">24</div>
+            </div>
+        </div>
+
+        <div class="trend-section">
+            <h2 class="section-title">Trending Now</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trend Keyword</th>
+                            <th>Category</th>
+                            <th>Growth (YoY)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trend-table">
+                        <tr>
+                            <td><b>Viral Cloud Cake</b></td>
+                            <td>Baking & Desserts</td>
+                            <td><span class="trend-badge badge-growth">+240%</span></td>
+                            <td style="color: var(--success); font-weight: 600;">Covered</td>
+                            <td><button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">View Pins</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>Matcha Tiramisu</b></td>
+                            <td>Italian Fusion</td>
+                            <td><span class="trend-badge badge-growth">+180%</span></td>
+                            <td style="color: var(--warning); font-weight: 600;">Processing</td>
+                            <td><button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">View Status</button></td>
+                        </tr>
+                        <tr>
+                            <td><b>Pistachio Kunafa Spread</b></td>
+                            <td>Sweets & Trends</td>
+                            <td><span class="trend-badge badge-growth">+410%</span></td>
+                            <td style="color: var(--text-muted); font-weight: 600;">New Trend</td>
+                            <td><button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="generateForTrend('Pistachio Kunafa Spread')">Generate Now</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generator Modal -->
+    <div id="generator-modal" class="overlay">
+        <div class="modal">
+            <h2 id="modal-title">Generating Pins</h2>
+            <p id="modal-subtitle">Harnessing AI to create premium visual content</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div id="progress-text" style="font-weight: 600; font-size: 14px;">Initializing pipeline...</div>
+            </div>
+
+            <div class="status-steps">
+                <div class="status-step" id="step-1">
+                    <div class="step-icon">1</div>
+                    Fetching Trend Data
+                </div>
+                <div class="status-step" id="step-2">
+                    <div class="step-icon">2</div>
+                    Generating AI Assets
+                </div>
+                <div class="status-step" id="step-3">
+                    <div class="step-icon">3</div>
+                    Applying Design Overlays
+                </div>
+                <div class="status-step" id="step-4">
+                    <div class="step-icon">4</div>
+                    Preparing for Pinterest
+                </div>
+            </div>
+            
+            <div id="result-gallery" style="display: none; margin-top: 30px;">
+                <div style="padding: 24px; background: #f8f9fa; border-radius: 16px; border: 1px dashed #ccc; margin-bottom: 24px;">
+                    <div style="font-size: 40px; margin-bottom: 12px;">📦</div>
+                    <div style="font-weight: 600; color: #111;">Assets Generated Successfully</div>
+                    <div style="font-size: 14px; color: #666; margin-top: 8px;">High-resolution Pin and metadata are ready for publication.</div>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="publishBatch()">Publish to Pinterest Board</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function connectPinterest() {
+            // Real Pinterest OAuth URL for the video demo
+            const clientId = "1562363";
+            const redirectUri = encodeURIComponent("http://localhost:5000/admin/success.html");
+            const scopes = "boards:read,boards:write,pins:read,pins:write,user_accounts:read";
+            const state = "demo_state_" + Math.random().toString(36).substring(7);
+            
+            const oauthUrl = `https://www.pinterest.com/oauth/?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scopes}&state=${state}`;
+            
+            window.location.href = oauthUrl;
+        }
+
+        function showGenerator() {
+            const trend = prompt("What food trend would you like to generate for?", "Pistachio Kunafa Spread");
+            if (!trend) return;
+            document.getElementById('modal-title').innerText = "Generating: " + trend;
+            document.getElementById('generator-modal').style.display = 'flex';
+            runPipeline();
+        }
+
+        function generateForTrend(trend) {
+            document.getElementById('modal-title').innerText = "Generating: " + trend;
+            showGenerator();
+        }
+
+        async function runPipeline() {
+            const trend = document.getElementById('modal-title').innerText.replace('Generating: ', '');
+            const steps = [
+                { id: 1, text: "Gemini: Analyzing trend & crafting prompts...", time: 2000 },
+                { id: 2, text: "SiliconFlow: Generating high-res image...", time: 4000 },
+                { id: 3, text: "Pillow: Applying editorial design...", time: 2000 },
+                { id: 4, text: "Finalizing assets for Pinterest...", time: 1000 }
+            ];
+
+            let currentStep = 0;
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+
+            // Reset steps
+            document.querySelectorAll('.step-icon').forEach(icon => {
+                icon.classList.remove('active', 'completed');
+                icon.innerHTML = icon.parentElement.id.split('-')[1];
+            });
+
+            async function processSteps() {
+                if (currentStep < steps.length) {
+                    const step = steps[currentStep];
+                    progressText.innerText = step.text;
+                    const stepEl = document.getElementById('step-' + (currentStep + 1));
+                    stepEl.querySelector('.step-icon').classList.add('active');
+                    
+                    const progressVal = ((currentStep + 1) / steps.length) * 100;
+                    progressFill.style.width = progressVal + '%';
+
+                    // If it's the second step, start the actual backend work
+                    if (currentStep === 1) {
+                        try {
+                            const response = await fetch('/api/generate', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ trend })
+                            });
+                            const result = await response.json();
+                            if (result.success) {
+                                window.latestPinUrl = result.pinUrl;
+                            } else {
+                                throw new Error("Backend generation failed");
+                            }
+                        } catch (err) {
+                            progressText.innerText = "Error: " + err.message;
+                            return;
+                        }
+                    }
+
+                    setTimeout(() => {
+                        stepEl.querySelector('.step-icon').classList.remove('active');
+                        stepEl.querySelector('.step-icon').classList.add('completed');
+                        stepEl.querySelector('.step-icon').innerHTML = '✓';
+                        currentStep++;
+                        processSteps();
+                    }, steps[currentStep].time);
+                } else {
+                    progressText.innerText = "Processing Complete!";
+                    document.getElementById('result-gallery').style.display = 'block';
+                }
+            }
+
+            processSteps();
+        }
+
+        function publishBatch() {
+            const btn = event.target;
+            btn.innerHTML = '<span class="spinner"></span> Publishing...';
+            btn.disabled = true;
+            
+            // Simulate publication delay
+            setTimeout(() => {
+                const gallery = document.getElementById('result-gallery');
+                gallery.innerHTML = `
+                    <div style="padding: 20px; background: #e6ffed; border-radius: 12px; color: #22863a; margin-bottom: 24px;">
+                        <h3 style="margin-bottom: 8px;">✓ Published Live!</h3>
+                        <p style="font-size: 14px;">The Pin has been successfully created on your Pinterest board.</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="${window.latestPinUrl || 'https://www.pinterest.com/FoodTrendsBlog/'}" target="_blank" class="btn btn-primary" style="text-decoration: none;">View Pin on Pinterest</a>
+                        <button class="btn btn-outline" onclick="window.location.reload()">Back to Dashboard</button>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        // Check for success redirect
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('connected') === 'true') {
+            const status = document.getElementById('pinterest-status');
+            status.style.color = '#28a745';
+            status.innerHTML = '<span style="width: 8px; height: 8px; background: #28a745; border-radius: 50%;"></span> Connected: Food Trends Bot';
+            document.getElementById('btn-connect').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

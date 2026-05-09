@@ -16,6 +16,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import config
 from writer.seo_prompt import build_image_prompt
 from gemini_client import generate_content_with_fallback, generate_image_with_fallback, generate_image_with_gemini_flash
+import requests
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -121,53 +123,42 @@ def _resize_and_crop(img, target_w, target_h):
     return img
 
 
-def _try_gemini_imagen(article_title, output_path_webp, output_path_jpg):
-    """Try to generate image using Gemini Imagen 3."""
-    try:
-        prompt = build_image_prompt(article_title)
-        from google.genai import types
-        response = generate_image_with_fallback(
-            model="imagen-3.0-generate-002",
-            prompt=prompt,
-            generation_config=types.GenerateImagesConfig(
-                number_of_images=1,
-                output_mime_type="image/jpeg",
-                aspect_ratio="16:9",
-            )
-        )
-        if response and getattr(response, "generated_images", None):
-            image_bytes = response.generated_images[0].image.image_bytes
-            if isinstance(image_bytes, bytes) and len(image_bytes) > 100:
-                result_webp = _compress_to_webp(image_bytes, output_path_webp)
-                result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
-                if result_webp and result_jpg:
-                    logger.info("    Images ready from Gemini Imagen 3")
-                    return result_webp, result_jpg
-    except Exception as e:
-        logger.warning(f"    Gemini Imagen failed: {e}")
+def _try_huggingface_image(article_title, output_path_webp, output_path_jpg):
+    """Generate image via HuggingFace Inference with key rotation."""
+    keys = getattr(config, "HUGGINGFACE_API_KEYS", [])
+    if not keys:
+        return None, None
+        
+    prompt = build_image_prompt(article_title)
+    full_prompt = f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography, 1200x630"
+    model = "black-forest-labs/FLUX.1-schnell"
+    
+    for i, key in enumerate(keys):
+        try:
+            logger.info(f"    Trying HuggingFace (Key {i+1}/{len(keys)}): {article_title[:40]}...")
+            url = f"https://router.huggingface.co/fal-ai/fal-ai/flux/schnell" # Using the router or direct model URL
+            # Note: The Hub client is better, but here we'll use requests for simplicity or the client
+            from huggingface_hub import InferenceClient
+            client = InferenceClient(api_key=key)
+            image = client.text_to_image(full_prompt, model=model)
+            
+            # Convert PIL image to bytes
+            buffer = io.BytesIO()
+            image.save(buffer, format="JPEG")
+            image_bytes = buffer.getvalue()
+            
+            result_webp = _compress_to_webp(image_bytes, output_path_webp)
+            result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
+            if result_webp and result_jpg:
+                logger.info(f"    Images ready from HuggingFace (Key {i+1})")
+                return result_webp, result_jpg
+        except Exception as e:
+            logger.warning(f"    HuggingFace Key {i+1} failed: {e}")
+            continue
+            
     return None, None
 
 
-def _try_gemini_flash_image(article_title, output_path_webp, output_path_jpg):
-    """Try Gemini 2.5 Flash Image (free tier)."""
-    try:
-        prompt = build_image_prompt(article_title)
-        response = generate_image_with_gemini_flash(prompt)
-        if not response or not getattr(response, "candidates", None):
-            return None, None
-        for part in response.candidates[0].content.parts:
-            if getattr(part, "inline_data", None) and getattr(part.inline_data, "data", None):
-                image_bytes = part.inline_data.data
-                if isinstance(image_bytes, bytes) and len(image_bytes) > 100:
-                    result_webp = _compress_to_webp(image_bytes, output_path_webp)
-                    result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
-                    if result_webp and result_jpg:
-                        logger.info(f"    Images ready from Gemini Flash Image")
-                        return result_webp, result_jpg
-                break
-    except Exception as e:
-        logger.warning(f"    Gemini Flash Image failed: {e}")
-    return None, None
 
 
 def _try_source_image(source_url, output_path_webp, output_path_jpg):
@@ -216,6 +207,59 @@ def _try_source_image(source_url, output_path_webp, output_path_jpg):
             return result_webp, result_jpg
     except Exception as e:
         logger.warning(f"    Source image failed: {e}")
+    return None, None
+
+
+def _try_kolors_image(article_title, output_path_webp, output_path_jpg):
+    """Generate image via SiliconFlow Kolors API."""
+    api_key = os.getenv("SILICONFLOW_API_KEY")
+    if not api_key:
+        return None, None
+        
+    try:
+        logger.info(f"    Trying Kolors (SiliconFlow): {article_title[:40]}...")
+        prompt = build_image_prompt(article_title)
+        
+        payload = {
+            "model": os.getenv("SILICONFLOW_MODEL", "Kwai-Kolors/Kolors"),
+            "prompt": f"{prompt}, high quality, food photography, realistic, 1024x1024",
+            "negative_prompt": "text, watermark, low quality, blurry",
+            "image_size": "1024x1024",
+            "batch_size": 1,
+            "num_inference_steps": 25
+        }
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        response = requests.post(
+            "https://api.siliconflow.cn/v1/images/generations",
+            headers=headers,
+            json=payload,
+            timeout=60
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            image_url = data.get("images", [{}])[0].get("url")
+            if not image_url:
+                # Some versions of the API return 'data' list
+                image_url = data.get("data", [{}])[0].get("url")
+                
+            if image_url:
+                img_res = requests.get(image_url, timeout=30)
+                image_bytes = img_res.content
+                result_webp = _compress_to_webp(image_bytes, output_path_webp)
+                result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
+                if result_webp and result_jpg:
+                    logger.info("    Images ready from Kolors")
+                    return result_webp, result_jpg
+        else:
+            logger.warning(f"    Kolors API error: {response.text}")
+    except Exception as e:
+        logger.warning(f"    Kolors failed: {e}")
     return None, None
 
 
@@ -353,23 +397,23 @@ def generate_featured_image(article_title, save_dir=None, source_url=None):
 
     logger.info(f"  Generating featured image for: {article_title[:60]}")
 
-    # 1. Gemini Imagen 3
-    webp, jpg = _try_gemini_imagen(article_title, output_path_webp, output_path_jpg)
+    # 1. Kolors (SiliconFlow) - WordPress Priority #1
+    webp, jpg = _try_kolors_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 2. Gemini Flash Image
-    webp, jpg = _try_gemini_flash_image(article_title, output_path_webp, output_path_jpg)
+    # 2. Hugging Face - WordPress Priority #2
+    webp, jpg = _try_huggingface_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 3. Source article
+    # 3. Source article - WordPress Priority #3
     if source_url:
         webp, jpg = _try_source_image(source_url, output_path_webp, output_path_jpg)
         if webp and jpg:
             return webp, jpg
 
-    # 4. Pollinations
+    # 4. Pollinations (Free Fallback)
     webp, jpg = _try_pollinations_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg

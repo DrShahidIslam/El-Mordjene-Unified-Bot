@@ -312,20 +312,34 @@ def _extract_faqpage_json(text):
 
 
 def _strip_faq_and_schema_from_content(content):
-    """Remove FAQ section and JSON-LD schema if the model wrongly put them inside CONTENT."""
+    """Remove FAQ section, JSON-LD schema, and metadata blocks if the model wrongly put them inside CONTENT."""
     if not content:
         return content
-    while True:
-        json_str = _extract_faqpage_json(content)
-        if not json_str:
-            break
-        content = content.replace(json_str, "", 1).strip()
+        
+    # Remove script tags with JSON-LD
+    import re
     content = re.sub(
         r'<script\s+type=["\']application/ld\+json["\']\s*>.*?</script>\s*',
         '',
         content,
         flags=re.DOTALL | re.IGNORECASE,
     )
+    
+    # Remove common metadata marker blocks
+    markers = ["META_DESCRIPTION:", "SLUG:", "TAGS:", "CATEGORY:", "LANGUAGE:", "TITLE:"]
+    for marker in markers:
+        content = re.sub(f"(?m)^{marker}.*$", "", content)
+
+    # Remove markdown code fences
+    content = re.sub(r'```json.*?```', '', content, flags=re.DOTALL | re.IGNORECASE)
+    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
+
+    while True:
+        json_str = _extract_faqpage_json(content)
+        if not json_str:
+            break
+        content = content.replace(json_str, "", 1).strip()
+    
     content = re.sub(r'\n{3,}', '\n\n', content).strip()
     return content
 
@@ -887,15 +901,20 @@ def _parse_article_output(raw_text, intent=None):
         schema_json = _extract_faqpage_json(content)
         content = _strip_faq_and_schema_from_content(content)
         content = _downgrade_h1_tags(content)
+        
+        # If the model left any "FAQ" or "Frequently Asked Questions" text at the very bottom, strip it if we have schema
         if schema_json:
+            content = re.sub(r'(?i)<h[23]>Frequently Asked Questions</h[23]>.*$', '', content, flags=re.DOTALL).strip()
+            content = re.sub(r'(?i)<h[23]>FAQ</h[23]>.*$', '', content, flags=re.DOTALL).strip()
+            
             schema_block = (
-                '<!-- wp:html -->\n'
+                '\n\n<!-- wp:html -->\n'
                 '<script type="application/ld+json">\n'
-                + schema_json
+                + schema_json.strip()
                 + '\n</script>\n'
                 '<!-- /wp:html -->'
             )
-            content = content.strip() + "\n\n" + schema_block
+            content = content.strip() + schema_block
 
         result["content"] = content
         result["full_content"] = content
@@ -993,13 +1012,15 @@ def generate_article(topic, source_urls=None):
 
     used_summary_fallback = False
     if not source_texts:
-        if intent != "recipe" and getattr(config, "BLOCK_SOURCELESS_NON_RECIPE", True):
-            raise ValueError("No extractable sources were found, so generation was skipped to avoid weak AI-only content.")
-        logger.warning("   No source material could be extracted. Using topic summary only.")
+        logger.warning("   No source material found. Proceeding with autonomous AI generation.")
+        summary_text = "\n".join(s.get("summary", "") for s in topic.get("stories", []))
+        if not summary_text:
+            summary_text = f"Write a comprehensive, professional, and SEO-optimized article about '{topic.get('topic', '')}' based on your expert knowledge of the food and dessert niche."
+        
         source_texts = [{
             "title": topic.get("topic", ""),
-            "text": "\n".join(s.get("summary", "") for s in topic.get("stories", [])),
-            "source_domain": "aggregated_summaries",
+            "text": summary_text,
+            "source_domain": "ai_knowledge",
             "url": "",
         }]
         used_summary_fallback = True

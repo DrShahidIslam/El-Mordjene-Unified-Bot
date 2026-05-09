@@ -3,111 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discovery Gallery - El Mordjene</title>
+    <title>El Mordjene - Premium Discovery Gallery</title>
+    
+    <!-- SEO & Pinterest Keywords Alignment -->
+    <meta name="description" content="Discover the latest viral food trends, from Rotel Dip recipes to Summer Crockpot meals. curated by El Mordjene.">
+    <meta name="keywords" content="Rotel Dip, Summer Crockpot Recipes, Mother's Day Cookies, Summer Supper Ideas, Viral Food Trends">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #8f1f28;
             --accent: #d87439;
             --bg: #fffaf5;
             --text: #2a1910;
+            --glass: rgba(255, 255, 255, 0.9);
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(11,100%,94%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(35,100%,92%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(11,100%,94%,1) 0, transparent 50%);
             color: var(--text);
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         header {
-            padding: 40px 20px;
+            padding: 60px 20px 20px 20px;
             text-align: center;
+            animation: fadeInDown 0.8s ease-out;
         }
 
         h1 {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
+            font-size: 3rem;
             color: var(--primary);
-            letter-spacing: 2px;
+            letter-spacing: -1px;
             margin: 0;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-top: 10px;
+            font-weight: 600;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 550px;
             width: 90%;
-            background: white;
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(143, 31, 40, 0.05);
-            margin-top: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 50px 40px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(143, 31, 40, 0.1);
+            margin-top: 40px;
             text-align: center;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        #loader {
+            padding: 40px;
+            font-style: italic;
+            color: #888;
         }
 
         #post-content {
             display: none;
         }
 
-        #loader {
-            padding: 40px;
+        .trend-badge {
+            display: inline-block;
+            background: #fff0f0;
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        p {
+            line-height: 1.7;
+            color: #554a44;
+            font-size: 1.1rem;
+            margin-bottom: 35px;
         }
 
         .btn {
             display: inline-block;
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, #b32a35 100%);
             color: white;
-            padding: 18px 40px;
-            border-radius: 50px;
+            padding: 20px 45px;
+            border-radius: 100px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: transform 0.2s, background-color 0.2s;
-            margin-top: 30px;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px -5px rgba(143, 31, 40, 0.4);
         }
 
         .btn:hover {
-            transform: scale(1.05);
-            background-color: var(--accent);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(143, 31, 40, 0.5);
+            background: linear-gradient(135deg, var(--accent) 0%, #e68a4d 100%);
         }
 
         .footer {
             margin-top: auto;
-            padding: 40px;
-            font-size: 0.9rem;
-            color: #999;
+            padding: 60px 40px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #b0a6a0;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pulse animation for loader */
+        .pulse {
+            display: inline-block;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>EL MORDJENE</h1>
-        <p>Discovery Gallery</p>
+        <div class="tagline">Discovery Portal</div>
     </header>
 
     <div class="container">
-        <div id="loader">Discovering the best content for you...</div>
+        <div id="loader">
+            <span class="pulse">Curating trending recipes for you...</span>
+        </div>
         
         <div id="post-content">
+            <div class="trend-badge">VERIFIED TREND</div>
             <h2 id="post-title">Exploring Delicious Secrets</h2>
-            <p id="post-excerpt">We've found a special treat for you. Click below to view the full details including recipes and tips.</p>
-            <a href="#" id="post-link" class="btn">READ MORE</a>
+            <p id="post-excerpt">We've identified this as a top-growing recipe for 2026. Join thousands of other food enthusiasts and explore the full details below.</p>
+            <a href="#" id="post-link" class="btn">VIEW FULL RECIPE</a>
         </div>
     </div>
 
     <div class="footer">
-        &copy; 2026 El Mordjene discovery portal.
+        &copy; 2026 EL MORDJENE. ALL RIGHTS RESERVED.<br>
+        <span style="font-size: 0.7rem; margin-top: 10px; display: block; opacity: 0.5;">PREMIUM DISCOVERY INTERFACE v2.0</span>
     </div>
 
     <script>
-        // Mapping of slugs to URLs (This will be updated by the bot)
+        // Mapping of slugs to URLs (This is updated dynamically by our automation)
         const POST_MAP = {
-            // "slug-example": "https://el-mordjene.info/some-post/",
             "DEFAULT": "https://el-mordjene.info"
         };
 
@@ -116,15 +199,21 @@
             const id = urlParams.get('id');
             const target = POST_MAP[id] || POST_MAP["DEFAULT"];
             
-            // For a truly "premium" bridge, we wait a tiny bit to show the professional landing page
+            // Premium transition feel
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('post-content').style.display = 'block';
                 document.getElementById('post-link').href = target;
                 
-                // Optional: Auto-redirect after 3 seconds if you want
-                // setTimeout(() => { window.location.href = target; }, 3000);
-            }, 800);
+                // Dynamic trend injection
+                if (id && id.includes('rotel')) {
+                    document.getElementById('post-title').innerText = "Viral Rotel Dip Recipe";
+                    document.getElementById('post-excerpt').innerText = "The #1 viral party dip on Pinterest is here. Discover how to make the perfect Rotel dip for your next gathering.";
+                } else if (id && id.includes('crockpot')) {
+                    document.getElementById('post-title').innerText = "Summer Slow Cooker Favorites";
+                    document.getElementById('post-excerpt').innerText = "Keep your kitchen cool with these top-rated summer crockpot recipes. Easy, delicious, and no-heat required.";
+                }
+            }, 1200);
         }
 
         window.onload = init;

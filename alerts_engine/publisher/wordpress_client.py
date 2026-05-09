@@ -159,6 +159,18 @@ def create_post(article, featured_image_path=None, status=None):
         "tags": tag_ids,
         "comment_status": "open",
         "lang": article.get("language", "en"),
+        # RankMath SEO Fields (Initial attempt)
+        "rank_math_title": article.get("title", ""),
+        "rank_math_description": article.get("meta_description", ""),
+        "rank_math_focus_keyword": article.get("matched_keyword", "") or (article.get("tags") or [""])[0],
+        "meta": {
+            "rank_math_title": article.get("title", ""),
+            "rank_math_description": article.get("meta_description", ""),
+            "rank_math_focus_keyword": article.get("matched_keyword", "") or (article.get("tags") or [""])[0],
+            "_rank_math_title": article.get("title", ""),
+            "_rank_math_description": article.get("meta_description", ""),
+            "_rank_math_focus_keyword": article.get("matched_keyword", "") or (article.get("tags") or [""])[0],
+        }
     }
 
     if media_id:
@@ -425,31 +437,37 @@ def get_or_create_tag(name):
 
 
 def _set_rankmath_meta(post_id, article):
-    """Set RankMath SEO metadata on a post."""
+    """Set RankMath SEO metadata on a post with multiple fallbacks."""
     focus_kw = article.get("matched_keyword", "")
     if not focus_kw and article.get("tags"):
         focus_kw = article["tags"][0]
 
-    rankmath_meta = {
+    # Try both top-level (for some REST extensions) and meta object
+    payload = {
+        "rank_math_title": article.get("title", ""),
+        "rank_math_description": article.get("meta_description", ""),
+        "rank_math_focus_keyword": focus_kw,
         "meta": {
             "rank_math_title": article.get("title", ""),
             "rank_math_description": article.get("meta_description", ""),
             "rank_math_focus_keyword": focus_kw,
+            "_rank_math_title": article.get("title", ""),
+            "_rank_math_description": article.get("meta_description", ""),
+            "_rank_math_focus_keyword": focus_kw,
             "rank_math_robots": ["index", "follow"],
         }
     }
 
     try:
-        response = requests.request(
-            "PATCH",
+        response = requests.post(
             f"{API_BASE}/posts/{post_id}",
-            json=rankmath_meta,
+            json=payload,
             auth=AUTH, headers=HEADERS, timeout=TIMEOUT,
         )
         if response.status_code == 200:
             logger.info(f"  RankMath SEO metadata set (focus: '{focus_kw}')")
         else:
-            logger.warning(f"  RankMath meta update returned HTTP {response.status_code}")
+            logger.warning(f"  RankMath meta update returned HTTP {response.status_code}: {response.text[:100]}")
     except Exception as e:
         logger.warning(f"  RankMath meta update failed: {e}")
 

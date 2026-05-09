@@ -101,7 +101,7 @@ def fetch_article_text(url, max_chars=3000):
             }
 
     except Exception as e:
-        logger.warning(f"Fallback extraction failed for {url}: {e}")
+        logger.debug(f"  Fallback extraction failed for {url[:80]}: {e}")
 
     return None
 
@@ -189,8 +189,8 @@ def fetch_multiple_sources(urls, max_sources=5):
                 sources.append(result)
                 logger.info(f"  Extracted {len(result['text'])} chars from {result['source_domain']}")
             else:
-                logger.warning(f"  Could not extract from: {url[:80]}")
+                logger.debug(f"  Could not extract from: {url[:80]}")
         except Exception as e:
-            logger.error(f"  Error fetching {url[:80]}: {e}")
+            logger.debug(f"  Error fetching {url[:80]}: {e}")
 
     return sources

@@ -4,4 +4,15 @@ __pycache__/
 *.pyc
 logs/
 *.log
-bridge_page/discovery/*.html
+# Allow discovery pages
+# bridge_page/discovery/*.html
+node_modules/
+pinterest_engine/node_modules/
+agent.db
+agent_state.json
+*.jpg
+*.png
+*.webp
+!bridge_page/discovery/assets/*.jpg
+!bridge_page/discovery/assets/*.png
+!bridge_page/discovery/assets/*.webp

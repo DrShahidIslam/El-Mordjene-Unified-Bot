@@ -9,19 +9,51 @@ import shutil
 from PIL import Image, ImageDraw, ImageFont
 from dotenv import load_dotenv
 from pathlib import Path
+import argparse
+from google import genai
+from huggingface_hub import InferenceClient
+
+VERSION = "1.2.1"
+print(f"--- PIN GENERATOR v{VERSION} START ---", flush=True)
 
 # Load environment
-load_dotenv()
+root_dir = Path(__file__).parent.parent
+env_path = root_dir / ".env"
+load_dotenv(dotenv_path=env_path, override=True)
 
-SILICONFLOW_API_KEY = os.getenv("SILICONFLOW_API_KEY")
+# API Configurations
 SILICONFLOW_API_URL = "https://api.siliconflow.cn/v1/images/generations"
 SILICONFLOW_MODEL = os.getenv("SILICONFLOW_MODEL", "Kwai-Kolors/Kolors")
-
 PINTEREST_API_BASE = "https://api.pinterest.com/v5"
-PINTEREST_ACCESS_TOKEN = os.getenv("PINTEREST_ACCESS_TOKEN")
+
+# Priority: Load token from dashboard OAuth first
+PINTEREST_ACCESS_TOKEN = os.getenv("PINTEREST_ACCESS_TOKEN", "").strip()
+token_file = root_dir / "pinterest_token.json"
+if token_file.exists():
+    try:
+        with open(token_file, "r") as f:
+            token_data = json.load(f)
+            PINTEREST_ACCESS_TOKEN = token_data.get("access_token", PINTEREST_ACCESS_TOKEN)
+    except: pass
+
+hf_keys = os.getenv("HUGGINGFACE_API_KEY", "").split(",")
+hf_keys = [k.strip() for k in hf_keys if k.strip()]
+HUGGINGFACE_MODEL = "black-forest-labs/FLUX.1-schnell" 
+
+GEMINI_API_KEYS = os.getenv("GEMINI_API_KEYS", "").split(",")
+current_gemini_key_index = 0
+
+def get_gemini_client():
+    global current_gemini_key_index
+    if not GEMINI_API_KEYS: return None
+    key = GEMINI_API_KEYS[current_gemini_key_index].strip()
+    return genai.Client(api_key=key)
+
+client = get_gemini_client()
 
 BRIDGE_PAGE_ROOT = Path("bridge_page")
 BRIDGE_PAGE_URL_BASE = os.getenv("BRIDGE_PAGE_URL", "https://drshahidislam.github.io/Food-Trends-Blog/")
+MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
 
 WEEKLY_MAGAZINE_CSS = """
         :root { --primary: #e6dfd9; --accent: #8b2b2b; --text: #1a1a1a; --surface: #ffffff; }
@@ -43,58 +75,72 @@ WEEKLY_MAGAZINE_CSS = """
 
 # --- Core Functions ---
 
-def generate_image(prompt, output_path):
-    """Generate image using SiliconFlow"""
-    headers = {
-        "Authorization": f"Bearer {SILICONFLOW_API_KEY}",
-        "Content-Type": "application/json",
-    }
-    payload = {
-        "model": SILICONFLOW_MODEL,
-        "prompt": f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography",
-        "image_size": "768x1024", 
-        "batch_size": 1,
-    }
-    
+def _try_kolors(prompt, output_path):
+    api_key = os.getenv("SILICONFLOW_API_KEY")
+    if not api_key: return False
     try:
+        print(f"DEBUG: Trying Kolors Fallback...", flush=True)
+        payload = {
+            "model": SILICONFLOW_MODEL,
+            "prompt": f"{prompt}, food photography, high quality, realistic, 1024x1024",
+            "image_size": "1024x1024"
+        }
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         response = requests.post(SILICONFLOW_API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 200:
-            image_url = response.json()["images"][0]["url"]
-            img_data = requests.get(image_url, timeout=30).content
-            with open(output_path, "wb") as f:
-                f.write(img_data)
-            return True
-        else:
-            print(f"SiliconFlow Error: {response.text}")
+            img_url = response.json().get("images", [{}])[0].get("url") or response.json().get("data", [{}])[0].get("url")
+            if img_url:
+                img_data = requests.get(img_url).content
+                with open(output_path, "wb") as f: f.write(img_data)
+                return True
     except Exception as e:
-        print(f"SiliconFlow Exception: {e}")
+        print(f"DEBUG: Kolors fallback failed: {e}")
+    return False
+
+def _try_pollinations(prompt, output_path):
+    try:
+        print(f"DEBUG: Trying Pollinations Last Resort...", flush=True)
+        import urllib.parse
+        encoded = urllib.parse.quote(prompt)
+        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&nologo=true&seed={random.randint(1,999999)}"
+        res = requests.get(url, timeout=30)
+        if res.status_code == 200:
+            with open(output_path, "wb") as f: f.write(res.content)
+            return True
+    except Exception as e:
+        print(f"DEBUG: Pollinations failed: {e}")
+    return False
+
+def generate_image(prompt, output_path):
+    full_prompt = f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography, 768x1024"
+    for i, key in enumerate(hf_keys):
+        try:
+            print(f"HuggingFace: Key {i+1}/{len(hf_keys)}...", flush=True)
+            hf_client = InferenceClient(api_key=key)
+            image = hf_client.text_to_image(full_prompt, model=HUGGINGFACE_MODEL)
+            image.save(output_path)
+            return True
+        except Exception as e:
+            print(f"HuggingFace Key {i+1} Error: {e}")
+            continue
+    if _try_kolors(prompt, output_path): return True
+    if _try_pollinations(prompt, output_path): return True
     return False
 
 def design_pin(image_path, title, output_path):
-    """Apply premium design overlays using Pillow"""
     img = Image.open(image_path).convert("RGBA")
     width, height = img.size
-    
     overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
-    
-    # Sophisticated Gradient
     grad_height = int(height * 0.5)
     for y in range(height - grad_height, height):
         progress = (y - (height - grad_height)) / grad_height
         alpha = int(220 * (progress ** 1.5))
         draw.line([(0, y), (width, y)], fill=(42, 25, 16, alpha))
-        
     img = Image.alpha_composite(img, overlay)
     draw = ImageDraw.Draw(img)
-    
-    # Premium Typography
     font_size = int(width * 0.08)
-    font_paths = [
-        "C:/Windows/Fonts/Montserrat-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "arialbd.ttf"
-    ]
+    font_paths = ["C:/Windows/Fonts/Montserrat-Bold.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", "arialbd.ttf"]
     font = None
     for fp in font_paths:
         try:
@@ -103,17 +149,14 @@ def design_pin(image_path, title, output_path):
                 break
         except: continue
     if not font: font = ImageFont.load_default()
-    
     wrapped_lines = textwrap.wrap(title, width=18)
     line_h = font_size * 1.2
     y_text = height - (len(wrapped_lines) * line_h) - 150
-    
     for line in wrapped_lines:
         w = draw.textlength(line, font=font)
         draw.text(((width-w)/2 + 2, y_text + 2), line, font=font, fill=(0,0,0,100))
         draw.text(((width-w)/2, y_text), line, font=font, fill=(255,255,255,255))
         y_text += line_h
-        
     try:
         brand_font = ImageFont.truetype(font_paths[0], int(width * 0.035)) if font else None
         if brand_font:
@@ -121,31 +164,20 @@ def design_pin(image_path, title, output_path):
             bw = draw.textlength(brand_text, font=brand_font)
             draw.text(((width-bw)/2, height - 70), brand_text, font=brand_font, fill=(255,255,255,160))
     except: pass
-    
     img.convert("RGB").save(output_path, "JPEG", quality=95)
 
 def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
-    """
-    Update or create a robust Weekly Gallery page holding multiple pins.
-    Copies the generated image to assets folder so it displays properly.
-    """
     now = datetime.datetime.now()
     week_num = now.isocalendar()[1]
     year = now.year
     week_slug = f"edition-{week_num}-{year}"
-    
     discovery_dir = BRIDGE_PAGE_ROOT / "discovery"
     assets_dir = discovery_dir / "assets"
     discovery_dir.mkdir(parents=True, exist_ok=True)
     assets_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Move the raw image to assets folder to act as the gorgeous thumbnail
     dest_img_path = assets_dir / f"{slug}.jpg"
     shutil.copy(image_file_name, dest_img_path)
-    
     html_file = discovery_dir / f"{week_slug}.html"
-    
-    # HTML Card for this pin
     card_html = f"""
         <!-- POST: {slug} -->
         <div class="card" id="{slug}">
@@ -159,125 +191,129 @@ def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
             </div>
         </div>
     """
-
     if not html_file.exists():
-        # Create fresh weekly magazine
-        base_html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Mordjene Weekly Finds - Week {week_num}, {year}</title>
-    <style>
-{WEEKLY_MAGAZINE_CSS}
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Weekly Edition</h1>
-        <p>Curated Top Trends & Beautiful Recipes • Week {week_num}</p>
-    </div>
-    <div class="gallery-container">
-        <!-- CARDS BEGIN -->
-{card_html}
-        <!-- CARDS END -->
-    </div>
-</body>
-</html>"""
+        base_html = f"<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Weekly Finds</title><style>{WEEKLY_MAGAZINE_CSS}</style></head><body><div class='header'><h1>Weekly Edition</h1><p>Week {week_num}</p></div><div class='gallery-container'><!-- CARDS BEGIN -->{card_html}<!-- CARDS END --></div></body></html>"
         html_file.write_text(base_html, encoding="utf-8")
     else:
-        # Inject card into existing magazine
         content = html_file.read_text(encoding="utf-8")
-        inject_marker = "<!-- CARDS BEGIN -->"
-        if inject_marker in content:
-            new_content = content.replace(inject_marker, f"{inject_marker}\n{card_html}")
-            html_file.write_text(new_content, encoding="utf-8")
-            
-    # --- Auto-Archive Homepage Linking ---
-    # To prevent orphaned pages and build beautiful internal links on the root homepage
-    root_index = Path("index.html")
-    if root_index.exists():
-        index_content = root_index.read_text(encoding="utf-8")
-        archive_marker = "<!-- ARCHIVE BEGIN -->"
-        link_html = f'<a href="bridge_page/discovery/{week_slug}.html" style="font-size: 1.1rem; color: #8b2b2b; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #eae0d8; border-radius: 4px; display: inline-block; width: 300px; text-align: center;">Week {week_num}, {year} Edition &rarr;</a>'
-        
-        # Only inject if this exact week isn't already archived
-        if week_slug not in index_content and archive_marker in index_content:
-            new_index_content = index_content.replace(archive_marker, f"{archive_marker}\n            {link_html}")
-            root_index.write_text(new_index_content, encoding="utf-8")
-            print(f"Updated index.html archive with {week_slug}")
-            
-    # Format the final Pinterest link resolving cleanly to github pages hash
+        marker = "<!-- CARDS BEGIN -->"
+        if marker in content:
+            html_file.write_text(content.replace(marker, f"{marker}\n{card_html}"), encoding="utf-8")
     return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/discovery/{week_slug}.html#{slug}"
 
-def publish_pin(image_path, title, description, bridge_url, board_id):
-    """Push to Pinterest API"""
-    if not PINTEREST_ACCESS_TOKEN:
-        print("Skipping Pinterest publish: No Access Token")
-        return False
-        
-    with open(image_path, "rb") as f:
-        img_b64 = base64.b64encode(f.read()).decode()
-        
-    payload = {
-        "board_id": board_id,
-        "title": title[:100],
-        "description": description[:500],
-        "link": bridge_url,
-        "media_source": {
-            "source_type": "image_base64",
-            "content_type": "image/jpeg",
-            "data": img_b64,
-        }
-    }
-    
-    headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}", "Content-Type": "application/json"}
+pin_session = requests.Session()
+def pin_request(method, endpoint, **kwargs):
+    url = f"https://api.pinterest.com/v5{endpoint}"
     try:
-        response = requests.post(f"{PINTEREST_API_BASE}/pins", headers=headers, json=payload, timeout=60)
-        if response.status_code in (200, 201):
-            print(f"Pin Published! ID: {response.json().get('id')}")
-            return True
-        else:
-            print(f"Pinterest Error: {response.text}")
-    except Exception as e:
-        print(f"Pinterest Exception: {e}")
-    return False
+        if method == "GET": return pin_session.get(url, **kwargs)
+        return pin_session.post(url, **kwargs)
+    except: return None
+
+def publish_pin(image_path, title, description, bridge_url, board_id):
+    if MOCK_MODE: return True
+    if not PINTEREST_ACCESS_TOKEN: return False
+    with open(image_path, "rb") as f: img_b64 = base64.b64encode(f.read()).decode()
+    payload = {
+        "board_id": board_id, "title": title[:100], "description": description[:500],
+        "link": bridge_url,
+        "media_source": {"source_type": "image_base64", "content_type": "image/jpeg", "data": img_b64}
+    }
+    headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}", "Content-Type": "application/json"}
+    res = pin_request("POST", "/pins", headers=headers, json=payload, timeout=60)
+    return res and res.status_code in (200, 201)
+
+def get_board_id(board_name):
+    if not PINTEREST_ACCESS_TOKEN: return None
+    headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}"}
+    res = pin_request("GET", "/boards", headers=headers)
+    if res and res.status_code == 200:
+        for b in res.json().get("items", []):
+            if b.get("name", "").lower().strip() == board_name.lower().strip():
+                return b.get("id")
+    return None
 
 def process_new_pin(title, slug, url, description, board_id):
-    """Master flow for generating multiple pins per article (4x multiplier) -> Weekly Gallery"""
-    print(f"--- Unified Flow: {title} (Generating 4 Variations) ---")
-    
-    angles = [
-        "A luxury close-up editorial shot, macro",
-        "A beautiful overhead flat-lay photography composition",
-        "A bright minimalist lifestyle setting",
-        "A dramatic moody lighting rustic shot"
-    ]
-    
-    success_count = 0
+    print(f"--- Pinterest Flow: {title} ---")
+    angles = ["A luxury close-up editorial shot, macro", "A beautiful overhead flat-lay photography"]
+    success = 0
     for i, angle in enumerate(angles):
         iter_slug = f"{slug}-pin-{i+1}"
         raw_img = f"temp_raw_{iter_slug}.jpg"
         final_img = f"final_pin_{iter_slug}.jpg"
-        
-        print(f"  -> Variation {i+1}: {angle}")
-        
-        # 1. Image Generation
-        pin_prompt = f"{angle} of {title}"
-        if generate_image(pin_prompt, raw_img):
-            # 2. Design Overlay
+        if generate_image(f"{angle} of {title}", raw_img):
             design_pin(raw_img, title, final_img)
-            
-            # 3. Weekly Magazine Injection (Host the raw image for the beautiful gallery thumb)
-            bridge_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
-            
-            # 4. Pinterest Publish
-            if publish_pin(final_img, title, description, bridge_url, board_id):
-                success_count += 1
-            
-            # Cleanup local temp files (raw_img was copied to bridge assets folder already)
+            b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
+            if publish_pin(final_img, title, description, b_url, board_id): success += 1
             if os.path.exists(raw_img): os.remove(raw_img)
             if os.path.exists(final_img): os.remove(final_img)
-            
-    print(f"--- Completed: {success_count}/4 Pins Published ---")
-    return success_count > 0
+    print(f"--- Finished: {success} Pins Published ---")
+    return success > 0
+
+def _load_queue():
+    queue_path = root_dir / "topic_queue.json"
+    if queue_path.exists():
+        try:
+            with open(queue_path, "r") as f: return json.load(f)
+        except: return []
+    return []
+
+def _save_queue(queue):
+    queue_path = root_dir / "topic_queue.json"
+    with open(queue_path, "w") as f: json.dump(queue, f, indent=2)
+
+def run_pin_worker():
+    """Pick a topic from queue that needs pins (1:3 ratio) and publish 1 pin."""
+    queue = _load_queue()
+    # Filter: WP is done and needs more pins
+    target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 3), None)
+    
+    if not target:
+        print("No topics in queue waiting for pins. Trying 'pending' topics as fallback...")
+        # Optional: as a fallback, we could pick a pending one if it was just published elsewhere
+        return
+
+    title = target["topic"]
+    slug = target.get("topic", "").lower().replace(" ", "-")
+    url = target.get("wp_url")
+    description = f"Check out this amazing {title} recipe and guide on el-mordjene.info!"
+    pin_index = target.get("pin_count", 0)
+    
+    print(f"--- PIN WORKER: Processing '{title}' (Pin {pin_index + 1}/3) ---")
+    
+    # Rotate angles based on which pin we are on
+    angles = [
+        "A luxury editorial food photography hero shot, professional lighting",
+        "A beautiful overhead flat-lay of ingredients and preparation",
+        "A close-up macro shot showing texture and delicious details"
+    ]
+    angle = angles[pin_index % len(angles)]
+    
+    iter_slug = f"{slug}-pin-{pin_index + 1}"
+    raw_img = f"temp_raw_{iter_slug}.jpg"
+    final_img = f"final_pin_{iter_slug}.jpg"
+    
+    board_id = os.getenv("PINTEREST_BOARD_ID") or os.getenv("BOARD_RECIPES_EN")
+    
+    if generate_image(f"{angle} of {title}", raw_img):
+        design_pin(raw_img, title, final_img)
+        b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
+        if publish_pin(final_img, title, description, b_url, board_id):
+            target["pin_count"] = pin_index + 1
+            _save_queue(queue)
+            print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
+        
+        if os.path.exists(raw_img): os.remove(raw_img)
+        if os.path.exists(final_img): os.remove(final_img)
+    else:
+        print(f"FAILURE: Could not generate image for {title}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--trend")
+    parser.add_argument("--worker", action="store_true", help="Run as a queue worker")
+    args = parser.parse_args()
+    
+    if args.worker:
+        run_pin_worker()
+    elif args.trend:
+        process_new_pin(args.trend, "cli-test", "https://google.com", "CLI Description", os.getenv("PINTEREST_BOARD_ID"))

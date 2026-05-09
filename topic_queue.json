@@ -1,0 +1,520 @@
+[
+  {
+    "topic": "Dubai Chocolate Bar with Pistachio Cream",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 1,
+    "source": "manual",
+    "retries": 1
+  },
+  {
+    "topic": "Viral El Mordjene Filled Crepes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 2,
+    "source": "manual",
+    "retries": 1
+  },
+  {
+    "topic": "Summer Dessert Ideas 2026",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 3,
+    "source": "manual",
+    "retries": 1
+  },
+  {
+    "topic": "Chicken Ceaser Wraps Recipes",
+    "intent": "recipe",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/chicken-caesar-wraps-recipes-5/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API",
+    "published_at": "2026-05-09T17:53:59.261107"
+  },
+  {
+    "topic": "Rotel Dip Recipe",
+    "intent": "recipe",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/rotel-dip-recipe-6/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API",
+    "published_at": "2026-05-09T17:55:26.027481"
+  },
+  {
+    "topic": "Tomato Cucumber Salad Recipe",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Healthy Snacks Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Easy Summer Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Crockpot Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Healthy Summer Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Dinner Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Healthy Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Birthday Cake",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Dinner",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Dinner Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Ground Beef Recipes For Dinner",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Deviled Eggs Recipe Best",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Lunch Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Dinner Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Easy Dinner Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Shoneys Strawberry Pie Recipe",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Food Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Lunch Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Sweet Potato Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Chicken Breast Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Banana Bread Recipe",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Salad Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Cookie Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Pasta Salad Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Chicken Salad Recipe",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Desserts",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Summer Grilling Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Hummingbird Nectar Recipe",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Breakfast Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Crockpot Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Strawberry Shortcake",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Chicken Thigh Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Carrot Cake Recipe",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Pasta Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Cake",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Easy Dinner Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Healthy Dinner Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Ground Beef Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Salmon Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Pork Chop Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Breakfast Casserole",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Dessert Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Meatloaf Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Mediterranean Diet Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Breakfast",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Easy Summer Dinners",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Shrimp Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Dinner Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Chicken Recipes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  },
+  {
+    "topic": "Chocolate Chip Cookies",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Pinterest API"
+  }
+]
