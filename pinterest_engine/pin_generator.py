@@ -303,13 +303,13 @@ def run_pin_worker():
     raw_img = f"temp_raw_{iter_slug}.jpg"
     final_img = f"final_pin_{iter_slug}.jpg"
     
-    # BOARD SELECTION LOGIC (Specialized)
+    # BOARD SELECTION LOGIC (Specialized - FoodTrendsBlog)
     board_mapping = {
-        "dessert": os.getenv("PINTEREST_BOARD_DESSERTS") or "1033083670713095411",
-        "dinner": os.getenv("PINTEREST_BOARD_DINNER") or "1033083670713095410",
-        "trend": os.getenv("PINTEREST_BOARD_TRENDS") or "1033083670713095408",
-        "salad": os.getenv("PINTEREST_BOARD_SALADS") or "1033083670713095409",
-        "recipe": os.getenv("PINTEREST_BOARD_RECIPES") or "1033083670713095221"
+        "dessert": os.getenv("PINTEREST_BOARD_DESSERTS") or "976859044115152346",
+        "dinner": os.getenv("PINTEREST_BOARD_DINNER") or "976859044115152345",
+        "trend": os.getenv("PINTEREST_BOARD_TRENDS") or "976859044115152343",
+        "salad": os.getenv("PINTEREST_BOARD_SALADS") or "976859044115152344",
+        "recipe": os.getenv("PINTEREST_BOARD_RECIPES") or "976859044115152343"
     }
     
     # Simple keyword matching
