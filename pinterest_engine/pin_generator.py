@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 from dotenv import load_dotenv
 from pathlib import Path
 import argparse
+import urllib.parse
 from google import genai
 from huggingface_hub import InferenceClient
 
@@ -90,11 +91,20 @@ def _try_kolors(prompt, output_path):
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         response = requests.post(SILICONFLOW_API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 200:
-            img_url = response.json().get("images", [{}])[0].get("url") or response.json().get("data", [{}])[0].get("url")
+            resp_json = response.json()
+            # Try multiple common SiliconFlow response formats
+            img_url = None
+            if "images" in resp_json and resp_json["images"]:
+                img_url = resp_json["images"][0].get("url")
+            elif "data" in resp_json and resp_json["data"]:
+                img_url = resp_json["data"][0].get("url")
+            
             if img_url:
                 img_data = requests.get(img_url).content
                 with open(output_path, "wb") as f: f.write(img_data)
                 return True
+            else:
+                print(f"DEBUG: Kolors response missing image URL: {resp_json}")
     except Exception as e:
         print(f"DEBUG: Kolors fallback failed: {e}")
     return False
@@ -102,7 +112,6 @@ def _try_kolors(prompt, output_path):
 def _try_pollinations(prompt, output_path):
     try:
         print(f"DEBUG: Trying Pollinations Last Resort...", flush=True)
-        import urllib.parse
         encoded = urllib.parse.quote(prompt)
         url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&nologo=true&seed={random.randint(1,999999)}"
         res = requests.get(url, timeout=30)
