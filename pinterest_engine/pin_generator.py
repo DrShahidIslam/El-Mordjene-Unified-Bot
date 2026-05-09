@@ -294,12 +294,31 @@ def run_pin_worker():
     raw_img = f"temp_raw_{iter_slug}.jpg"
     final_img = f"final_pin_{iter_slug}.jpg"
     
-    board_id = os.getenv("PINTEREST_BOARD_ID") or os.getenv("BOARD_RECIPES_EN")
+    # BOARD SELECTION LOGIC (Specialized)
+    board_mapping = {
+        "dessert": os.getenv("PINTEREST_BOARD_DESSERTS") or "1033083670713095411",
+        "dinner": os.getenv("PINTEREST_BOARD_DINNER") or "1033083670713095410",
+        "trend": os.getenv("PINTEREST_BOARD_TRENDS") or "1033083670713095408",
+        "salad": os.getenv("PINTEREST_BOARD_SALADS") or "1033083670713095409",
+        "recipe": os.getenv("PINTEREST_BOARD_RECIPES") or "1033083670713095221"
+    }
+    
+    # Simple keyword matching
+    t_lower = title.lower()
+    selected_board = board_mapping["recipe"] # Default
+    if any(k in t_lower for k in ["cake", "cookie", "dessert", "sweet", "chocolate", "crepe", "bake"]):
+        selected_board = board_mapping["dessert"]
+    elif any(k in t_lower for k in ["dinner", "wrap", "pasta", "chicken", "meat", "main"]):
+        selected_board = board_mapping["dinner"]
+    elif any(k in t_lower for k in ["salad", "healthy", "bowl", "chickpea", "vegan"]):
+        selected_board = board_mapping["salad"]
+    elif any(k in t_lower for k in ["viral", "trending", "trend", "new"]):
+        selected_board = board_mapping["trend"]
     
     if generate_image(f"{angle} of {title}", raw_img):
         design_pin(raw_img, title, final_img)
         b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
-        if publish_pin(final_img, title, description, b_url, board_id):
+        if publish_pin(final_img, title, description, b_url, selected_board):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
