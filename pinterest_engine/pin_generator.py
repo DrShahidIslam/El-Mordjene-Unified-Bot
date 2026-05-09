@@ -56,21 +56,23 @@ BRIDGE_PAGE_URL_BASE = os.getenv("BRIDGE_PAGE_URL", "https://drshahidislam.githu
 MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
 
 WEEKLY_MAGAZINE_CSS = """
-        :root { --primary: #e6dfd9; --accent: #8b2b2b; --text: #1a1a1a; --surface: #ffffff; }
-        body { font-family: 'Georgia', serif; background-color: var(--primary); color: var(--text); margin: 0; padding: 0; }
-        .header { background: var(--surface); padding: 40px 20px; text-align: center; border-bottom: 1px solid #dcd3cb; }
-        .header h1 { margin: 0; font-size: 2.5rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
-        .header p { color: #666; font-family: sans-serif; letter-spacing: 1px; margin-top: 10px; }
-        .gallery-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; }
-        .card { background: var(--surface); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s ease; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139,43,43,0.15); }
-        .card-img-wrapper { position: relative; width: 100%; padding-top: 133%; overflow: hidden; }
-        .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { font-size: 1.4rem; color: var(--text); margin: 0 0 15px 0; line-height: 1.3; }
-        .card-excerpt { color: #555; font-family: sans-serif; font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
-        .card-btn { display: inline-block; background-color: var(--accent); color: white; text-align: center; padding: 12px 20px; text-decoration: none; border-radius: 4px; font-family: sans-serif; font-weight: bold; letter-spacing: 1px; transition: background 0.2s; }
-        .card-btn:hover { background-color: #6a1f1f; }
+    :root { --primary: #f8f5f2; --accent: #8b2b2b; --text: #1a1a1a; --surface: #ffffff; }
+    body { font-family: 'Georgia', serif; background-color: var(--primary); color: var(--text); margin: 0; padding: 0; scroll-behavior: smooth; }
+    .header { background: var(--surface); padding: 60px 20px; text-align: center; border-bottom: 2px solid var(--accent); }
+    .header h1 { margin: 0; font-size: 3rem; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; font-weight: 900; }
+    .header p { color: #666; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; margin-top: 15px; text-transform: uppercase; font-size: 0.9rem; }
+    .gallery-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 60px; }
+    .card { background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; border: 1px solid #eee; }
+    .card:target { border: 3px solid var(--accent); transform: scale(1.02); box-shadow: 0 30px 60px rgba(139,43,43,0.2); }
+    .card:hover { transform: translateY(-10px); }
+    .card-img-wrapper { position: relative; width: 100%; padding-top: 65%; overflow: hidden; }
+    .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .card:hover .card-img { transform: scale(1.05); }
+    .card-body { padding: 40px; text-align: center; }
+    .card-title { font-size: 2.2rem; color: var(--text); margin: 0 0 20px 0; line-height: 1.2; font-weight: bold; }
+    .card-excerpt { color: #444; font-family: 'Open Sans', sans-serif; font-size: 1.1rem; line-height: 1.8; margin-bottom: 30px; }
+    .card-btn { display: block; background-color: var(--accent); color: white; text-align: center; padding: 20px 40px; text-decoration: none; border-radius: 50px; font-family: sans-serif; font-weight: 900; letter-spacing: 2px; transition: all 0.3s ease; text-transform: uppercase; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(139,43,43,0.3); }
+    .card-btn:hover { background-color: #1a1a1a; transform: scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
 """
 
 # --- Core Functions ---
