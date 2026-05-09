@@ -1,9 +1,9 @@
 name: Pinterest Pin Worker
 
 on:
-  # schedule:
-  #   - cron: '0 */3 * * *'  # Runs every 3 hours (8 times a day)
-  workflow_dispatch:      # Keep manual only
+  schedule:
+    - cron: '0 */3 * * *'  # Runs every 3 hours (8 times a day)
+  workflow_dispatch:      # Manual trigger
 
 permissions:
   contents: write
