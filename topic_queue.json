@@ -105,11 +105,12 @@
   {
     "topic": "Summer Dinner Ideas",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/refreshing-summer-dinner-ideas/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-10T09:54:46.544454"
   },
   {
     "topic": "Healthy Recipes",
