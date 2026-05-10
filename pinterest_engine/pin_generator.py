@@ -14,7 +14,7 @@ import urllib.parse
 from google import genai
 from huggingface_hub import InferenceClient
 
-VERSION = "1.2.1"
+VERSION = "1.2.2"
 print(f"--- PIN GENERATOR v{VERSION} START ---", flush=True)
 
 # Load environment
@@ -75,8 +75,6 @@ WEEKLY_MAGAZINE_CSS = """
     .card-btn { display: block; background-color: var(--accent); color: white; text-align: center; padding: 20px 40px; text-decoration: none; border-radius: 50px; font-family: sans-serif; font-weight: 900; letter-spacing: 2px; transition: all 0.3s ease; text-transform: uppercase; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(139,43,43,0.3); }
     .card-btn:hover { background-color: #1a1a1a; transform: scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
 """
-
-# --- Core Functions ---
 
 # --- Niche CTA Options ---
 CTA_OPTIONS = {
@@ -352,16 +350,26 @@ def get_board_id(board_name):
 
 def process_new_pin(title, slug, url, description, board_id):
     print(f"--- Pinterest Flow: {title} ---")
-    angles = ["A luxury close-up editorial shot, macro", "A beautiful overhead flat-lay photography"]
+    angles = ["A luxury editorial food photography hero shot, professional lighting", "A beautiful overhead flat-lay photography"]
     success = 0
     for i, angle in enumerate(angles):
         iter_slug = f"{slug}-pin-{i+1}"
         raw_img = f"temp_raw_{iter_slug}.jpg"
         final_img = f"final_pin_{iter_slug}.jpg"
+        
+        # Content Gen
+        gemini_data = generate_pin_content_with_gemini(title)
+        if gemini_data:
+            p_title = gemini_data.get("title", title)
+            p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
+            overlay_text = gemini_data.get("overlay_text", title)
+        else:
+            p_title, p_desc, overlay_text = title, description, title
+
         if generate_image_master(f"{angle} of {title}", raw_img):
-            design_pin_premium(raw_img, title, final_img)
-            b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
-            if publish_pin(final_img, title, description, b_url, board_id): success += 1
+            design_pin_premium(raw_img, overlay_text, final_img)
+            b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
+            if publish_pin(final_img, p_title, p_desc, b_url, board_id): success += 1
             if os.path.exists(raw_img): os.remove(raw_img)
             if os.path.exists(final_img): os.remove(final_img)
     print(f"--- Finished: {success} Pins Published ---")
@@ -386,8 +394,7 @@ def run_pin_worker():
     target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 3), None)
     
     if not target:
-        print("No topics in queue waiting for pins. Trying 'pending' topics as fallback...")
-        # Optional: as a fallback, we could pick a pending one if it was just published elsewhere
+        print("No topics in queue waiting for pins.")
         return
 
     title = target["topic"]
@@ -413,11 +420,11 @@ def run_pin_worker():
     # --- GENERATE PREMIUM CONTENT ---
     gemini_data = generate_pin_content_with_gemini(title)
     if gemini_data:
-        title = gemini_data.get("title", title)
-        description = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
+        p_title = gemini_data.get("title", title)
+        p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
         overlay_text = gemini_data.get("overlay_text", title)
     else:
-        overlay_text = title
+        p_title, p_desc, overlay_text = title, description, title
 
     # BOARD SELECTION LOGIC (Specialized - FoodTrendsBlog)
     board_mapping = {
@@ -445,8 +452,8 @@ def run_pin_worker():
     image_prompt = f"{angle} of {title}, delicious food"
     if generate_image_master(image_prompt, raw_img):
         design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
-        b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
-        if publish_pin(final_img, title, description, b_url, selected_board):
+        b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
+        if publish_pin(final_img, p_title, p_desc, b_url, selected_board):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
