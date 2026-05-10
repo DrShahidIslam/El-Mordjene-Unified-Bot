@@ -75,20 +75,22 @@
   {
     "topic": "Easy Summer Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/easy-summer-recipes-orzo-salad/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-10T09:49:19.146909"
   },
   {
     "topic": "Summer Crockpot Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/summer-crockpot-recipes/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-10T09:50:05.290439"
   },
   {
     "topic": "Healthy Summer Recipes",
