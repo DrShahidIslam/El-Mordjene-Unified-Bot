@@ -346,7 +346,6 @@ def upload_media(file_path, title=""):
                     requests.post(
                         f"{API_BASE}/media/{media_id}",
                         json={"alt_text": title[:125]},
-                        auth=AUTH,
                         headers=HEADERS,
                         timeout=15,
                     )
