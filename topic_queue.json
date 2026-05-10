@@ -55,20 +55,22 @@
   {
     "topic": "Tomato Cucumber Salad Recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/tomato-cucumber-salad-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-10T09:44:20.823771"
   },
   {
     "topic": "Healthy Snacks Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/nutritious-energy-bites-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-10T09:45:10.746538"
   },
   {
     "topic": "Easy Summer Recipes",
