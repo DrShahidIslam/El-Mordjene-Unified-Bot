@@ -42,15 +42,54 @@ hf_keys = [k.strip() for k in hf_keys if k.strip()]
 HUGGINGFACE_MODEL = "black-forest-labs/FLUX.1-schnell" 
 
 GEMINI_API_KEYS = os.getenv("GEMINI_API_KEYS", "").split(",")
-current_gemini_key_index = 0
 
-def get_gemini_client():
-    global current_gemini_key_index
+def generate_pin_content_with_gemini(topic):
+    """Generate high-CTR title and description using Pinterest Annotated Keywords strategy via Raw HTTP."""
     if not GEMINI_API_KEYS: return None
-    key = GEMINI_API_KEYS[current_gemini_key_index].strip()
-    return genai.Client(api_key=key)
+    
+    prompt = f"""
+    You are a viral Pinterest marketing expert. Your task is to generate high-performance content for a pin about: "{topic}".
+    
+    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche.
+    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword.
+    3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords.
+    4. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay.
+    5. Create a HYPER-REALISTIC Image Prompt (300-500 chars). Focus on lighting (softbox, rim light), textures (glistening, crispy, creamy), camera gear (Sony A7R IV, 90mm Macro), and food styling details. DO NOT mention people or hands, focus purely on the food as the hero.
+    
+    Return ONLY valid JSON:
+    {{
+      "annotated_keywords": ["keyword1", "keyword2", "keyword3"],
+      "title": "Annotated Keyword: The Curiosity Gap Hook",
+      "description": "Natural SEO description with keywords...",
+      "overlay_text": "HOOK FOR IMAGE",
+      "image_prompt": "Hyper-realistic photography prompt here...",
+      "hashtags": "#viral #recipe #food..."
+    }}
+    """
+    
+    # Model from config
+    try:
+        from alerts_engine import config as wp_config
+        model_name = getattr(wp_config, "GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
+    except:
+        model_name = "gemini-3.1-flash-lite-preview"
 
-client = get_gemini_client()
+    for key in GEMINI_API_KEYS:
+        clean_key = key.strip().strip("'").strip('"')
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={clean_key}"
+        try:
+            payload = {"contents": [{"parts": [{"text": prompt}]}]}
+            res = requests.post(url, json=payload, headers={'Content-Type': 'application/json'}, timeout=30)
+            if res.status_code == 200:
+                text = res.json()['candidates'][0]['content']['parts'][0]['text']
+                text = text.strip().replace("```json", "").replace("```", "")
+                return json.loads(text)
+            else:
+                print(f"   [Gemini] Key fail (status {res.status_code})")
+        except Exception as e:
+            print(f"   [Gemini] Request error: {e}")
+            continue
+    return None
 
 BRIDGE_PAGE_ROOT = Path("bridge_page")
 BRIDGE_PAGE_URL_BASE = os.getenv("BRIDGE_PAGE_URL", "https://drshahidislam.github.io/Food-Trends-Blog/")
@@ -89,7 +128,9 @@ CTA_OPTIONS = {
 
 def _try_huggingface(prompt, output_path):
     if not hf_keys: return False
-    full_prompt = f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography, 768x1024"
+    # Use a highly realistic static photography string
+    full_prompt = f"{prompt}, high-end food photography, award-winning, ultra-realistic, 8k resolution, shot on 100mm macro lens, f/2.8, cinematic soft lighting, detailed textures, professional food styling, bokeh background, 768x1024"
+    
     for i, key in enumerate(hf_keys):
         try:
             print(f"HuggingFace: Key {i+1}/{len(hf_keys)}...", flush=True)
@@ -107,9 +148,11 @@ def _try_kolors(prompt, output_path):
     if not api_key: return False
     try:
         print(f"DEBUG: Trying Kolors Fallback...", flush=True)
+        enhanced_prompt = f"{prompt}, professional food photography, commercial quality, hyper-realistic, natural lighting, 1024x1024"
+            
         payload = {
             "model": SILICONFLOW_MODEL,
-            "prompt": f"{prompt}, food photography, high quality, realistic, 1024x1024",
+            "prompt": enhanced_prompt,
             "image_size": "1024x1024"
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
@@ -254,8 +297,8 @@ def design_pin_premium(image_path, title, output_path, board_type="recipe"):
 # --- Gemini Content Generator (Annotated Keywords Strategy) ---
 
 def generate_pin_content_with_gemini(topic):
-    """Generate high-CTR title and description using Pinterest Annotated Keywords strategy."""
-    if not client: return None
+    """Generate high-CTR title and description using Pinterest Annotated Keywords strategy via Raw HTTP."""
+    if not GEMINI_API_KEYS: return None
     
     prompt = f"""
     You are a viral Pinterest marketing expert. Your task is to generate high-performance content for a pin about: "{topic}".
@@ -264,6 +307,7 @@ def generate_pin_content_with_gemini(topic):
     2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword.
     3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords.
     4. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay.
+    5. Create a HYPER-REALISTIC Image Prompt (300-500 chars). Focus on lighting (softbox, rim light), textures (glistening, crispy, creamy), camera gear (Sony A7R IV, 90mm Macro), and food styling details. DO NOT mention people or hands, focus purely on the food as the hero.
     
     Return ONLY valid JSON:
     {{
@@ -271,16 +315,25 @@ def generate_pin_content_with_gemini(topic):
       "title": "Annotated Keyword: The Curiosity Gap Hook",
       "description": "Natural SEO description with keywords...",
       "overlay_text": "HOOK FOR IMAGE",
+      "image_prompt": "Hyper-realistic photography prompt here...",
       "hashtags": "#viral #recipe #food..."
     }}
     """
-    try:
-        response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
-        text = response.text.strip().replace("```json", "").replace("```", "")
-        return json.loads(text)
-    except Exception as e:
-        print(f"Gemini Content Gen Error: {e}")
-        return None
+    
+    for key in GEMINI_API_KEYS:
+        clean_key = key.strip().strip("'").strip('"')
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={clean_key}"
+        try:
+            payload = {"contents": [{"parts": [{"text": prompt}]}]}
+            res = requests.post(url, json=payload, timeout=30)
+            if res.status_code == 200:
+                text = res.json()['candidates'][0]['content']['parts'][0]['text']
+                text = text.strip().replace("```json", "").replace("```", "")
+                return json.loads(text)
+        except Exception as e:
+            print(f"   [Gemini] Key fail: {e}")
+            continue
+    return None
 
 def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
     now = datetime.datetime.now()
@@ -357,7 +410,7 @@ def process_new_pin(title, slug, url, description, board_id):
         raw_img = f"temp_raw_{iter_slug}.jpg"
         final_img = f"final_pin_{iter_slug}.jpg"
         
-        # Content Gen
+        # Content Gen (Keep Gemini for Title/Desc but NOT for prompt expansion if it's unstable)
         gemini_data = generate_pin_content_with_gemini(title)
         if gemini_data:
             p_title = gemini_data.get("title", title)
@@ -366,7 +419,8 @@ def process_new_pin(title, slug, url, description, board_id):
         else:
             p_title, p_desc, overlay_text = title, description, title
 
-        if generate_image_master(f"{angle} of {title}", raw_img):
+        image_prompt = f"{angle} of {title}"
+        if generate_image_master(image_prompt, raw_img):
             design_pin_premium(raw_img, overlay_text, final_img)
             b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
             if publish_pin(final_img, p_title, p_desc, b_url, board_id): success += 1
@@ -449,7 +503,7 @@ def run_pin_worker():
     
     selected_board = board_mapping[board_key]
     
-    image_prompt = f"{angle} of {title}, delicious food"
+    image_prompt = f"{angle} of {title}"
     if generate_image_master(image_prompt, raw_img):
         design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
         b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
