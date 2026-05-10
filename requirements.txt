@@ -5,3 +5,6 @@ google-genai
 Pillow
 trafilatura
 pytrends
+huggingface_hub
+beautifulsoup4
+newsapi-python

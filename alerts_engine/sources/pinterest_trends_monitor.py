@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import config
 import logging
 from datetime import datetime
 
@@ -11,7 +12,7 @@ def fetch_pinterest_trends():
     Fetch trending keywords from Pinterest to guide article creation.
     Specifically filtering for food, baking, recipes, sweets.
     """
-    token = os.getenv("PINTEREST_ACCESS_TOKEN")
+    token = config.PINTEREST_ACCESS_TOKEN
     if not token:
         logger.warning("No PINTEREST_ACCESS_TOKEN found. Cannot fetch Pinterest trends.")
         return []

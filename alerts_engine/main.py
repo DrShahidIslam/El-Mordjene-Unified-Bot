@@ -6,7 +6,7 @@ import os
 import sys
 import time
 from datetime import datetime
-from publisher.wordpress_client import test_wordpress_connection
+
 
 # Prevent UnicodeEncodeError when printing emojis to standard Windows consoles
 if sys.stdout.encoding.lower() != 'utf-8':
@@ -18,12 +18,15 @@ from database.db import (
     record_published_topic, get_recent_published_topics,
     is_topic_already_covered
 )
-from sources.pinterest_trends_monitor import fetch_pinterest_trends
 from writer.article_generator import generate_article
 from publisher.wordpress_client import (
     create_post, test_wordpress_connection
 )
 from publisher.image_handler import generate_featured_image
+from sources.rss_monitor import fetch_rss_stories
+from sources.news_api_monitor import fetch_news_headlines
+from sources.trends_monitor import fetch_trending_queries
+from sources.pinterest_trends_monitor import fetch_pinterest_trends
 
 # --- Unified Pinterest Integration ---
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "pinterest_engine"))
@@ -34,7 +37,7 @@ except ImportError:
 
 # Configure logging
 logging.basicConfig(
-    level=getattr(logging, config.LOG_LEVEL),
+    level=getattr(config, "LOG_LEVEL", "INFO"),
     format='%(asctime)s | %(levelname)-8s | %(name)s | %(message)s',
     handlers=[logging.StreamHandler(), logging.FileHandler(config.LOG_FILE, encoding='utf-8')]
 )
@@ -189,17 +192,76 @@ def run_scan(state):
             time.sleep(10)
         conn.close()
 
-    # 2. If we still have capacity, fetch from Pinterest (Fallback)
+    # 2. Aggregated Discovery (RSS, NewsAPI, Google Trends, Pinterest)
     if published_count < max_per_run:
-        logger.info(f"Queue empty or limit not reached. Fetching Pinterest trends... ({published_count}/{max_per_run})")
-        trends = fetch_pinterest_trends()
-        if trends:
+        logger.info(f"Queue empty or limit not reached. Running aggregated discovery... ({published_count}/{max_per_run})")
+        
+        aggregated_trends = []
+        
+        # A. Pinterest Trends
+        try:
+            aggregated_trends.extend(fetch_pinterest_trends())
+        except Exception as e:
+            logger.warning(f"Discovery: Pinterest failed: {e}")
+
+        # B. RSS Stories
+        try:
+            rss_stories = fetch_rss_stories()
+            for s in rss_stories:
+                aggregated_trends.append({
+                    "topic": s["title"],
+                    "matched_keyword": s["matched_keyword"],
+                    "source": s["source"],
+                    "top_url": s["url"],
+                    "stories": [s]
+                })
+        except Exception as e:
+            logger.warning(f"Discovery: RSS failed: {e}")
+
+        # C. NewsAPI Headlines
+        try:
+            news_stories = fetch_news_headlines()
+            for s in news_stories:
+                aggregated_trends.append({
+                    "topic": s["title"],
+                    "matched_keyword": s["matched_keyword"],
+                    "source": s["source"],
+                    "top_url": s["url"],
+                    "stories": [s]
+                })
+        except Exception as e:
+            logger.warning(f"Discovery: NewsAPI failed: {e}")
+
+        # D. Google Trends
+        try:
+            google_trends = fetch_trending_queries()
+            for t in google_trends:
+                if t.get("is_rising"):
+                    aggregated_trends.append({
+                        "topic": t["keyword"],
+                        "matched_keyword": t["keyword"],
+                        "source": t["source"],
+                        "score": t.get("spike_ratio", 1.0)
+                    })
+        except Exception as e:
+            logger.warning(f"Discovery: Google Trends failed: {e}")
+
+        if aggregated_trends:
+            # Sort by score or significance if available
+            aggregated_trends.sort(key=lambda x: x.get("score", 1.0), reverse=True)
+            
             conn = get_connection()
-            for topic in trends:
+            for topic in aggregated_trends:
                 if published_count >= max_per_run: break
                 
                 # Deduplicate against queue and cache
-                if any(q["topic"].lower() == topic["topic"].lower() for q in queue):
+                topic_title = topic["topic"].lower()
+                if any(q["topic"].lower() == topic_title for q in queue):
+                    continue
+                
+                # Deduplicate against DB
+                is_covered, _, _ = is_topic_already_covered(conn, topic["topic"], threshold=0.5)
+                if is_covered:
                     continue
 
                 story_hash = hashlib.sha256(topic["topic"].encode()).hexdigest()[:16]
