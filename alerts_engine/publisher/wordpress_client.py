@@ -22,7 +22,18 @@ logger = logging.getLogger(__name__)
 LAST_PUBLISH_ERROR = None
 
 API_BASE = f"{config.WP_URL}/wp-json/wp/v2"
-AUTH = HTTPBasicAuth(config.WP_USERNAME, config.WP_APP_PASSWORD)
+
+def _get_headers():
+    creds = f"{config.WP_USERNAME}:{config.WP_APP_PASSWORD}"
+    token = base64.b64encode(creds.encode()).decode()
+    return {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Authorization": f"Basic {token}",
+        "Referer": f"{config.WP_URL}/",
+        "Accept": "application/json, text/plain, */*",
+    }
+
+HEADERS = _get_headers()
 TIMEOUT = 30
 RETRY_DELAY = 5
 RETRY_403_DELAY = 4
@@ -36,13 +47,18 @@ RECIPE_TITLE_MARKERS = [
     "homemade",
     "copycat",
 ]
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Referer": f"{config.WP_URL}/",
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Origin": config.WP_URL.rstrip("/"),
-}
+def _get_headers():
+    creds = f"{config.WP_USERNAME}:{config.WP_APP_PASSWORD}"
+    token = base64.b64encode(creds.encode()).decode()
+    h = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Authorization": f"Basic {token}",
+        "Referer": f"{config.WP_URL}/",
+        "Accept": "application/json, text/plain, */*",
+    }
+    return h
+
+HEADERS = _get_headers()
 
 def _safe_json(response, context_name=""):
     try:
@@ -186,7 +202,6 @@ def create_post(article, featured_image_path=None, status=None):
             response = requests.post(
                 f"{API_BASE}/posts",
                 json=post_data,
-                auth=AUTH,
                 headers=HEADERS,
                 timeout=TIMEOUT,
             )
@@ -323,7 +338,6 @@ def upload_media(file_path, title=""):
                 f"{API_BASE}/media",
                 data=file_data,
                 headers=headers,
-                auth=AUTH,
                 timeout=60,
             )
             if response.status_code in (200, 201):
@@ -363,7 +377,7 @@ def get_or_create_category(name, slug=""):
             response = requests.get(
                 f"{API_BASE}/categories",
                 params={"slug": slug},
-                auth=AUTH, headers=HEADERS, timeout=TIMEOUT
+                headers=HEADERS, timeout=TIMEOUT
             )
             if response.status_code == 200:
                 cats = _safe_json(response, "Get Category by Slug")
@@ -376,7 +390,7 @@ def get_or_create_category(name, slug=""):
         response = requests.get(
             f"{API_BASE}/categories",
             params={"search": name, "per_page": 10},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT
+            headers=HEADERS, timeout=TIMEOUT
         )
         if response.status_code == 200:
             for cat in _safe_json(response, "Get Category"):
@@ -398,7 +412,7 @@ def get_or_create_category(name, slug=""):
         response = requests.post(
             f"{API_BASE}/categories",
             json={"name": name},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT
+            headers=HEADERS, timeout=TIMEOUT
         )
         if response.status_code in (200, 201):
             cat_id = _safe_json(response, "Create Category").get("id")
@@ -426,7 +440,7 @@ def get_or_create_tag(name):
         response = requests.post(
             f"{API_BASE}/tags",
             json={"name": name},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT
+            headers=HEADERS, timeout=TIMEOUT
         )
         if response.status_code in (200, 201):
             return _safe_json(response, "Create Tag").get("id")
@@ -462,7 +476,7 @@ def _set_rankmath_meta(post_id, article):
         response = requests.post(
             f"{API_BASE}/posts/{post_id}",
             json=payload,
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT,
+            headers=HEADERS, timeout=TIMEOUT,
         )
         if response.status_code == 200:
             logger.info(f"  RankMath SEO metadata set (focus: '{focus_kw}')")
@@ -480,7 +494,7 @@ def update_post_status(post_id, status="publish"):
         response = requests.post(
             f"{API_BASE}/posts/{post_id}",
             json={"status": status},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT,
+            headers=HEADERS, timeout=TIMEOUT,
         )
         if response.status_code == 200:
             try:
@@ -542,7 +556,7 @@ def get_recent_post_titles(limit=50):
         response = requests.get(
             f"{API_BASE}/posts",
             params={"per_page": min(limit, 100), "status": "publish,draft,pending"},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT,
+            headers=HEADERS, timeout=TIMEOUT,
         )
         if response.status_code == 200:
             for post in response.json():
@@ -570,7 +584,7 @@ def test_wordpress_connection():
         response = requests.get(
             f"{API_BASE}/posts",
             params={"per_page": 1},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT
+            headers=HEADERS, timeout=TIMEOUT
         )
         if response.status_code == 200:
             posts = _safe_json(response, "Test Connection")

@@ -6,6 +6,7 @@ import os
 import sys
 import time
 from datetime import datetime
+from publisher.wordpress_client import test_wordpress_connection
 
 # Prevent UnicodeEncodeError when printing emojis to standard Windows consoles
 if sys.stdout.encoding.lower() != 'utf-8':
@@ -128,6 +129,11 @@ def _save_queue(queue):
 
 def run_scan(state):
     """Perform one full trend scan (Queue-first) and trigger auto-pilot."""
+    # PRE-RUN CONNECTION CHECK
+    if not test_wordpress_connection():
+        logger.error("🛑 ABORTING SCAN: WordPress connection failed. Saving resources.")
+        return
+
     logger.info("=" * 60)
     logger.info(" Starting scan cycle...")
     logger.info("=" * 60)
