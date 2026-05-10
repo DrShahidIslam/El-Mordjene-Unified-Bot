@@ -48,13 +48,13 @@ def generate_pin_content_with_gemini(topic):
     if not GEMINI_API_KEYS: return None
     
     prompt = f"""
-    You are a viral Pinterest marketing expert. Your task is to generate high-performance content for a pin about: "{topic}".
+    You are a viral Pinterest marketing expert specializing in high-CTR food photography. Your task is to generate high-performance content for a pin about: "{topic}".
     
     1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche.
     2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword.
-    3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords.
+    3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords and hashtags.
     4. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay.
-    5. Create a HYPER-REALISTIC Image Prompt (300-500 chars). Focus on lighting (softbox, rim light), textures (glistening, crispy, creamy), camera gear (Sony A7R IV, 90mm Macro), and food styling details. DO NOT mention people or hands, focus purely on the food as the hero.
+    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars). Focus on Pinterest-viral aesthetics: macro close-ups, vibrant high-contrast colors, and dramatic professional lighting (softbox, rim light, volumetric shadows). Specify professional camera gear (Sony A7R IV, 90mm f/2.8 Macro lens), intricate textures (glistening glazes, crispy caramelized edges, creamy interiors), and an artfully styled composition with scattered garnishes. DO NOT mention people, hands, text, or graphics. The food must be the absolute hero, looking irresistible and professional.
     
     Return ONLY valid JSON:
     {{
@@ -62,7 +62,7 @@ def generate_pin_content_with_gemini(topic):
       "title": "Annotated Keyword: The Curiosity Gap Hook",
       "description": "Natural SEO description with keywords...",
       "overlay_text": "HOOK FOR IMAGE",
-      "image_prompt": "Hyper-realistic photography prompt here...",
+      "image_prompt": "Masterpiece, hyper-realistic photography prompt here...",
       "hashtags": "#viral #recipe #food..."
     }}
     """
@@ -296,44 +296,7 @@ def design_pin_premium(image_path, title, output_path, board_type="recipe"):
 
 # --- Gemini Content Generator (Annotated Keywords Strategy) ---
 
-def generate_pin_content_with_gemini(topic):
-    """Generate high-CTR title and description using Pinterest Annotated Keywords strategy via Raw HTTP."""
-    if not GEMINI_API_KEYS: return None
-    
-    prompt = f"""
-    You are a viral Pinterest marketing expert. Your task is to generate high-performance content for a pin about: "{topic}".
-    
-    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche.
-    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword.
-    3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords.
-    4. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay.
-    5. Create a HYPER-REALISTIC Image Prompt (300-500 chars). Focus on lighting (softbox, rim light), textures (glistening, crispy, creamy), camera gear (Sony A7R IV, 90mm Macro), and food styling details. DO NOT mention people or hands, focus purely on the food as the hero.
-    
-    Return ONLY valid JSON:
-    {{
-      "annotated_keywords": ["keyword1", "keyword2", "keyword3"],
-      "title": "Annotated Keyword: The Curiosity Gap Hook",
-      "description": "Natural SEO description with keywords...",
-      "overlay_text": "HOOK FOR IMAGE",
-      "image_prompt": "Hyper-realistic photography prompt here...",
-      "hashtags": "#viral #recipe #food..."
-    }}
-    """
-    
-    for key in GEMINI_API_KEYS:
-        clean_key = key.strip().strip("'").strip('"')
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={clean_key}"
-        try:
-            payload = {"contents": [{"parts": [{"text": prompt}]}]}
-            res = requests.post(url, json=payload, timeout=30)
-            if res.status_code == 200:
-                text = res.json()['candidates'][0]['content']['parts'][0]['text']
-                text = text.strip().replace("```json", "").replace("```", "")
-                return json.loads(text)
-        except Exception as e:
-            print(f"   [Gemini] Key fail: {e}")
-            continue
-    return None
+# (Duplicate function removed, using the one defined above)
 
 def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
     now = datetime.datetime.now()
@@ -419,7 +382,10 @@ def process_new_pin(title, slug, url, description, board_id):
         else:
             p_title, p_desc, overlay_text = title, description, title
 
-        image_prompt = f"{angle} of {title}"
+        image_prompt = gemini_data.get("image_prompt") if gemini_data else None
+        if not image_prompt:
+            image_prompt = f"{angle} of {title}"
+
         if generate_image_master(image_prompt, raw_img):
             design_pin_premium(raw_img, overlay_text, final_img)
             b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
@@ -503,7 +469,10 @@ def run_pin_worker():
     
     selected_board = board_mapping[board_key]
     
-    image_prompt = f"{angle} of {title}"
+    image_prompt = gemini_data.get("image_prompt") if gemini_data else None
+    if not image_prompt:
+        image_prompt = f"{angle} of {title}"
+
     if generate_image_master(image_prompt, raw_img):
         design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
         b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)

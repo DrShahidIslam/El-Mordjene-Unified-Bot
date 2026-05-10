@@ -259,31 +259,17 @@ LANGUAGE: [en or fr]
 
 
 def build_image_prompt(topic_title, article_content_snippet=""):
-    """Build a prompt for generating a food photography featured image."""
-    prompt = f"""Generate a stunning, appetizing food photography image suitable for a professional food blog or culinary magazine like Bon Appetit or Tasty.
-
-Context: This image is for a food article about: {topic_title}
-
-CRITICAL INSTRUCTIONS:
-- ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO NUMBERS, AND NO WATERMARKS anywhere in the image.
-- DO NOT attempt to write the topic title or any keywords on the image.
-- DO NOT include graphic design overlays, borders, or lower-thirds.
-
-Style & Composition Guidelines:
-- Professional food photography, overhead or 45-degree angle
-- Warm, natural lighting with soft shadows (like golden hour or window light)
-- Rich, vibrant colors that make food look irresistible
-- Clean, styled background (marble, wood, linen, or rustic surfaces)
-- Include garnishes, scattered ingredients, or utensils for visual interest
-- 16:9 aspect ratio, landscape orientation
-- The image should make the viewer hungry and inspired to cook
-
-Exclusions:
-- No recognizable brand logos or packaging
-- No human faces (hands holding food are OK)
-- No cluttered or messy backgrounds"""
-
+    """Build a highly optimized, hyper-realistic prompt for a food photography featured image."""
+    prompt = f"""Masterpiece, hyper-realistic food photography of: {topic_title}.
+Style: High-end editorial culinary magazine (Bon Appetit / Michelin Guide style).
+Composition: Professional hero shot, 45-degree angle or elegant overhead flat-lay.
+Lighting: Volumetric natural lighting, soft window light with subtle rim highlights to emphasize intricate textures.
+Camera: Shot on Sony A7R IV, 90mm f/2.8 Macro G Master lens for tack-sharp detail and creamy, professional bokeh.
+Textures: Glistening surfaces, crispy caramelized edges, vibrant natural colors, ultra-high resolution 8k.
+Background: Minimalist luxury, neutral marble or weathered rustic wood, artfully styled with scattered garnishes (flaky sea salt, fresh herbs, or crumbs).
+CRITICAL: NO TEXT, NO LETTERS, NO NUMBERS, NO WATERMARKS, NO GRAPHICS. Pure professional photography only. 16:9 aspect ratio."""
     return prompt
+
 
 
 

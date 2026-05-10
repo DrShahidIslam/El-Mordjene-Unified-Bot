@@ -130,7 +130,8 @@ def _try_huggingface_image(article_title, output_path_webp, output_path_jpg):
         return None, None
         
     prompt = build_image_prompt(article_title)
-    full_prompt = f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography, 1200x630"
+    full_prompt = f"{prompt}, hyper-realistic food photography, masterpiece, 8k, macro shot, professional studio lighting, editorial style, tack-sharp detail, vibrant colors, Sony A7R IV, 90mm f/2.8 Macro"
+
     model = "black-forest-labs/FLUX.1-schnell"
     
     for i, key in enumerate(keys):
@@ -222,7 +223,8 @@ def _try_kolors_image(article_title, output_path_webp, output_path_jpg):
         
         payload = {
             "model": os.getenv("SILICONFLOW_MODEL", "Kwai-Kolors/Kolors"),
-            "prompt": f"{prompt}, high quality, food photography, realistic, 1024x1024",
+            "prompt": f"{prompt}, hyper-realistic food photography, professional studio lighting, 8k, highly detailed textures, masterpiece, high quality, Sony A7R IV, 90mm Macro, vibrant colors",
+
             "negative_prompt": "text, watermark, low quality, blurry",
             "image_size": "1024x1024",
             "batch_size": 1,
@@ -271,11 +273,12 @@ def _try_pollinations_image(article_title, output_path_webp, output_path_jpg):
     try:
         logger.info(f"    Trying Pollinations (free): {article_title[:40]}...")
         prompt = (
-            f"Professional food photography, appetizing, warm lighting, "
-            f"shallow depth of field, clean styled background, no text, "
-            f"high quality editorial photo of: {article_title}. "
-            f"Photorealistic, 8k resolution, Bon Appetit magazine style"
+            f"Masterpiece hyper-realistic food photography of: {article_title}. "
+            f"Appetizing, professional studio lighting, shallow depth of field, "
+            f"Sony A7R IV, 90mm Macro, highly detailed textures, "
+            f"no text, no watermark, 8k resolution, editorial magazine style"
         )
+
         safe_prompt = urllib.parse.quote(prompt)
         seed = int(time.time() * 1000) % 1000000
         url = (
