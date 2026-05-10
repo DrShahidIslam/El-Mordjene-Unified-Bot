@@ -28,9 +28,7 @@ def _get_headers():
     token = base64.b64encode(creds.encode()).decode()
     return {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Authorization": f"Basic {token}",
-        "Referer": f"{config.WP_URL}/",
-        "Accept": "application/json, text/plain, */*",
+        "Authorization": f"Basic {token}"
     }
 
 HEADERS = _get_headers()
@@ -430,7 +428,7 @@ def get_or_create_tag(name):
         response = requests.get(
             f"{API_BASE}/tags",
             params={"search": name, "per_page": 5},
-            auth=AUTH, headers=HEADERS, timeout=TIMEOUT
+            headers=HEADERS, timeout=TIMEOUT
         )
         if response.status_code == 200:
             for tag in _safe_json(response, "Get Tag"):

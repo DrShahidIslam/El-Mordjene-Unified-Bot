@@ -12,12 +12,7 @@ password = os.getenv("WP_APP_PASSWORD")
 print(f"--- WP AUTH TEST ---")
 print(f"URL: {wp_url}")
 print(f"User: {username}")
-if password:
-    print(f"Password: {password[:4]}...{password[-4:]}")
-else:
-    print("Password: MISSING")
 
-# Test simple 'me' endpoint
 credentials = f"{username}:{password}"
 token = base64.b64encode(credentials.encode()).decode()
 headers = {
@@ -29,25 +24,28 @@ try:
     response = requests.get(f"{wp_url}/wp-json/wp/v2/users/me", headers=headers, timeout=20)
     if response.status_code == 200:
         user = response.json()
-        print(f"\nSUCCESS! Authenticated as: {user.get('name')} (ID: {user.get('id')})")
+        print(f"AUTH SUCCESS: {user.get('name')} (ID: {user.get('id')})")
         
-        # Test Media Upload
-        print("\n--- TESTING MEDIA UPLOAD ---")
-        dummy_content = b"fake image data"
+        # Test Media
+        print("Testing Media Upload...")
         media_headers = headers.copy()
         media_headers.update({
             "Content-Disposition": 'attachment; filename="test_auth.txt"',
             "Content-Type": "text/plain",
         })
+        m_res = requests.post(f"{wp_url}/wp-json/wp/v2/media", headers=media_headers, data=b"test", timeout=20)
+        print(f"Media Upload Status: {m_res.status_code}")
         
-        media_res = requests.post(f"{wp_url}/wp-json/wp/v2/media", headers=media_headers, data=dummy_content, timeout=20)
-        if media_res.status_code in (200, 201):
-            print(f"✅ MEDIA UPLOAD SUCCESS! (ID: {media_res.json().get('id')})")
+        # Test Post
+        print("Testing Post Creation...")
+        p_data = {"title": "Test from Bot", "content": "Test", "status": "draft"}
+        p_res = requests.post(f"{wp_url}/wp-json/wp/v2/posts", headers=headers, json=p_data, timeout=20)
+        print(f"Post Creation Status: {p_res.status_code}")
+        if p_res.status_code in (200, 201):
+            print(f"Post ID: {p_res.json().get('id')}")
         else:
-            print(f"❌ MEDIA UPLOAD FAILED: {media_res.status_code}")
-            print(f"Response: {media_res.text}")
+            print(f"Error: {p_res.text}")
     else:
-        print(f"\nFAILED: {response.status_code}")
-        print(f"Response: {response.text}")
+        print(f"AUTH FAILED: {response.status_code}")
 except Exception as e:
-    print(f"\nCONNECTION ERROR: {e}")
+    print(f"ERROR: {e}")
