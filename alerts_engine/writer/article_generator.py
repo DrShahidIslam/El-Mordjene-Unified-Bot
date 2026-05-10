@@ -1030,6 +1030,7 @@ def generate_article(topic, source_urls=None):
         source_texts=source_texts,
         matched_keyword=topic.get("matched_keyword", ""),
         intent=intent,
+        min_words=config.ARTICLE_MIN_WORDS,
     )
 
     try:

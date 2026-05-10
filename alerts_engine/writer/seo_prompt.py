@@ -81,7 +81,7 @@ def _intent_guidance(intent):
     return intent_map.get((intent or "").strip().lower(), intent_map["explainer"])
 
 
-def build_article_prompt(topic_title, source_texts, matched_keyword="", intent="general"):
+def build_article_prompt(topic_title, source_texts, matched_keyword="", intent="general", min_words=1000):
     """
     Build the master SEO prompt for Gemini article generation.
     """
@@ -136,6 +136,7 @@ TASK:
 - PRIMARY KEYWORD: {matched_keyword or topic_title}
 - SECONDARY KEYWORDS: {secondary_keywords}
 - SUPPORTING KEYWORDS / ENTITIES: {supporting_keywords}
+- TARGET LENGTH: At least {min_words} words. Be comprehensive and dive deep into subtopics, cultural context, and variations to reach this length naturally.
 
 SOURCE MATERIAL (use only these facts):
 {sources_block}
