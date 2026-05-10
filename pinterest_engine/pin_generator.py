@@ -78,6 +78,32 @@ WEEKLY_MAGAZINE_CSS = """
 
 # --- Core Functions ---
 
+# --- Niche CTA Options ---
+CTA_OPTIONS = {
+    "viral": ["Click For The Secret ➔", "Tap To See The Trend", "Get The Full Guide Now", "Find Out How Here"],
+    "healthy": ["Get The Healthy Recipe ➔", "Eat Better Today", "Clean Eating Guide", "Healthy & Delicious"],
+    "dinner": ["What's For Dinner? ➔", "Easy Weeknight Meal", "Family Favorite Recipe", "Cook This Tonight"],
+    "dessert": ["Sweet Tooth Heaven ➔", "Decadent & Delicious", "The Best Dessert Ever", "Try This Treat"],
+    "recipe": ["Click For Full Recipe ➔", "Step-By-Step Guide", "Master This Dish", "The Only Recipe You Need"]
+}
+
+# --- Multi-Backend Generation ---
+
+def _try_huggingface(prompt, output_path):
+    if not hf_keys: return False
+    full_prompt = f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography, 768x1024"
+    for i, key in enumerate(hf_keys):
+        try:
+            print(f"HuggingFace: Key {i+1}/{len(hf_keys)}...", flush=True)
+            hf_client = InferenceClient(api_key=key)
+            image = hf_client.text_to_image(full_prompt, model=HUGGINGFACE_MODEL)
+            image.save(output_path)
+            return True
+        except Exception as e:
+            print(f"HuggingFace Key {i+1} Error: {e}")
+            continue
+    return False
+
 def _try_kolors(prompt, output_path):
     api_key = os.getenv("SILICONFLOW_API_KEY")
     if not api_key: return False
@@ -92,7 +118,6 @@ def _try_kolors(prompt, output_path):
         response = requests.post(SILICONFLOW_API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 200:
             resp_json = response.json()
-            # Try multiple common SiliconFlow response formats
             img_url = None
             if "images" in resp_json and resp_json["images"]:
                 img_url = resp_json["images"][0].get("url")
@@ -103,8 +128,6 @@ def _try_kolors(prompt, output_path):
                 img_data = requests.get(img_url).content
                 with open(output_path, "wb") as f: f.write(img_data)
                 return True
-            else:
-                print(f"DEBUG: Kolors response missing image URL: {resp_json}")
     except Exception as e:
         print(f"DEBUG: Kolors fallback failed: {e}")
     return False
@@ -113,7 +136,7 @@ def _try_pollinations(prompt, output_path):
     try:
         print(f"DEBUG: Trying Pollinations Last Resort...", flush=True)
         encoded = urllib.parse.quote(prompt)
-        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&nologo=true&seed={random.randint(1,999999)}"
+        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&model=flux&nologo=true&seed={random.randint(1,999999)}"
         res = requests.get(url, timeout=30)
         if res.status_code == 200:
             with open(output_path, "wb") as f: f.write(res.content)
@@ -122,60 +145,144 @@ def _try_pollinations(prompt, output_path):
         print(f"DEBUG: Pollinations failed: {e}")
     return False
 
-def generate_image(prompt, output_path):
-    full_prompt = f"{prompt}, food photography, ultra-realistic, macro shot, 8k, professional lighting, editorial beauty photography, 768x1024"
-    for i, key in enumerate(hf_keys):
-        try:
-            print(f"HuggingFace: Key {i+1}/{len(hf_keys)}...", flush=True)
-            hf_client = InferenceClient(api_key=key)
-            image = hf_client.text_to_image(full_prompt, model=HUGGINGFACE_MODEL)
-            image.save(output_path)
-            return True
-        except Exception as e:
-            print(f"HuggingFace Key {i+1} Error: {e}")
-            continue
+def generate_image_master(prompt, output_path):
+    if _try_huggingface(prompt, output_path): return True
     if _try_kolors(prompt, output_path): return True
     if _try_pollinations(prompt, output_path): return True
     return False
 
-def design_pin(image_path, title, output_path):
+# --- Premium Design Engine ---
+
+def design_pin_premium(image_path, title, output_path, board_type="recipe"):
     img = Image.open(image_path).convert("RGBA")
     width, height = img.size
+    
+    # Selection of Layout
+    layouts = ['bottom_fade', 'center_box', 'top_fade', 'solid_block']
+    layout_style = random.choice(layouts)
+    print(f"   [Layout] Selected layout style: {layout_style}")
+    
+    # Font setup
+    font_size = int(width * 0.08)
+    fonts_dir = root_dir / "fonts"
+    
+    anton_path = str(fonts_dir / "Anton-Regular.ttf")
+    montserrat_path = str(fonts_dir / "Montserrat-Bold.ttf")
+    
+    primary_font_path = anton_path if layout_style == 'center_box' else montserrat_path
+    
+    font = None
+    try:
+        if os.path.exists(primary_font_path):
+            font = ImageFont.truetype(primary_font_path, font_size)
+        else:
+            # Fallback to system fonts
+            fallbacks = ["C:/Windows/Fonts/arialbd.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", "arialbd.ttf"]
+            for f_path in fallbacks:
+                if os.path.exists(f_path):
+                    font = ImageFont.truetype(f_path, font_size)
+                    break
+    except: pass
+    
+    if not font: font = ImageFont.load_default()
+    
+    # CTA Setup
+    ctas = CTA_OPTIONS.get(board_type, CTA_OPTIONS["recipe"])
+    cta_text = random.choice(ctas)
+    cta_font = None
+    try:
+        if os.path.exists(montserrat_path):
+            cta_font = ImageFont.truetype(montserrat_path, int(width * 0.045))
+    except: pass
+    if not cta_font: cta_font = font
+
     overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
-    grad_height = int(height * 0.5)
-    for y in range(height - grad_height, height):
-        progress = (y - (height - grad_height)) / grad_height
-        alpha = int(220 * (progress ** 1.5))
-        draw.line([(0, y), (width, y)], fill=(42, 25, 16, alpha))
+    draw_overlay = ImageDraw.Draw(overlay)
+    
+    wrapped_lines = textwrap.wrap(title, width=15 if layout_style == 'center_box' else 20)
+    line_h = font_size * 1.2
+    total_text_h = len(wrapped_lines) * line_h
+    
+    margin = int(width * 0.08)
+    
+    if layout_style == 'bottom_fade':
+        grad_h = int(height * 0.45)
+        for y in range(height - grad_h, height):
+            progress = (y - (height - grad_h)) / grad_h
+            alpha = int(220 * (progress ** 1.5))
+            draw_overlay.rectangle([(0, y), (width, y+1)], fill=(0, 0, 0, alpha))
+        text_y = height - total_text_h - int(height * 0.15)
+        
+    elif layout_style == 'top_fade':
+        grad_h = int(height * 0.40)
+        for y in range(0, grad_h):
+            progress = 1.0 - (y / grad_h)
+            alpha = int(220 * (progress ** 1.5))
+            draw_overlay.rectangle([(0, y), (width, y+1)], fill=(0, 0, 0, alpha))
+        text_y = int(height * 0.10)
+        
+    elif layout_style == 'center_box':
+        box_padding = int(height * 0.05)
+        box_h = total_text_h + (box_padding * 2) + int(height * 0.05)
+        box_y = (height - box_h) // 2
+        draw_overlay.rectangle([(margin//2, box_y), (width - margin//2, box_y + box_h)], fill=(0, 0, 0, 180))
+        text_y = box_y + box_padding
+        
+    elif layout_style == 'solid_block':
+        block_h = total_text_h + int(height * 0.18)
+        block_y = height - block_h
+        draw_overlay.rectangle([(0, block_y), (width, height)], fill=(30, 20, 15, 255))
+        text_y = block_y + int(height * 0.04)
+
     img = Image.alpha_composite(img, overlay)
     draw = ImageDraw.Draw(img)
-    font_size = int(width * 0.08)
-    font_paths = ["C:/Windows/Fonts/Montserrat-Bold.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", "arialbd.ttf"]
-    font = None
-    for fp in font_paths:
-        try:
-            if os.path.exists(fp):
-                font = ImageFont.truetype(fp, font_size)
-                break
-        except: continue
-    if not font: font = ImageFont.load_default()
-    wrapped_lines = textwrap.wrap(title, width=18)
-    line_h = font_size * 1.2
-    y_text = height - (len(wrapped_lines) * line_h) - 150
+    
     for line in wrapped_lines:
         w = draw.textlength(line, font=font)
-        draw.text(((width-w)/2 + 2, y_text + 2), line, font=font, fill=(0,0,0,100))
-        draw.text(((width-w)/2, y_text), line, font=font, fill=(255,255,255,255))
-        y_text += line_h
-    try:
-        brand_font = ImageFont.truetype(font_paths[0], int(width * 0.035)) if font else None
-        if brand_font:
-            brand_text = "EL MORDJENE"
-            bw = draw.textlength(brand_text, font=brand_font)
-            draw.text(((width-bw)/2, height - 70), brand_text, font=brand_font, fill=(255,255,255,160))
-    except: pass
+        draw.text(((width-w)/2, text_y), line, font=font, fill=(255,255,255,255))
+        text_y += line_h
+        
+    # Draw CTA
+    if cta_text:
+        cw = draw.textlength(cta_text, font=cta_font)
+        cx = (width - cw) // 2
+        cy = text_y + int(height * 0.02) if layout_style != 'bottom_fade' else text_y
+        if layout_style == 'bottom_fade': cy = height - int(height * 0.08)
+        
+        draw.text((cx, cy), cta_text, font=cta_font, fill=(255, 255, 255, 200))
+
     img.convert("RGB").save(output_path, "JPEG", quality=95)
+
+# --- Gemini Content Generator (Annotated Keywords Strategy) ---
+
+def generate_pin_content_with_gemini(topic):
+    """Generate high-CTR title and description using Pinterest Annotated Keywords strategy."""
+    if not client: return None
+    
+    prompt = f"""
+    You are a viral Pinterest marketing expert. Your task is to generate high-performance content for a pin about: "{topic}".
+    
+    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche.
+    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword.
+    3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords.
+    4. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay.
+    
+    Return ONLY valid JSON:
+    {{
+      "annotated_keywords": ["keyword1", "keyword2", "keyword3"],
+      "title": "Annotated Keyword: The Curiosity Gap Hook",
+      "description": "Natural SEO description with keywords...",
+      "overlay_text": "HOOK FOR IMAGE",
+      "hashtags": "#viral #recipe #food..."
+    }}
+    """
+    try:
+        response = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+        text = response.text.strip().replace("```json", "").replace("```", "")
+        return json.loads(text)
+    except Exception as e:
+        print(f"Gemini Content Gen Error: {e}")
+        return None
 
 def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
     now = datetime.datetime.now()
@@ -251,8 +358,8 @@ def process_new_pin(title, slug, url, description, board_id):
         iter_slug = f"{slug}-pin-{i+1}"
         raw_img = f"temp_raw_{iter_slug}.jpg"
         final_img = f"final_pin_{iter_slug}.jpg"
-        if generate_image(f"{angle} of {title}", raw_img):
-            design_pin(raw_img, title, final_img)
+        if generate_image_master(f"{angle} of {title}", raw_img):
+            design_pin_premium(raw_img, title, final_img)
             b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
             if publish_pin(final_img, title, description, b_url, board_id): success += 1
             if os.path.exists(raw_img): os.remove(raw_img)
@@ -303,6 +410,15 @@ def run_pin_worker():
     raw_img = f"temp_raw_{iter_slug}.jpg"
     final_img = f"final_pin_{iter_slug}.jpg"
     
+    # --- GENERATE PREMIUM CONTENT ---
+    gemini_data = generate_pin_content_with_gemini(title)
+    if gemini_data:
+        title = gemini_data.get("title", title)
+        description = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
+        overlay_text = gemini_data.get("overlay_text", title)
+    else:
+        overlay_text = title
+
     # BOARD SELECTION LOGIC (Specialized - FoodTrendsBlog)
     board_mapping = {
         "dessert": os.getenv("PINTEREST_BOARD_DESSERTS") or "976859044115152346",
@@ -314,18 +430,21 @@ def run_pin_worker():
     
     # Simple keyword matching
     t_lower = title.lower()
-    selected_board = board_mapping["recipe"] # Default
+    board_key = "recipe"
     if any(k in t_lower for k in ["cake", "cookie", "dessert", "sweet", "chocolate", "crepe", "bake"]):
-        selected_board = board_mapping["dessert"]
+        board_key = "dessert"
     elif any(k in t_lower for k in ["dinner", "wrap", "pasta", "chicken", "meat", "main"]):
-        selected_board = board_mapping["dinner"]
+        board_key = "dinner"
     elif any(k in t_lower for k in ["salad", "healthy", "bowl", "chickpea", "vegan"]):
-        selected_board = board_mapping["salad"]
+        board_key = "salad"
     elif any(k in t_lower for k in ["viral", "trending", "trend", "new"]):
-        selected_board = board_mapping["trend"]
+        board_key = "trend"
     
-    if generate_image(f"{angle} of {title}", raw_img):
-        design_pin(raw_img, title, final_img)
+    selected_board = board_mapping[board_key]
+    
+    image_prompt = f"{angle} of {title}, delicious food"
+    if generate_image_master(image_prompt, raw_img):
+        design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
         b_url = update_weekly_magazine(iter_slug, title, url, description, raw_img)
         if publish_pin(final_img, title, description, b_url, selected_board):
             target["pin_count"] = pin_index + 1
