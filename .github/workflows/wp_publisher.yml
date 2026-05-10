@@ -37,7 +37,7 @@ jobs:
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
-          POSTS_PER_RUN: 2
+          POSTS_PER_RUN: 1
         run: python alerts_engine/main.py --once
 
       - name: Commit and Push Changes
