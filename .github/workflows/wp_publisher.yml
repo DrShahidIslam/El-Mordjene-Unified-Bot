@@ -31,9 +31,9 @@ jobs:
 
       - name: Run WordPress Publisher
         env:
-          WP_URL: ${{ secrets.WP_URL }}
+          WP_BASE_URL: ${{ secrets.WP_URL }}
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
-          WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
+          WP_APP_PASSWORD: ${{ secrets.WP_PASSWORD }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
