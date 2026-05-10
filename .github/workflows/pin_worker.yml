@@ -47,4 +47,5 @@ jobs:
           git config --local user.name "GitHub Action"
           git add topic_queue.json bridge_page/discovery/ index.html
           git commit -m "Automation: Update pin counts and bridge site [skip ci]" || echo "No changes to commit"
+          git pull --rebase origin main
           git push origin main
