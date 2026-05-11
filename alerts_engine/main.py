@@ -44,6 +44,7 @@ logging.basicConfig(
 logger = logging.getLogger("agent")
 
 STATE_FILE = "agent_state.json"
+PUBLISHED_POSTS_FILE = os.path.join(os.path.dirname(__file__), "published_posts.json")
 
 def _load_state():
     if os.path.exists(STATE_FILE):
@@ -56,12 +57,29 @@ def _save_state(state):
     with open(STATE_FILE, "w") as f: json.dump(state, f, indent=2)
 
 def _load_published_posts():
-    path = os.path.join(os.path.dirname(__file__), "published_posts.json")
-    if os.path.exists(path):
+    if os.path.exists(PUBLISHED_POSTS_FILE):
         try:
-            with open(path, "r") as f: return json.load(f)
+            with open(PUBLISHED_POSTS_FILE, "r", encoding="utf-8") as f: return json.load(f)
         except: return {}
     return {}
+
+def append_latest_published_post(title, slug, url):
+    """Append a newly published article to the internal links registry."""
+    if not title or not slug or not url:
+        return
+        
+    posts = _load_published_posts()
+    posts[slug] = {
+        "url": url,
+        "anchor": title
+    }
+    
+    try:
+        with open(PUBLISHED_POSTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(posts, f, indent=4, ensure_ascii=False)
+        logger.info(f"Appended '{title}' to internal links registry.")
+    except Exception as e:
+        logger.error(f"Failed to save {PUBLISHED_POSTS_FILE}: {e}")
 
 def _finish_publication(article, post_id, post_url, state):
     logger.info(f"   Published: {article['title']}")
@@ -72,6 +90,7 @@ def _finish_publication(article, post_id, post_url, state):
         "url": post_url,
         "time": datetime.utcnow().isoformat()
     })
+    append_latest_published_post(article["title"], article["slug"], post_url)
 
 def auto_pilot_process(topic, state):
     """Zero-click automation: Generate, Image, and Publish."""
