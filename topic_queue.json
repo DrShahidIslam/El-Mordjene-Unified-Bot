@@ -145,11 +145,12 @@
   {
     "topic": "Summer Dinner Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/summer-dinner-recipes-mediterranean-chicken-skewers/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-11T18:35:09.536960"
   },
   {
     "topic": "Ground Beef Recipes For Dinner",
