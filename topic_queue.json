@@ -155,11 +155,12 @@
   {
     "topic": "Ground Beef Recipes For Dinner",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-beef-and-vegetable-skillet/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-11T21:08:17.244313"
   },
   {
     "topic": "Deviled Eggs Recipe Best",
