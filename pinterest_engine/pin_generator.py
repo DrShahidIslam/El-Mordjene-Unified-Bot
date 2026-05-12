@@ -336,11 +336,194 @@ DEEP_LINK_JS = """
         });
         const header = document.getElementById('focus-header');
         if (header) header.remove();
+
         window.location.hash = '';
     }
 
     window.addEventListener('DOMContentLoaded', initDeepLink);
 """
+
+# --- Niche CTA Options ---
+
+CTA_OPTIONS = {
+    "viral": ["Click For The Secret ➔", "Tap To See The Trend", "Get The Full Guide Now", "Find Out How Here"],
+    "healthy": ["Get The Healthy Recipe ➔", "Eat Better Today", "Clean Eating Guide", "Healthy & Delicious"],
+    "dinner": ["What's For Dinner? ➔", "Easy Weeknight Meal", "Family Favorite Recipe", "Cook This Tonight"],
+    "dessert": ["Sweet Tooth Heaven ➔", "Decadent & Delicious", "The Best Dessert Ever", "Try This Treat"],
+    "recipe": ["Click For Full Recipe ➔", "Step-By-Step Guide", "Master This Dish", "The Only Recipe You Need"]
+}
+
+# --- Multi-Backend Generation ---
+
+def _try_huggingface(prompt, output_path):
+    if not hf_keys: return False
+    # Use a highly realistic static photography string
+    full_prompt = f"{prompt}, high-end food photography, award-winning, ultra-realistic, 8k resolution, shot on 100mm macro lens, f/2.8, cinematic soft lighting, detailed textures, professional food styling, bokeh background, 768x1024"
+    
+    for i, key in enumerate(hf_keys):
+        try:
+            print(f"HuggingFace: Key {i+1}/{len(hf_keys)}...", flush=True)
+            hf_client = InferenceClient(api_key=key)
+            image = hf_client.text_to_image(full_prompt, model=HUGGINGFACE_MODEL)
+            image.save(output_path)
+            return True
+        except Exception as e:
+            print(f"HuggingFace Key {i+1} Error: {e}")
+            continue
+    return False
+
+def _try_kolors(prompt, output_path):
+    api_key = os.getenv("SILICONFLOW_API_KEY")
+    if not api_key: return False
+    try:
+        print(f"DEBUG: Trying Kolors Fallback...", flush=True)
+        enhanced_prompt = f"{prompt}, professional food photography, commercial quality, hyper-realistic, natural lighting, 1024x1024"
+            
+        payload = {
+            "model": SILICONFLOW_MODEL,
+            "prompt": enhanced_prompt,
+            "image_size": "1024x1024"
+        }
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        response = requests.post(SILICONFLOW_API_URL, headers=headers, json=payload, timeout=60)
+        if response.status_code == 200:
+            resp_json = response.json()
+            img_url = None
+            if "images" in resp_json and resp_json["images"]:
+                img_url = resp_json["images"][0].get("url")
+            elif "data" in resp_json and resp_json["data"]:
+                img_url = resp_json["data"][0].get("url")
+            
+            if img_url:
+                img_data = requests.get(img_url).content
+                with open(output_path, "wb") as f: f.write(img_data)
+                return True
+    except Exception as e:
+        print(f"DEBUG: Kolors fallback failed: {e}")
+    return False
+
+def _try_pollinations(prompt, output_path):
+    try:
+        print(f"DEBUG: Trying Pollinations Last Resort...", flush=True)
+        encoded = urllib.parse.quote(prompt)
+        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&model=flux&nologo=true&seed={random.randint(1,999999)}"
+        res = requests.get(url, timeout=30)
+        if res.status_code == 200:
+            with open(output_path, "wb") as f: f.write(res.content)
+            return True
+    except Exception as e:
+        print(f"DEBUG: Pollinations failed: {e}")
+    return False
+
+def generate_image_master(prompt, output_path):
+    if _try_huggingface(prompt, output_path): return True
+    if _try_kolors(prompt, output_path): return True
+    if _try_pollinations(prompt, output_path): return True
+    return False
+
+# --- Premium Design Engine ---
+
+def design_pin_premium(image_path, title, output_path, board_type="recipe"):
+    img = Image.open(image_path).convert("RGBA")
+    width, height = img.size
+    
+    # Selection of Layout
+    layouts = ['bottom_fade', 'center_box', 'top_fade', 'solid_block']
+    layout_style = random.choice(layouts)
+    print(f"   [Layout] Selected layout style: {layout_style}")
+    
+    # Font setup
+    font_size = int(width * 0.08)
+    fonts_dir = root_dir / "fonts"
+    
+    anton_path = str(fonts_dir / "Anton-Regular.ttf")
+    montserrat_path = str(fonts_dir / "Montserrat-Bold.ttf")
+    
+    primary_font_path = anton_path if layout_style == 'center_box' else montserrat_path
+    
+    font = None
+    try:
+        if os.path.exists(primary_font_path):
+            font = ImageFont.truetype(primary_font_path, font_size)
+        else:
+            # Fallback to system fonts
+            fallbacks = ["C:/Windows/Fonts/arialbd.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", "arialbd.ttf"]
+            for f_path in fallbacks:
+                if os.path.exists(f_path):
+                    font = ImageFont.truetype(f_path, font_size)
+                    break
+    except: pass
+    
+    if not font: font = ImageFont.load_default()
+    
+    # CTA Setup
+    ctas = CTA_OPTIONS.get(board_type, CTA_OPTIONS["recipe"])
+    cta_text = random.choice(ctas)
+    cta_font = None
+    try:
+        if os.path.exists(montserrat_path):
+            cta_font = ImageFont.truetype(montserrat_path, int(width * 0.045))
+    except: pass
+    if not cta_font: cta_font = font
+
+    overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw_overlay = ImageDraw.Draw(overlay)
+    
+    wrapped_lines = textwrap.wrap(title, width=15 if layout_style == 'center_box' else 20)
+    line_h = font_size * 1.2
+    total_text_h = len(wrapped_lines) * line_h
+    
+    margin = int(width * 0.08)
+    
+    if layout_style == 'bottom_fade':
+        grad_h = int(height * 0.45)
+        for y in range(height - grad_h, height):
+            progress = (y - (height - grad_h)) / grad_h
+            alpha = int(220 * (progress ** 1.5))
+            draw_overlay.rectangle([(0, y), (width, y+1)], fill=(0, 0, 0, alpha))
+        text_y = height - total_text_h - int(height * 0.15)
+        
+    elif layout_style == 'top_fade':
+        grad_h = int(height * 0.40)
+        for y in range(0, grad_h):
+            progress = 1.0 - (y / grad_h)
+            alpha = int(220 * (progress ** 1.5))
+            draw_overlay.rectangle([(0, y), (width, y+1)], fill=(0, 0, 0, alpha))
+        text_y = int(height * 0.10)
+        
+    elif layout_style == 'center_box':
+        box_padding = int(height * 0.05)
+        box_h = total_text_h + (box_padding * 2) + int(height * 0.05)
+        box_y = (height - box_h) // 2
+        draw_overlay.rectangle([(margin//2, box_y), (width - margin//2, box_y + box_h)], fill=(0, 0, 0, 180))
+        text_y = box_y + box_padding
+        
+    elif layout_style == 'solid_block':
+        block_h = total_text_h + int(height * 0.18)
+        block_y = height - block_h
+        draw_overlay.rectangle([(0, block_y), (width, height)], fill=(30, 20, 15, 255))
+        text_y = block_y + int(height * 0.04)
+
+    img = Image.alpha_composite(img, overlay)
+    draw = ImageDraw.Draw(img)
+    
+    for line in wrapped_lines:
+        w = draw.textlength(line, font=font)
+        draw.text(((width-w)/2, text_y), line, font=font, fill=(255,255,255,255))
+        text_y += line_h
+        
+    # Draw CTA
+    if cta_text:
+        cw = draw.textlength(cta_text, font=cta_font)
+        cx = (width - cw) // 2
+        cy = text_y + int(height * 0.02) if layout_style != 'bottom_fade' else text_y
+        if layout_style == 'bottom_fade': cy = height - int(height * 0.08)
+        
+        draw.text((cx, cy), cta_text, font=cta_font, fill=(255, 255, 255, 200))
+
+    img.convert("RGB").save(output_path, "JPEG", quality=95)
+
+
 
 def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
     import re
@@ -411,8 +594,8 @@ def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
                 print(f"   [Gallery] Appending new card: {slug}")
                 html_file.write_text(content.replace(marker, f"{marker}\n{card_html}"), encoding="utf-8")
                 
-    return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/discovery/{week_slug}.html#{slug}"
 
+    return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/discovery/{week_slug}.html#{slug}"
 
 pin_session = requests.Session()
 def pin_request(method, endpoint, **kwargs):
