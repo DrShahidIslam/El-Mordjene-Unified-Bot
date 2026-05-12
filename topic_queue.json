@@ -185,11 +185,12 @@
   {
     "topic": "Dinner Ideas",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/mastering-dinner-ideas-practical-guide/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-12T10:21:19.056221"
   },
   {
     "topic": "Easy Dinner Ideas",
