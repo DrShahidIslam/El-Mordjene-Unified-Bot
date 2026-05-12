@@ -593,7 +593,6 @@ def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
             if marker in content:
                 print(f"   [Gallery] Appending new card: {slug}")
                 html_file.write_text(content.replace(marker, f"{marker}\n{card_html}"), encoding="utf-8")
-                
 
     return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/discovery/{week_slug}.html#{slug}"
 
