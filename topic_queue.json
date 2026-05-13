@@ -195,11 +195,12 @@
   {
     "topic": "Easy Dinner Ideas",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/easy-dinner-ideas-guide/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-13T10:13:21.469803"
   },
   {
     "topic": "Shoneys Strawberry Pie Recipe",
