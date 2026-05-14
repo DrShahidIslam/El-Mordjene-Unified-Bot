@@ -205,11 +205,12 @@
   {
     "topic": "Shoneys Strawberry Pie Recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/shoneys-strawberry-pie-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-14T10:03:50.252557"
   },
   {
     "topic": "Food Recipes",
