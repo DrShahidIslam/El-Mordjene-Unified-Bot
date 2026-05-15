@@ -235,11 +235,12 @@
   {
     "topic": "Sweet Potato Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/sweet-potato-recipes/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-15T10:11:10.897584"
   },
   {
     "topic": "Summer Recipes",
