@@ -245,11 +245,12 @@
   {
     "topic": "Summer Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/summer-recipes-mediterranean-chicken-skewers/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-15T20:46:54.088832"
   },
   {
     "topic": "Chicken Breast Recipes",
