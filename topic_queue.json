@@ -536,5 +536,25 @@
     "pin_count": 0,
     "priority": 20,
     "source": "Pinterest API"
+  },
+  {
+    "topic": "Refreshing Summer Lunch Ideas for Warm Weather",
+    "intent": "recipe",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/summer-lunch-ideas-2/",
+    "pin_count": 0,
+    "priority": 1,
+    "source": "manual",
+    "published_at": "2026-05-15T07:35:40.741518"
+  },
+  {
+    "topic": "Effortless Dinner Ideas: Planning for Every Night",
+    "intent": "recipe",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/dinner-ideas-planning-guide/",
+    "pin_count": 0,
+    "priority": 1,
+    "source": "manual",
+    "published_at": "2026-05-15T07:35:40.741518"
   }
 ]
