@@ -255,11 +255,12 @@
   {
     "topic": "Chicken Breast Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/mastering-simple-chicken-breast-recipes/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-16T09:18:29.044966"
   },
   {
     "topic": "Banana Bread Recipe",
