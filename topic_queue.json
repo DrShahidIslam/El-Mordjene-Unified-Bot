@@ -295,11 +295,12 @@
   {
     "topic": "Pasta Salad Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/pasta-salad-recipes-guide/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-17T17:50:35.722977"
   },
   {
     "topic": "Chicken Salad Recipe",
