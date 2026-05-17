@@ -285,11 +285,12 @@
   {
     "topic": "Cookie Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-homemade-cookie-recipes/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-17T09:26:45.739277"
   },
   {
     "topic": "Pasta Salad Recipes",
