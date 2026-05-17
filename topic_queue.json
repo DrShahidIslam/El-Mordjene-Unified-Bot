@@ -335,11 +335,12 @@
   {
     "topic": "Hummingbird Nectar Recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/hummingbird-nectar-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-17T18:43:49.456645"
   },
   {
     "topic": "Breakfast Ideas",
