@@ -119,33 +119,31 @@ function buildHeroOverlay(asset, theme, hasPhoto) {
     .map((line, index) => {
       const y = hasPhoto ? 740 + index * 60 : 330 + index * 90;
       const fill = hasPhoto ? theme.hero : "#fff8f1";
-      return `<text x="170" y="${y}" font-size="56" font-family="Georgia, serif" fill="${fill}" font-weight="700">${escapeHtml(line)}</text>`;
+      return `<text x="170" y="${y}" font-size="56" font-family="system-ui, -apple-system, sans-serif" fill="${fill}" font-weight="800" letter-spacing="-1">${escapeHtml(line)}</text>`;
     })
     .join("");
 
   const subtitleSvg = subtitleLines
     .map((line, index) => {
       const y = 920 + index * 30;
-      return `<text x="170" y="${y}" font-size="26" font-family="Arial, sans-serif" fill="${theme.panelText}" font-weight="700">${escapeHtml(line)}</text>`;
+      return `<text x="170" y="${y}" font-size="26" font-family="system-ui, -apple-system, sans-serif" fill="${theme.panelText}" font-weight="500">${escapeHtml(line)}</text>`;
     })
     .join("");
 
   const keywordSvg = keywordLabel
-    .map((line, index) => `<text x="170" y="${206 + index * 26}" font-size="20" font-family="Arial, sans-serif" fill="#fff7ef" font-weight="700">${escapeHtml(line)}</text>`)
+    .map((line, index) => `<text x="170" y="${206 + index * 26}" font-size="20" font-family="system-ui, -apple-system, sans-serif" fill="#fff7ef" font-weight="700" letter-spacing="1">${escapeHtml(line)}</text>`)
     .join("");
 
   return `
     <svg width="1000" height="1500" viewBox="0 0 1000 1500" xmlns="http://www.w3.org/2000/svg">
-      <rect x="100" y="140" width="800" height="1040" rx="32" fill="#fffaf5" opacity="0.72"/>
-      <rect x="130" y="180" width="740" height="520" rx="28" fill="${hasPhoto ? "rgba(255,250,245,0.01)" : theme.hero}"/>
-      ${hasPhoto ? `<rect x="130" y="180" width="740" height="520" rx="28" fill="rgba(64,32,18,0.01)"/>` : `<circle cx="770" cy="220" r="170" fill="#ffffff" opacity="0.10"/><circle cx="250" cy="560" r="120" fill="#ffffff" opacity="0.08"/>`}
-      <rect x="140" y="170" width="260" height="58" rx="20" fill="${theme.accent}" opacity="0.92"/>
+      <rect x="100" y="140" width="800" height="1040" rx="40" fill="rgba(255, 255, 255, 0.85)" opacity="0.9"/>
+      <rect x="130" y="180" width="740" height="520" rx="30" fill="${hasPhoto ? "rgba(255,250,245,0.01)" : theme.hero}"/>
+      <rect x="140" y="170" width="280" height="58" rx="29" fill="${theme.accent}" opacity="0.95"/>
       ${keywordSvg}
-      <rect x="130" y="670" width="740" height="360" rx="28" fill="${theme.panel}" opacity="0.75"/>
       ${titleSvg}
       ${subtitleSvg}
-      <rect x="170" y="1060" width="660" height="52" rx="26" fill="${theme.accent}"/>
-      <text x="500" y="1094" text-anchor="middle" font-size="26" font-family="Arial, sans-serif" fill="#fff8f0" font-weight="700">Read more on el-mordjene.info</text>
+      <rect x="170" y="1060" width="660" height="56" rx="28" fill="${theme.hero}"/>
+      <text x="500" y="1098" text-anchor="middle" font-size="24" font-family="system-ui, -apple-system, sans-serif" fill="#ffffff" font-weight="700" letter-spacing="2">READ MORE ON EL-MORDJENE.INFO</text>
     </svg>
   `;
 }
@@ -155,23 +153,23 @@ function buildListOverlay(asset, theme, hasPhoto) {
   const titleLines = wrapText(asset.overlayTitle, 20, 4);
 
   const subtitleSvg = subtitleLine
-    .map((line) => `<text x="500" y="120" text-anchor="middle" font-size="28" font-family="Georgia, serif" fill="#2b1a12" font-weight="600" letter-spacing="2">${escapeHtml(line)}</text>`)
+    .map((line) => `<text x="500" y="120" text-anchor="middle" font-size="28" font-family="system-ui, -apple-system, sans-serif" fill="#2b1a12" font-weight="700" letter-spacing="3">${escapeHtml(line)}</text>`)
     .join("");
 
-  const boxHeight = titleLines.length * 70 + 40;
+  const boxHeight = titleLines.length * 70 + 60;
   const startY = 440 - ((titleLines.length - 1) * 70) / 2 + 20;
 
   const titleSvg = titleLines
-    .map((line, index) => `<text x="500" y="${startY + index * 70}" text-anchor="middle" font-size="60" font-family="Arial Black, Arial, sans-serif" fill="#111" font-weight="800">${escapeHtml(line)}</text>`)
+    .map((line, index) => `<text x="500" y="${startY + index * 70}" text-anchor="middle" font-size="64" font-family="system-ui, -apple-system, sans-serif" fill="#111" font-weight="900" letter-spacing="-2">${escapeHtml(line)}</text>`)
     .join("");
 
   return `
     <svg width="1000" height="1500" viewBox="0 0 1000 1500" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1000" height="1500" fill="rgba(255,255,255,0.02)"/>
-      <rect x="180" y="85" width="160" height="2" fill="#2b1a12" opacity="0.5"/>
-      <rect x="660" y="85" width="160" height="2" fill="#2b1a12" opacity="0.5"/>
+      <rect width="1000" height="1500" fill="rgba(255,255,255,0.05)"/>
+      <rect x="180" y="85" width="160" height="3" fill="${theme.accent}" opacity="0.8"/>
+      <rect x="660" y="85" width="160" height="3" fill="${theme.accent}" opacity="0.8"/>
       ${subtitleSvg}
-      <rect x="160" y="${440 - boxHeight / 2}" width="680" height="${boxHeight}" rx="24" fill="rgba(255,255,255,0.92)"/>
+      <rect x="140" y="${440 - boxHeight / 2 - 10}" width="720" height="${boxHeight + 20}" rx="32" fill="rgba(255, 255, 255, 0.95)" stroke="${theme.hero}" stroke-width="4"/>
       ${titleSvg}
     </svg>
   `;
@@ -181,19 +179,27 @@ function buildGuideOverlay(asset, theme, hasPhoto) {
   const subtitleLines = wrapText(asset.overlaySubtitle, 26, 1);
 
   const titleSvg = titleLines
-    .map((line, index) => `<text x="500" y="${770 + index * 70}" text-anchor="middle" font-size="64" font-family="Georgia, serif" fill="#fff6ef" font-weight="700">${escapeHtml(line)}</text>`)
+    .map((line, index) => `<text x="500" y="${770 + index * 70}" text-anchor="middle" font-size="64" font-family="system-ui, -apple-system, sans-serif" fill="#ffffff" font-weight="800" letter-spacing="-1">${escapeHtml(line)}</text>`)
     .join("");
 
   const subtitleSvg = subtitleLines
-    .map((line) => `<text x="500" y="${920}" text-anchor="middle" font-size="30" font-family="Arial, sans-serif" fill="#fff6ef" font-weight="600">${escapeHtml(line)}</text>`)
+    .map((line) => `<text x="500" y="${920}" text-anchor="middle" font-size="30" font-family="system-ui, -apple-system, sans-serif" fill="#fff6ef" font-weight="600" letter-spacing="1">${escapeHtml(line)}</text>`)
     .join("");
 
   return `
     <svg width="1000" height="1500" viewBox="0 0 1000 1500" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="680" width="1000" height="360" fill="#8f1f28" opacity="0.95"/>
+      <rect x="0" y="680" width="1000" height="820" fill="url(#grad)" opacity="0.95"/>
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="transparent" />
+          <stop offset="10%" stop-color="${theme.hero}" />
+          <stop offset="100%" stop-color="#1a0b06" />
+        </linearGradient>
+      </defs>
       ${titleSvg}
       ${subtitleSvg}
-      <text x="500" y="990" text-anchor="middle" font-size="28" font-family="Georgia, serif" fill="#fff6ef" font-weight="600">el-mordjene.info</text>
+      <rect x="300" y="1030" width="400" height="50" rx="25" fill="${theme.accent}"/>
+      <text x="500" y="1063" text-anchor="middle" font-size="22" font-family="system-ui, -apple-system, sans-serif" fill="#ffffff" font-weight="700" letter-spacing="2">VISIT EL-MORDJENE.INFO</text>
     </svg>
   `;
 }

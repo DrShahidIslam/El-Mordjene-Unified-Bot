@@ -3,127 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Mordjene - Premium Discovery Gallery</title>
+    <title id="meta-title">El Mordjene - Discover Premium Recipes</title>
     
-    <!-- SEO & Pinterest Keywords Alignment -->
-    <meta name="description" content="Discover the latest viral food trends, from Rotel Dip recipes to Summer Crockpot meals. curated by El Mordjene.">
-    <meta name="keywords" content="Rotel Dip, Summer Crockpot Recipes, Mother's Day Cookies, Summer Supper Ideas, Viral Food Trends">
-    
+    <!-- SEO Meta -->
+    <meta name="description" content="Discover premium viral recipes, curated directly from our food trends database.">
+    <meta name="robots" content="noindex, follow">
+
+    <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #8f1f28;
             --accent: #d87439;
             --bg: #fffaf5;
             --text: #2a1910;
-            --glass: rgba(255, 255, 255, 0.9);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(11,100%,94%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(35,100%,92%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(11,100%,94%,1) 0, transparent 50%);
-            color: var(--text);
+            background: var(--bg);
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            color: var(--text);
+            padding: 20px;
         }
 
+        /* Dynamic Blurred Background */
+        .blur-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(50px) brightness(0.85);
+            opacity: 0.15;
+            z-index: -1;
+            transition: background-image 1s ease, opacity 1s ease;
+        }
+
+        /* Branding Header */
         header {
-            padding: 60px 20px 20px 20px;
             text-align: center;
+            margin-top: 20px;
             animation: fadeInDown 0.8s ease-out;
         }
-
-        h1 {
+        header h1 {
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--primary);
-            letter-spacing: -1px;
             margin: 0;
             text-transform: uppercase;
+            letter-spacing: -1px;
         }
-
         .tagline {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
             color: var(--accent);
-            margin-top: 10px;
-            font-weight: 600;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 5px;
         }
 
-        .container {
-            max-width: 550px;
-            width: 90%;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 50px 40px;
+        /* Glassmorphic Container */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 60px rgba(143, 31, 40, 0.12);
             border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 25px 50px -12px rgba(143, 31, 40, 0.1);
-            margin-top: 40px;
-            text-align: center;
-            position: relative;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        #loader {
+            max-width: 520px;
+            width: 100%;
             padding: 40px;
-            font-style: italic;
-            color: #888;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        #post-content {
-            display: none;
+        .recipe-thumb {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            background: #eee;
+            display: none; /* hidden until loaded */
         }
 
         .trend-badge {
             display: inline-block;
             background: #fff0f0;
             color: var(--primary);
-            padding: 6px 12px;
+            padding: 6px 16px;
             border-radius: 50px;
             font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
 
         h2 {
             font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
-            margin-bottom: 20px;
             line-height: 1.2;
+            margin: 0 0 15px 0;
+            color: var(--text);
         }
 
-        p {
-            line-height: 1.7;
+        .excerpt {
+            font-size: 1.05rem;
+            line-height: 1.6;
             color: #554a44;
-            font-size: 1.1rem;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
         .btn {
-            display: inline-block;
+            display: block;
             background: linear-gradient(135deg, var(--primary) 0%, #b32a35 100%);
             color: white;
-            padding: 20px 45px;
+            padding: 20px;
             border-radius: 100px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 10px 20px -5px rgba(143, 31, 40, 0.4);
+            margin-bottom: 10px;
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -132,91 +149,205 @@
             background: linear-gradient(135deg, var(--accent) 0%, #e68a4d 100%);
         }
 
-        .footer {
-            margin-top: auto;
-            padding: 60px 40px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #b0a6a0;
-            letter-spacing: 1px;
+        /* Lead Capture Section */
+        .email-capture {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .email-capture h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin: 0 0 5px 0;
+            color: var(--text);
+        }
+
+        .email-capture p {
+            font-size: 0.9rem;
+            color: #777;
+            margin: 0 0 15px 0;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex-grow: 1;
+            padding: 14px 20px;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+        }
+
+        .input-group button {
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .input-group button:hover {
+            background: var(--accent);
+        }
+
+        /* Loader Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Pulse animation for loader */
-        .pulse {
-            display: inline-block;
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
-        }
     </style>
 </head>
 <body>
+
+    <div id="backdrop" class="blur-bg"></div>
+
     <header>
         <h1>EL MORDJENE</h1>
         <div class="tagline">Discovery Portal</div>
     </header>
 
-    <div class="container">
+    <div class="glass-card">
+        <!-- Loader Skeleton -->
         <div id="loader">
-            <span class="pulse">Curating trending recipes for you...</span>
+            <div class="skeleton" style="width: 100%; height: 260px; border-radius: 20px; margin-bottom: 25px;"></div>
+            <div class="skeleton" style="width: 40%; height: 24px; border-radius: 50px; margin: 0 auto 15px auto;"></div>
+            <div class="skeleton" style="width: 90%; height: 40px; margin: 0 auto 15px auto;"></div>
+            <div class="skeleton" style="width: 100%; height: 80px; margin: 0 auto 30px auto;"></div>
+            <div class="skeleton" style="width: 100%; height: 60px; border-radius: 100px;"></div>
         </div>
-        
-        <div id="post-content">
-            <div class="trend-badge">VERIFIED TREND</div>
-            <h2 id="post-title">Exploring Delicious Secrets</h2>
-            <p id="post-excerpt">We've identified this as a top-growing recipe for 2026. Join thousands of other food enthusiasts and explore the full details below.</p>
-            <a href="#" id="post-link" class="btn">VIEW FULL RECIPE</a>
+
+        <!-- Dynamic Content (Hidden Initially) -->
+        <div id="post-content" style="display: none;">
+            <img id="recipe-img" class="recipe-thumb" src="" alt="Recipe Preview">
+            <div class="trend-badge">VERIFIED MATCH</div>
+            <h2 id="recipe-title">Loading...</h2>
+            <div id="recipe-excerpt" class="excerpt"></div>
+            
+            <a href="https://el-mordjene.info" id="recipe-btn" class="btn">VIEW FULL RECIPE</a>
+
+            <!-- Soft Email Lead Capture -->
+            <div class="email-capture">
+                <h4>Get Viral Recipes Weekly</h4>
+                <p>Join 15,000+ food lovers and get free PDF recipe books!</p>
+                <form class="input-group" onsubmit="event.preventDefault(); alert('Subscribed! Check your inbox soon.');">
+                    <input type="email" placeholder="Your best email..." required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <div class="footer">
-        &copy; 2026 EL MORDJENE. ALL RIGHTS RESERVED.<br>
-        <span style="font-size: 0.7rem; margin-top: 10px; display: block; opacity: 0.5;">PREMIUM DISCOVERY INTERFACE v2.0</span>
+    <div style="text-align: center; color: #aaa; font-size: 0.8rem; letter-spacing: 1px;">
+        &copy; 2026 EL MORDJENE. ALL RIGHTS RESERVED.
     </div>
 
     <script>
-        // Mapping of slugs to URLs (This is updated dynamically by our automation)
-        const POST_MAP = {
-            "DEFAULT": "https://el-mordjene.info"
-        };
-
-        function init() {
+        async function fetchRecipe() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
-            const target = POST_MAP[id] || POST_MAP["DEFAULT"];
             
-            // Premium transition feel
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('post-content').style.display = 'block';
-                document.getElementById('post-link').href = target;
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('post-content');
+            
+            // Fallback immediately if no ID is passed
+            if(!id) {
+                document.getElementById('recipe-title').innerText = "Explore Premium Food Trends";
+                document.getElementById('recipe-excerpt').innerText = "Discover our latest curated collection of viral recipes and culinary inspirations.";
+                loader.style.display = 'none';
+                content.style.display = 'block';
+                return;
+            }
+
+            try {
+                // Fetch directly from WordPress API
+                const res = await fetch(`https://el-mordjene.info/wp-json/wp/v2/posts?slug=${id}`);
                 
-                // Dynamic trend injection
-                if (id && id.includes('rotel')) {
-                    document.getElementById('post-title').innerText = "Viral Rotel Dip Recipe";
-                    document.getElementById('post-excerpt').innerText = "The #1 viral party dip on Pinterest is here. Discover how to make the perfect Rotel dip for your next gathering.";
-                } else if (id && id.includes('crockpot')) {
-                    document.getElementById('post-title').innerText = "Summer Slow Cooker Favorites";
-                    document.getElementById('post-excerpt').innerText = "Keep your kitchen cool with these top-rated summer crockpot recipes. Easy, delicious, and no-heat required.";
+                if(res.ok) {
+                    const posts = await res.json();
+                    if(posts.length > 0) {
+                        const post = posts[0];
+                        
+                        // Populate Text & Link
+                        document.getElementById('recipe-title').innerHTML = post.title.rendered;
+                        document.getElementById('meta-title').innerText = post.title.rendered + " - El Mordjene";
+                        
+                        // Clean up excerpt (remove HTML tags)
+                        let rawExcerpt = post.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "");
+                        document.getElementById('recipe-excerpt').innerText = rawExcerpt;
+                        
+                        document.getElementById('recipe-btn').href = post.link;
+
+                        // Fetch Featured Image
+                        if(post.featured_media) {
+                            try {
+                                const imgRes = await fetch(`https://el-mordjene.info/wp-json/wp/v2/media/${post.featured_media}`);
+                                if(imgRes.ok) {
+                                    const imgData = await imgRes.json();
+                                    const imgUrl = imgData.source_url;
+                                    
+                                    const imgEl = document.getElementById('recipe-img');
+                                    imgEl.src = imgUrl;
+                                    imgEl.style.display = 'block';
+                                    
+                                    const backdrop = document.getElementById('backdrop');
+                                    backdrop.style.backgroundImage = `url('${imgUrl}')`;
+                                    backdrop.style.opacity = '0.3';
+                                }
+                            } catch(e) { console.error("Image fetch failed", e); }
+                        }
+
+                        // Reveal Content
+                        loader.style.display = 'none';
+                        content.style.display = 'block';
+                        return;
+                    }
                 }
-            }, 1200);
+            } catch(e) {
+                console.error("Failed to dynamically fetch recipe details", e);
+            }
+
+            // Error Fallback
+            document.getElementById('recipe-title').innerText = "Recipe Found!";
+            document.getElementById('recipe-excerpt').innerText = "Click below to view the full details and instructions on our main site.";
+            document.getElementById('recipe-btn').href = "https://el-mordjene.info";
+            loader.style.display = 'none';
+            content.style.display = 'block';
         }
 
-        window.onload = init;
+        // Initialize immediately
+        window.onload = fetchRecipe;
     </script>
 </body>
 </html>

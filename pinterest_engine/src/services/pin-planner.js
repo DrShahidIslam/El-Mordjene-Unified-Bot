@@ -1,4 +1,4 @@
-﻿import {
+import {
   buildKeywordSet,
   clampText,
   extractHeadingsFromHtml,
@@ -13,15 +13,15 @@ export function buildPinPlan(post, classification, config, options = {}) {
   const sentences = extractSentences(`${post.excerpt} ${post.contentHtml}`);
   const primaryKeyword = pickPrimaryKeyword(post, classification);
   const keywordSet = buildKeywordSet(post);
-  const firstHeading = headings[0] || sentences[0] || post.excerpt || post.title;
-  const listLead = listItems[0] || headings[1] || sentences[1] || firstHeading;
-  const guideLead = headings[2] || sentences[2] || post.excerpt || firstHeading;
+  const firstHeading = stripEmojis(headings[0] || sentences[0] || post.excerpt || post.title);
+  const listLead = stripEmojis(listItems[0] || headings[1] || sentences[1] || firstHeading);
+  const guideLead = stripEmojis(headings[2] || sentences[2] || post.excerpt || firstHeading);
 
   const variants = [
     {
       key: "hero",
       angle: post.language === "fr" ? "hero principal" : "main hook",
-      overlayTitle: clampText(buildHeroOverlay(post, primaryKeyword), 56),
+      overlayTitle: clampText(stripEmojis(buildHeroOverlay(post, primaryKeyword)), 56),
       overlaySubtitle: clampText(firstHeading, 70),
       pinTitle: clampText(buildHeroPinTitle(post, primaryKeyword), 100),
       pinDescription: clampText(buildHeroDescription(post, primaryKeyword, keywordSet), 320),
@@ -31,7 +31,7 @@ export function buildPinPlan(post, classification, config, options = {}) {
     {
       key: "list",
       angle: post.language === "fr" ? "points a retenir" : "saveable summary",
-      overlayTitle: clampText(buildListTitle(post, classification, primaryKeyword), 56),
+      overlayTitle: clampText(stripEmojis(buildListTitle(post, classification, primaryKeyword)), 56),
       overlaySubtitle: clampText(listLead, 70),
       pinTitle: clampText(`${buildListTitle(post, classification, primaryKeyword)} | ${post.title}`, 100),
       pinDescription: clampText(buildListDescription(post, primaryKeyword, keywordSet), 320),
@@ -41,7 +41,7 @@ export function buildPinPlan(post, classification, config, options = {}) {
     {
       key: "guide",
       angle: post.language === "fr" ? "guide pratique" : "practical guide",
-      overlayTitle: clampText(buildGuideTitle(post, classification, primaryKeyword), 56),
+      overlayTitle: clampText(stripEmojis(buildGuideTitle(post, classification, primaryKeyword)), 56),
       overlaySubtitle: clampText(guideLead, 70),
       pinTitle: clampText(`${buildGuideTitle(post, classification, primaryKeyword)} | ${post.title}`, 100),
       pinDescription: clampText(buildGuideDescription(post, primaryKeyword, keywordSet), 320),
@@ -151,3 +151,8 @@ export function scheduleDate(postDate, index, config) {
   return date.toISOString();
 }
 
+
+function stripEmojis(text) {
+  if (!text) return "";
+  return String(text).replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1FA00}-\u{1FAFF}]/gu, '').trim();
+}

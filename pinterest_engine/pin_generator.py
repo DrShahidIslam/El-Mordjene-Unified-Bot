@@ -651,7 +651,7 @@ def process_new_pin(title, slug, url, description, board_id):
 
         if generate_image_master(image_prompt, raw_img):
             design_pin_premium(raw_img, overlay_text, final_img)
-            b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
+            b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
             if publish_pin(final_img, p_title, p_desc, b_url, board_id): success += 1
             if os.path.exists(raw_img): os.remove(raw_img)
             if os.path.exists(final_img): os.remove(final_img)
@@ -738,7 +738,7 @@ def run_pin_worker():
 
     if generate_image_master(image_prompt, raw_img):
         design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
-        b_url = update_weekly_magazine(iter_slug, p_title, url, p_desc, raw_img)
+        b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
         if publish_pin(final_img, p_title, p_desc, b_url, selected_board):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
