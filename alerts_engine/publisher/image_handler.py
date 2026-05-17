@@ -123,67 +123,41 @@ def _resize_and_crop(img, target_w, target_h):
     return img
 
 
-def _try_hyperbolic_image(article_title, output_path_webp, output_path_jpg):
-    """Generate image via Hyperbolic API with FLUX.1-schnell model."""
-    api_key = getattr(config, "HYPERBOLIC_API_KEY", None) or os.getenv("HYPERBOLIC_API_KEY")
-    if not api_key:
-        logger.warning("    No HYPERBOLIC_API_KEY found in configuration or environment variables.")
+def _try_cloudflare_image(article_title, output_path_webp, output_path_jpg):
+    """Generate image via Cloudflare Workers AI with SDXL model."""
+    account_id = getattr(config, "CLOUDFLARE_ACCOUNT_ID", None) or os.getenv("CLOUDFLARE_ACCOUNT_ID")
+    api_token = getattr(config, "CLOUDFLARE_API_TOKEN", None) or os.getenv("CLOUDFLARE_API_TOKEN")
+
+    if not account_id or not api_token:
+        logger.warning("    No CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN found in config or env.")
         return None, None
 
     try:
-        logger.info(f"    Trying Hyperbolic (FLUX.1-schnell): {article_title[:40]}...")
+        logger.info(f"    Trying Cloudflare SDXL: {article_title[:40]}...")
         prompt = build_image_prompt(article_title)
-        full_prompt = f"{prompt}, hyper-realistic food photography, masterpiece, 8k, macro shot, professional studio lighting, editorial style, tack-sharp detail, vibrant colors, Sony A7R IV, 90mm f/2.8 Macro"
+        full_prompt = f"{prompt}, hyper-realistic food photography, masterpiece, 8k, macro shot, professional studio lighting, editorial style, tack-sharp detail, vibrant colors, Sony A7R IV, 90mm f/2.8 Macro, horizontal landscape aspect ratio, 16:9, high resolution"
 
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id.strip()}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
         headers = {
-            "Authorization": f"Bearer {api_key.strip()}",
+            "Authorization": f"Bearer {api_token.strip()}",
             "Content-Type": "application/json"
         }
-
-        # Payload standard for Hyperbolic's FLUX.1-schnell
         payload = {
-            "model_name": "FLUX.1-schnell",
-            "prompt": full_prompt,
-            "width": 1024,
-            "height": 1024
+            "prompt": full_prompt
         }
 
-        response = requests.post(
-            "https://api.hyperbolic.xyz/v1/image/generation",
-            headers=headers,
-            json=payload,
-            timeout=60
-        )
-
+        response = requests.post(url, headers=headers, json=payload, timeout=45)
         if response.status_code == 200:
-            data = response.json()
-            image_base64 = data.get("images", [None])[0]
-            
-            # Robust parser for different API styles
-            if isinstance(image_base64, dict):
-                image_base64 = image_base64.get("image", "") or image_base64.get("url", "")
-                
-            if image_base64:
-                import base64
-                # Check if it is base64 string or an actual URL
-                if str(image_base64).startswith("http"):
-                    img_res = requests.get(image_base64, timeout=30)
-                    image_bytes = img_res.content
-                else:
-                    # Clean potential data URI prefixes
-                    if "," in str(image_base64):
-                        image_base64 = str(image_base64).split(",", 1)[1]
-                    image_bytes = base64.b64decode(image_base64)
-                    
-                result_webp = _compress_to_webp(image_bytes, output_path_webp)
-                result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
-                if result_webp and result_jpg:
-                    logger.info("    Images ready from Hyperbolic")
-                    return result_webp, result_jpg
+            image_bytes = response.content
+            result_webp = _compress_to_webp(image_bytes, output_path_webp)
+            result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
+            if result_webp and result_jpg:
+                logger.info("    Images ready from Cloudflare SDXL")
+                return result_webp, result_jpg
         else:
-            logger.warning(f"    Hyperbolic API error: {response.status_code} - {response.text}")
+            logger.warning(f"    Cloudflare SDXL API error: {response.status_code} - {response.text}")
     except Exception as e:
-        logger.warning(f"    Hyperbolic failed: {e}")
+        logger.warning(f"    Cloudflare SDXL failed: {e}")
     return None, None
 
 def _try_huggingface_image(article_title, output_path_webp, output_path_jpg):
@@ -463,8 +437,8 @@ def generate_featured_image(article_title, save_dir=None, source_url=None):
 
     logger.info(f"  Generating featured image for: {article_title[:60]}")
 
-    # 1. Hyperbolic API (FLUX.1-schnell) - WordPress Priority #1
-    webp, jpg = _try_hyperbolic_image(article_title, output_path_webp, output_path_jpg)
+    # 1. Cloudflare Workers AI (SDXL) - WordPress Priority #1
+    webp, jpg = _try_cloudflare_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
