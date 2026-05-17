@@ -44,6 +44,7 @@ ACF_RECIPE_SCHEMA_FIELDS = [s.strip() for s in get_env_manual("ACF_RECIPE_SCHEMA
 # Premium APIs
 SILICONFLOW_API_KEY = get_env_manual("SILICONFLOW_API_KEY")
 SILICONFLOW_MODEL = get_env_manual("SILICONFLOW_MODEL", "Kwai-Kolors/Kolors")
+HYPERBOLIC_API_KEY = get_env_manual("HYPERBOLIC_API_KEY")
 
 _hf_keys_env = get_env_manual("HUGGINGFACE_API_KEY")
 HUGGINGFACE_API_KEYS = [k.strip() for k in _hf_keys_env.split(",") if k.strip()]

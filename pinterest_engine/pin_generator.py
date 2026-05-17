@@ -372,6 +372,50 @@ def _try_huggingface(prompt, output_path):
             continue
     return False
 
+def _try_hyperbolic(prompt, output_path):
+    api_key = os.getenv("HYPERBOLIC_API_KEY")
+    if not api_key: return False
+    try:
+        print(f"DEBUG: Trying Hyperbolic Fallback...", flush=True)
+        enhanced_prompt = f"{prompt}, high-end food photography, award-winning, ultra-realistic, 8k resolution, shot on 100mm macro lens, f/2.8, cinematic soft lighting, detailed textures, professional food styling, bokeh background, 1024x1024"
+        
+        payload = {
+            "model_name": "FLUX.1-schnell",
+            "prompt": enhanced_prompt,
+            "width": 1024,
+            "height": 1024
+        }
+        headers = {
+            "Authorization": f"Bearer {api_key.strip()}",
+            "Content-Type": "application/json"
+        }
+        response = requests.post("https://api.hyperbolic.xyz/v1/image/generation", headers=headers, json=payload, timeout=60)
+        if response.status_code == 200:
+            resp_json = response.json()
+            image_base64 = resp_json.get("images", [None])[0]
+            
+            # Robust parser for base64 / dictionary returns
+            if isinstance(image_base64, dict):
+                image_base64 = image_base64.get("image", "") or image_base64.get("url", "")
+                
+            if image_base64:
+                import base64
+                if str(image_base64).startswith("http"):
+                    img_data = requests.get(image_base64, timeout=30).content
+                else:
+                    if "," in str(image_base64):
+                        image_base64 = str(image_base64).split(",", 1)[1]
+                    img_data = base64.b64decode(image_base64)
+                    
+                with open(output_path, "wb") as f:
+                    f.write(img_data)
+                return True
+        else:
+            print(f"DEBUG: Hyperbolic API error: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"DEBUG: Hyperbolic failed: {e}")
+    return False
+
 def _try_kolors(prompt, output_path):
     api_key = os.getenv("SILICONFLOW_API_KEY")
     if not api_key: return False
@@ -417,6 +461,7 @@ def _try_pollinations(prompt, output_path):
 
 def generate_image_master(prompt, output_path):
     if _try_huggingface(prompt, output_path): return True
+    if _try_hyperbolic(prompt, output_path): return True
     if _try_kolors(prompt, output_path): return True
     if _try_pollinations(prompt, output_path): return True
     return False
