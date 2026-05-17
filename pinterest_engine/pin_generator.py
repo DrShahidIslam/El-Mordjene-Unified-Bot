@@ -423,12 +423,143 @@ def generate_image_master(prompt, output_path):
 
 # --- Premium Design Engine ---
 
+def create_split_screen_layout(image_path, title, output_path, board_type="recipe"):
+    """
+    Creates a premium 1000x1500 px vertical split-screen card:
+    - Top 40% (1000x600 px): standard crop of the recipe image
+    - Middle 20% (1000x300 px): solid board-matched color block with large text
+    - Bottom 40% (1000x600 px): 1.35x close-up macro zoom of the texture
+    """
+    print(f"   [Layout] Building Split-Screen Vertical Layout for board: {board_type}")
+    try:
+        orig_img = Image.open(image_path).convert("RGBA")
+    except Exception as e:
+        print(f"   [Layout Error] Failed to open base image: {e}")
+        return False
+
+    target_w, target_h = 1000, 1500
+    canvas = Image.new("RGBA", (target_w, target_h), (255, 255, 255, 255))
+
+    # Helper function to crop-to-fill and resize to specific bounds
+    def crop_and_resize(img, tw, th, zoom=1.0):
+        w, h = img.size
+        # zoom in
+        zw = int(w / zoom)
+        zh = int(h / zoom)
+        left = (w - zw) // 2
+        top = (h - zh) // 2
+        zoomed = img.crop((left, top, left + zw, top + zh))
+        
+        # aspect ratio crop
+        zw, zh = zoomed.size
+        target_aspect = tw / th
+        zoomed_aspect = zw / zh
+        
+        if zoomed_aspect > target_aspect:
+            new_w = int(zh * target_aspect)
+            crop_left = (zw - new_w) // 2
+            cropped = zoomed.crop((crop_left, 0, crop_left + new_w, zh))
+        else:
+            new_h = int(zw / target_aspect)
+            crop_top = (zh - new_h) // 2
+            cropped = zoomed.crop((0, crop_top, zw, crop_top + new_h))
+            
+        return cropped.resize((tw, th), Image.Resampling.LANCZOS)
+
+    # 1. Top Image Segment (1000x600 px)
+    top_segment = crop_and_resize(orig_img, target_w, 600, zoom=1.0)
+    canvas.paste(top_segment, (0, 0))
+
+    # 2. Bottom Image Segment (1000x600 px)
+    # 1.35x zoom macro close-up of texture
+    bottom_segment = crop_and_resize(orig_img, target_w, 600, zoom=1.35)
+    canvas.paste(bottom_segment, (0, 900))
+
+    # 3. Middle Text Box Segment (1000x300 px)
+    # Harmonious curated HSL color palettes matching Pinterest food trends
+    board_colors = {
+        "dessert": (74, 44, 17, 255),    # Rich Cocoa Brown
+        "dinner": (179, 54, 42, 255),     # Warm Terracotta/Red
+        "salad": (68, 97, 62, 255),       # Deep Sage Green
+        "soup": (189, 101, 49, 255),      # Golden Mustard/Orange
+        "trend": (33, 40, 48, 255),       # Dark Slate Blue
+        "recipe": (48, 32, 21, 255)       # Espresso Brown
+    }
+    box_color = board_colors.get(board_type, board_colors["recipe"])
+
+    draw = ImageDraw.Draw(canvas)
+    draw.rectangle([(0, 600), (target_w, 900)], fill=box_color)
+
+    # Fonts
+    fonts_dir = root_dir / "fonts"
+    anton_path = str(fonts_dir / "Anton-Regular.ttf")
+    montserrat_path = str(fonts_dir / "Montserrat-Bold.ttf")
+
+    font_badge_size = 35
+    font_title_size = 75
+
+    badge_font = None
+    title_font = None
+
+    try:
+        if os.path.exists(montserrat_path):
+            badge_font = ImageFont.truetype(montserrat_path, font_badge_size)
+            title_font = ImageFont.truetype(montserrat_path, font_title_size)
+        else:
+            fallbacks = ["C:/Windows/Fonts/arialbd.ttf", "arialbd.ttf"]
+            for f_path in fallbacks:
+                if os.path.exists(f_path):
+                    badge_font = ImageFont.truetype(f_path, font_badge_size)
+                    title_font = ImageFont.truetype(f_path, font_title_size)
+                    break
+    except Exception as e:
+        print(f"   [Layout Font Error] {e}")
+
+    if not badge_font: badge_font = ImageFont.load_default()
+    if not title_font: title_font = ImageFont.load_default()
+
+    # Draw Category Badge Text
+    badge_text = board_type.upper()
+    if badge_text == "RECIPE": badge_text = "EASY RECIPE"
+    elif badge_text == "TREND": badge_text = "VIRAL TREND"
+
+    badge_w = draw.textlength(badge_text, font=badge_font)
+    # Bright orange accent color overlay (e.g. #d87439) for maximum visual POP
+    draw.text(((target_w - badge_w) / 2, 630), badge_text, font=badge_font, fill=(216, 116, 57, 255))
+
+    # Draw High-Impact Headline Text (all caps, split into lines)
+    clean_title = title.replace("-", " ").upper()
+    # narrow wrapping for extremely large bold fonts inside 1000px canvas
+    wrapped_lines = textwrap.wrap(clean_title, width=18)
+    
+    line_h = font_title_size * 1.1
+    # Center vertical alignment inside the 690-900y space
+    start_y = 690 + (90 - (len(wrapped_lines) * line_h)) // 2
+
+    # Draw max 2 lines to avoid overflowing
+    for line in wrapped_lines[:2]:
+        tw = draw.textlength(line, font=title_font)
+        draw.text(((target_w - tw) / 2, start_y), line, font=title_font, fill=(255, 255, 255, 255))
+        start_y += line_h
+
+    # Convert canvas back to RGB and save
+    canvas.convert("RGB").save(output_path, "JPEG", quality=95)
+    print(f"   [Layout] Split-Screen Vertical card compiled successfully at: {output_path}")
+    return True
+
 def design_pin_premium(image_path, title, output_path, board_type="recipe"):
+    force_split = os.getenv("FORCE_SPLIT_SCREEN", "true").lower() == "true"
+    
+    # If forced, use split screen format
+    if force_split:
+        if create_split_screen_layout(image_path, title, output_path, board_type):
+            return
+            
     img = Image.open(image_path).convert("RGBA")
     width, height = img.size
     
     # Selection of Layout
-    layouts = ['bottom_fade', 'center_box', 'top_fade', 'solid_block']
+    layouts = ['bottom_fade', 'center_box', 'top_fade', 'solid_block', 'split_screen']
     layout_style = random.choice(layouts)
     print(f"   [Layout] Selected layout style: {layout_style}")
     
@@ -654,7 +785,8 @@ def process_new_pin(title, slug, url, description, board_id):
             b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
             if publish_pin(final_img, p_title, p_desc, b_url, board_id): success += 1
             if os.path.exists(raw_img): os.remove(raw_img)
-            if os.path.exists(final_img): os.remove(final_img)
+            if os.getenv("MOCK_MODE", "false").lower() != "true" and os.path.exists(final_img):
+                os.remove(final_img)
     print(f"--- Finished: {success} Pins Published ---")
     return success > 0
 
@@ -743,9 +875,9 @@ def run_pin_worker():
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
-        
         if os.path.exists(raw_img): os.remove(raw_img)
-        if os.path.exists(final_img): os.remove(final_img)
+        if os.getenv("MOCK_MODE", "false").lower() != "true" and os.path.exists(final_img):
+            os.remove(final_img)
     else:
         print(f"FAILURE: Could not generate image for {title}")
 
