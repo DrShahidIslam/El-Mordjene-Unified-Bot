@@ -365,11 +365,12 @@
   {
     "topic": "Strawberry Shortcake",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/perfect-strawberry-shortcake-guide/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-18T11:35:32.944482"
   },
   {
     "topic": "Chicken Thigh Recipes",
