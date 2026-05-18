@@ -355,11 +355,12 @@
   {
     "topic": "Crockpot Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/crockpot-recipes-essential-guide/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-18T07:46:21.651073"
   },
   {
     "topic": "Strawberry Shortcake",
