@@ -523,8 +523,8 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
     anton_path = str(fonts_dir / "Anton-Regular.ttf")
     montserrat_path = str(fonts_dir / "Montserrat-Bold.ttf")
 
-    font_badge_size = 35
-    font_title_size = 75
+    font_badge_size = 32
+    font_title_size = 60
 
     badge_font = None
     title_font = None
@@ -552,20 +552,35 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
     elif badge_text == "TREND": badge_text = "VIRAL TREND"
 
     badge_w = draw.textlength(badge_text, font=badge_font)
-    # Bright orange accent color overlay (e.g. #d87439) for maximum visual POP
-    draw.text(((target_w - badge_w) / 2, 630), badge_text, font=badge_font, fill=(216, 116, 57, 255))
+    # Bright orange accent color overlay (#d87439) with safe y-padding
+    draw.text(((target_w - badge_w) / 2, 620), badge_text, font=badge_font, fill=(216, 116, 57, 255))
 
-    # Draw High-Impact Headline Text (all caps, split into lines)
+    # Draw High-Impact Headline Text (all caps, split into lines dynamically)
     clean_title = title.replace("-", " ").upper()
-    # narrow wrapping for extremely large bold fonts inside 1000px canvas
-    wrapped_lines = textwrap.wrap(clean_title, width=18)
     
-    line_h = font_title_size * 1.1
-    # Center vertical alignment inside the 690-900y space
-    start_y = 690 + (90 - (len(wrapped_lines) * line_h)) // 2
+    # Safe character wrapping for 60px bold font on 1000px canvas
+    wrapped_lines = textwrap.wrap(clean_title, width=22)
+    
+    # Scale down font size dynamically if the title is very long (4+ lines) to prevent overflow
+    if len(wrapped_lines) > 3:
+        font_title_size = 48
+        try:
+            if os.path.exists(montserrat_path):
+                title_font = ImageFont.truetype(montserrat_path, font_title_size)
+            elif os.path.exists("C:/Windows/Fonts/arialbd.ttf"):
+                title_font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", font_title_size)
+        except Exception:
+            pass
+        wrapped_lines = textwrap.wrap(clean_title, width=28)
+        
+    line_h = font_title_size * 1.15
+    title_height = len(wrapped_lines[:3]) * line_h
+    
+    # Symmetrically center the entire title block in the remaining 218px space (y = 672 to 890)
+    start_y = 672 + (218 - title_height) // 2
 
-    # Draw max 2 lines to avoid overflowing
-    for line in wrapped_lines[:2]:
+    # Draw up to 3 lines cleanly without text clipping
+    for line in wrapped_lines[:3]:
         tw = draw.textlength(line, font=title_font)
         draw.text(((target_w - tw) / 2, start_y), line, font=title_font, fill=(255, 255, 255, 255))
         start_y += line_h

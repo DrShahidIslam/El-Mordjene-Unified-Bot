@@ -902,11 +902,7 @@ def _parse_article_output(raw_text, intent=None):
         content = _strip_faq_and_schema_from_content(content)
         content = _downgrade_h1_tags(content)
         
-        # If the model left any "FAQ" or "Frequently Asked Questions" text at the very bottom, strip it if we have schema
         if schema_json:
-            content = re.sub(r'(?i)<h[23]>Frequently Asked Questions</h[23]>.*$', '', content, flags=re.DOTALL).strip()
-            content = re.sub(r'(?i)<h[23]>FAQ</h[23]>.*$', '', content, flags=re.DOTALL).strip()
-            
             schema_block = (
                 '\n\n<!-- wp:html -->\n'
                 '<script type="application/ld+json">\n'
