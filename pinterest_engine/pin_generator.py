@@ -444,8 +444,8 @@ def _try_pollinations(prompt, output_path):
 
 def generate_image_master(prompt, output_path):
     if _try_huggingface(prompt, output_path): return True
-    if _try_cloudflare(prompt, output_path): return True
     if _try_kolors(prompt, output_path): return True
+    if _try_cloudflare(prompt, output_path): return True
     if _try_pollinations(prompt, output_path): return True
     return False
 

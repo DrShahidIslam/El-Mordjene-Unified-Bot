@@ -437,31 +437,31 @@ def generate_featured_image(article_title, save_dir=None, source_url=None):
 
     logger.info(f"  Generating featured image for: {article_title[:60]}")
 
-    # 1. Cloudflare Workers AI (SDXL) - WordPress Priority #1
-    webp, jpg = _try_cloudflare_image(article_title, output_path_webp, output_path_jpg)
-    if webp and jpg:
-        return webp, jpg
-
-    # 2. Hugging Face - WordPress Priority #2
+    # 1. Hugging Face - WordPress Priority #1
     webp, jpg = _try_huggingface_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 3. Kolors (SiliconFlow) - WordPress Priority #3
+    # 2. Kolors (SiliconFlow) - WordPress Priority #2
     webp, jpg = _try_kolors_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 4. Source article
+    # 3. Cloudflare Workers AI (SDXL) - WordPress Priority #3
+    webp, jpg = _try_cloudflare_image(article_title, output_path_webp, output_path_jpg)
+    if webp and jpg:
+        return webp, jpg
+
+    # 4. Pollinations (Free Fallback) - WordPress Priority #4
+    webp, jpg = _try_pollinations_image(article_title, output_path_webp, output_path_jpg)
+    if webp and jpg:
+        return webp, jpg
+
+    # 5. Source article
     if source_url:
         webp, jpg = _try_source_image(source_url, output_path_webp, output_path_jpg)
         if webp and jpg:
             return webp, jpg
-
-    # 5. Pollinations (Free Fallback) - WordPress Priority #4
-    webp, jpg = _try_pollinations_image(article_title, output_path_webp, output_path_jpg)
-    if webp and jpg:
-        return webp, jpg
 
     # 5. LoremFlickr
     webp, jpg = _try_loremflickr_image(article_title, output_path_webp, output_path_jpg)
