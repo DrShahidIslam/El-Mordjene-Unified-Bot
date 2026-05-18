@@ -375,11 +375,12 @@
   {
     "topic": "Chicken Thigh Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/easy-crispy-skillet-chicken-thigh-recipes/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-18T17:47:50.749196"
   },
   {
     "topic": "Carrot Cake Recipe",
