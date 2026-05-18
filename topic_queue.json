@@ -405,11 +405,12 @@
   {
     "topic": "Pasta Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/authentic-spaghetti-aglio-e-olio-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-18T21:00:34.226939"
   },
   {
     "topic": "Cake",
