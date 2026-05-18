@@ -50,18 +50,20 @@ def generate_pin_content_with_gemini(topic):
     prompt = f"""
     You are a viral Pinterest marketing expert specializing in high-CTR food photography. Your task is to generate high-performance content for a pin about: "{topic}".
     
-    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche.
-    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword.
-    3. Create an SEO-optimized Description (200-400 chars) that naturally weaves in the keywords and hashtags.
-    4. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay.
-    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars). Focus on Pinterest-viral aesthetics: macro close-ups, vibrant high-contrast colors, and dramatic professional lighting (softbox, rim light, volumetric shadows). Specify professional camera gear (Sony A7R IV, 90mm f/2.8 Macro lens), intricate textures (glistening glazes, crispy caramelized edges, creamy interiors), and an artfully styled composition with scattered garnishes. DO NOT mention people, hands, text, or graphics. The food must be the absolute hero, looking irresistible and professional.
+    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche (e.g., 'easy dessert recipes', 'viral food trends').
+    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword, followed by an irresistible curiosity hook (e.g. 'Easy Crepes Recipe: The Secret To Ultra-Fluffy Crepes').
+    3. Create an SEO-optimized Description (250-400 chars) that naturally weaves in sensory food adjectives (e.g., glistening, velvety, crispy, melt-in-your-mouth), incorporates your keywords naturally, and ends with a definitive high-intent Call-To-Action (e.g. 'Click to view the full printable recipe and chef tips on our blog!').
+    4. Create an accessibility and search-optimized Alt Text (150-300 chars) that strictly describes the visual food details, glistening textures, garnishes, and aesthetic presentation of the dish (for Pinterest & Google Image Search crawlability). Do not include promotion or call to action in the alt text.
+    5. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay (e.g. 'SECRET TO ULTRA FLUFFY!').
+    6. Create a HYPER-REALISTIC Image Prompt (400-600 chars). Focus on Pinterest-viral aesthetics: macro close-ups, vibrant high-contrast colors, and dramatic professional lighting (softbox, rim light, volumetric shadows). Specify professional camera gear (Sony A7R IV, 90mm f/2.8 Macro lens), intricate textures (glistening glazes, crispy caramelized edges, creamy interiors), and an artfully styled composition with scattered garnishes. DO NOT mention people, hands, text, or graphics. The food must be the absolute hero, looking irresistible and professional.
     
     Return ONLY valid JSON:
     {{
       "annotated_keywords": ["keyword1", "keyword2", "keyword3"],
-      "title": "Annotated Keyword: The Curiosity Gap Hook",
-      "description": "Natural SEO description with keywords...",
-      "overlay_text": "HOOK FOR IMAGE",
+      "title": "Annotated Keyword: Sensation Curiosity Gap Hook",
+      "description": "Sensory-rich description ending in a clear high-intent CTA...",
+      "alt_text": "Descriptive visual alt text of the glistening dish texture...",
+      "overlay_text": "HOOK FOR IMAGE OVERLAY",
       "image_prompt": "Masterpiece, hyper-realistic photography prompt here...",
       "hashtags": "#viral #recipe #food..."
     }}
@@ -778,13 +780,15 @@ def pin_request(method, endpoint, **kwargs):
         return pin_session.post(url, **kwargs)
     except: return None
 
-def publish_pin(image_path, title, description, bridge_url, board_id):
+def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=None):
     if MOCK_MODE: return True
     if not PINTEREST_ACCESS_TOKEN: return False
     with open(image_path, "rb") as f: img_b64 = base64.b64encode(f.read()).decode()
+    if not alt_text: alt_text = title
     payload = {
         "board_id": board_id, "title": title[:100], "description": description[:500],
         "link": bridge_url,
+        "alt_text": alt_text[:500],
         "media_source": {"source_type": "image_base64", "content_type": "image/jpeg", "data": img_b64}
     }
     headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}", "Content-Type": "application/json"}
@@ -816,8 +820,10 @@ def process_new_pin(title, slug, url, description, board_id):
             p_title = gemini_data.get("title", title)
             p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
             overlay_text = gemini_data.get("overlay_text", title)
+            alt_text = gemini_data.get("alt_text", p_title)
         else:
             p_title, p_desc, overlay_text = title, description, title
+            alt_text = p_title
 
         image_prompt = gemini_data.get("image_prompt") if gemini_data else None
         if not image_prompt:
@@ -826,7 +832,7 @@ def process_new_pin(title, slug, url, description, board_id):
         if generate_image_master(image_prompt, raw_img):
             design_pin_premium(raw_img, overlay_text, final_img)
             b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
-            if publish_pin(final_img, p_title, p_desc, b_url, board_id): success += 1
+            if publish_pin(final_img, p_title, p_desc, b_url, board_id, alt_text=alt_text): success += 1
             if os.path.exists(raw_img): os.remove(raw_img)
             if os.getenv("MOCK_MODE", "false").lower() != "true" and os.path.exists(final_img):
                 os.remove(final_img)
@@ -881,8 +887,10 @@ def run_pin_worker():
         p_title = gemini_data.get("title", title)
         p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
         overlay_text = gemini_data.get("overlay_text", title)
+        alt_text = gemini_data.get("alt_text", p_title)
     else:
         p_title, p_desc, overlay_text = title, description, title
+        alt_text = p_title
 
     # BOARD SELECTION LOGIC (Specialized - FoodTrendsBlog)
     board_mapping = {
@@ -914,7 +922,7 @@ def run_pin_worker():
     if generate_image_master(image_prompt, raw_img):
         design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
         b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
-        if publish_pin(final_img, p_title, p_desc, b_url, selected_board):
+        if publish_pin(final_img, p_title, p_desc, b_url, selected_board, alt_text=alt_text):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
