@@ -554,8 +554,6 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
     elif badge_text == "TREND": badge_text = "VIRAL TREND"
 
     badge_w = draw.textlength(badge_text, font=badge_font)
-    # Bright orange accent color overlay (#d87439) with safe y-padding
-    draw.text(((target_w - badge_w) / 2, 620), badge_text, font=badge_font, fill=(216, 116, 57, 255))
 
     # Draw High-Impact Headline Text (all caps, split into lines dynamically)
     clean_title = title.replace("-", " ").upper()
@@ -578,10 +576,18 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
     line_h = font_title_size * 1.15
     title_height = len(wrapped_lines[:3]) * line_h
     
-    # Symmetrically center the entire title block in the remaining 218px space (y = 672 to 890)
-    start_y = 672 + (218 - title_height) // 2
-
-    # Draw up to 3 lines cleanly without text clipping
+    # Symmetrically center the entire block (badge + spacing + title) in the 300px vertical space (y = 600 to 900)
+    badge_height = font_badge_size
+    spacing = 15
+    total_content_height = badge_height + spacing + title_height
+    
+    block_start_y = 600 + (300 - total_content_height) // 2
+    
+    # Draw badge
+    draw.text(((target_w - badge_w) / 2, block_start_y), badge_text, font=badge_font, fill=(216, 116, 57, 255))
+    
+    # Draw title lines starting below badge
+    start_y = block_start_y + badge_height + spacing
     for line in wrapped_lines[:3]:
         tw = draw.textlength(line, font=title_font)
         draw.text(((target_w - tw) / 2, start_y), line, font=title_font, fill=(255, 255, 255, 255))
