@@ -43,19 +43,42 @@ HUGGINGFACE_MODEL = "black-forest-labs/FLUX.1-schnell"
 
 GEMINI_API_KEYS = os.getenv("GEMINI_API_KEYS", "").split(",")
 
-def generate_pin_content_with_gemini(topic):
-    """Generate high-CTR title and description using Pinterest Annotated Keywords strategy via Raw HTTP."""
+def generate_pin_content_with_gemini(topic, pin_index=0):
+    """Generate high-CTR title, description, and visual prompts using Pinterest Annotated Keywords and index-based variation angles."""
     if not GEMINI_API_KEYS: return None
     
+    # Establish specific angles based on pin_index to prevent duplicate pins
+    if pin_index == 0:
+        angle_instruction = """
+        - Visual Focus: A luxury editorial food photography hero shot.
+        - Text Overlay: The actual clean recipe or food item name (e.g. 'DUBAI CHOCOLATE BAR' or 'EL MORDJENE CREPES'). Do not add extra sales pitch hooks. Keep it premium and direct.
+        """
+        secondary_angle_focus = "A close-up macro texture shot showing melt-in-your-mouth detail."
+    elif pin_index == 1:
+        angle_instruction = """
+        - Visual Focus: A beautiful overhead flat-lay of ingredients, garnishes, and prep.
+        - Text Overlay: A quick-time/simplicity hook focusing on prep ease (e.g. 'READY IN 15 MINS!', 'ONE-BOWL EASY!', 'SIMPLE STEP BY STEP').
+        """
+        secondary_angle_focus = "A luxury editorial food photography hero shot."
+    else:
+        angle_instruction = """
+        - Visual Focus: A close-up macro shot showing glistening texture and delicious details.
+        - Text Overlay: A chef secret, hack, or craving hook (e.g. 'THE SECRET HACK!', 'CHEF'S BEST TRICK!', 'SECRET INGREDIENT!').
+        """
+        secondary_angle_focus = "An overhead flat-lay of ingredients and preparation layout."
+
     prompt = f"""
-    You are a viral Pinterest marketing expert specializing in high-CTR food photography. Your task is to generate high-performance content for a pin about: "{topic}".
+    You are a viral Pinterest marketing expert specializing in high-CTR food photography. Your task is to generate high-performance content for Pin #{pin_index + 1} about: "{topic}".
+    
+    Adhere strictly to these targeted angle guidelines for this pin variation:
+    {angle_instruction}
     
     1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche (e.g., 'easy dessert recipes', 'viral food trends').
     2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword, followed by an irresistible curiosity hook (e.g. 'Easy Crepes Recipe: The Secret To Ultra-Fluffy Crepes').
     3. Create an SEO-optimized Description (250-400 chars) that naturally weaves in sensory food adjectives (e.g., glistening, velvety, crispy, melt-in-your-mouth), incorporates your keywords naturally, and ends with a definitive high-intent Call-To-Action (e.g. 'Click to view the full printable recipe and chef tips on our blog!').
     4. Create an accessibility and search-optimized Alt Text (150-300 chars) that strictly describes the visual food details, glistening textures, garnishes, and aesthetic presentation of the dish (for Pinterest & Google Image Search crawlability). Do not include promotion or call to action in the alt text.
-    5. Create an urgent, massive 3-6 word CLICK-BAIT hook for the image overlay (e.g. 'SECRET TO ULTRA FLUFFY!').
-    6. Create a HYPER-REALISTIC Image Prompt (400-600 chars). Focus on Pinterest-viral aesthetics: macro close-ups, vibrant high-contrast colors, and dramatic professional lighting (softbox, rim light, volumetric shadows). Specify professional camera gear (Sony A7R IV, 90mm f/2.8 Macro lens), intricate textures (glistening glazes, crispy caramelized edges, creamy interiors), and an artfully styled composition with scattered garnishes. DO NOT mention people, hands, text, or graphics. The food must be the absolute hero, looking irresistible and professional.
+    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars) matching the Visual Focus described above. Focus on Pinterest-viral aesthetics: macro close-ups, vibrant high-contrast colors, and dramatic professional lighting (softbox, rim light, volumetric shadows). Specify professional camera gear (Sony A7R IV, 90mm f/2.8 Macro lens), intricate textures (glistening glazes, crispy caramelized edges, creamy interiors), and an artfully styled composition with scattered garnishes. DO NOT mention people, hands, text, or graphics. The food must be the absolute hero.
+    6. Create a secondary complementary Image Prompt (400-600 chars) focusing on: "{secondary_angle_focus}". Apply the same hyper-realistic styling rules. This will be used to build a two-image collage.
     
     Return ONLY valid JSON:
     {{
@@ -63,8 +86,9 @@ def generate_pin_content_with_gemini(topic):
       "title": "Annotated Keyword: Sensation Curiosity Gap Hook",
       "description": "Sensory-rich description ending in a clear high-intent CTA...",
       "alt_text": "Descriptive visual alt text of the glistening dish texture...",
-      "overlay_text": "HOOK FOR IMAGE OVERLAY",
-      "image_prompt": "Masterpiece, hyper-realistic photography prompt here...",
+      "overlay_text": "TEXT TO OVERLAY ON THE IMAGE (following target angle guidelines exactly)",
+      "image_prompt": "Primary visual focus photography prompt...",
+      "secondary_image_prompt": "Secondary visual focus photography prompt...",
       "hashtags": "#viral #recipe #food..."
     }}
     """
@@ -453,12 +477,12 @@ def generate_image_master(prompt, output_path):
 
 # --- Premium Design Engine ---
 
-def create_split_screen_layout(image_path, title, output_path, board_type="recipe"):
+def create_split_screen_layout(image_path, title, output_path, board_type="recipe", secondary_image_path=None):
     """
     Creates a premium 1000x1500 px vertical split-screen card:
-    - Top 40% (1000x600 px): standard crop of the recipe image
+    - Top 40% (1000x600 px): standard crop of the recipe image (zoom 1.0)
     - Middle 20% (1000x300 px): solid board-matched color block with large text
-    - Bottom 40% (1000x600 px): 1.35x close-up macro zoom of the texture
+    - Bottom 40% (1000x600 px): either a second complementary image, or a 2.3x close-up macro zoom of the first image
     """
     print(f"   [Layout] Building Split-Screen Vertical Layout for board: {board_type}")
     try:
@@ -501,8 +525,20 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
     canvas.paste(top_segment, (0, 0))
 
     # 2. Bottom Image Segment (1000x600 px)
-    # 1.35x zoom macro close-up of texture
-    bottom_segment = crop_and_resize(orig_img, target_w, 600, zoom=1.35)
+    # Check if we have a secondary complementary image
+    if secondary_image_path and os.path.exists(secondary_image_path):
+        try:
+            print(f"   [Layout] Placing secondary complementary image as bottom segment...")
+            sec_img = Image.open(secondary_image_path).convert("RGBA")
+            bottom_segment = crop_and_resize(sec_img, target_w, 600, zoom=1.0)
+        except Exception as e:
+            print(f"   [Layout Warning] Failed to load secondary image: {e}. Falling back to extreme zoom.")
+            bottom_segment = crop_and_resize(orig_img, target_w, 600, zoom=2.3)
+    else:
+        # Extreme 2.3x macro close-up zoom of the primary food texture
+        print(f"   [Layout] Placing 2.3x extreme zoom of primary image as bottom segment...")
+        bottom_segment = crop_and_resize(orig_img, target_w, 600, zoom=2.3)
+        
     canvas.paste(bottom_segment, (0, 900))
 
     # 3. Middle Text Box Segment (1000x300 px)
@@ -598,12 +634,12 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
     print(f"   [Layout] Split-Screen Vertical card compiled successfully at: {output_path}")
     return True
 
-def design_pin_premium(image_path, title, output_path, board_type="recipe"):
+def design_pin_premium(image_path, title, output_path, board_type="recipe", secondary_image_path=None):
     force_split = os.getenv("FORCE_SPLIT_SCREEN", "true").lower() == "true"
     
     # If forced, use split screen format
     if force_split:
-        if create_split_screen_layout(image_path, title, output_path, board_type):
+        if create_split_screen_layout(image_path, title, output_path, board_type, secondary_image_path):
             return
             
     img = Image.open(image_path).convert("RGBA")
@@ -818,28 +854,47 @@ def process_new_pin(title, slug, url, description, board_id):
     for i, angle in enumerate(angles):
         iter_slug = f"{slug}-pin-{i+1}"
         raw_img = f"temp_raw_{iter_slug}.jpg"
+        sec_img = f"temp_raw_{iter_slug}_sec.jpg"
         final_img = f"final_pin_{iter_slug}.jpg"
         
-        # Content Gen (Keep Gemini for Title/Desc but NOT for prompt expansion if it's unstable)
-        gemini_data = generate_pin_content_with_gemini(title)
+        # Pass pin_index to guarantee unique overlays and descriptions per pin
+        gemini_data = generate_pin_content_with_gemini(title, pin_index=i)
         if gemini_data:
             p_title = gemini_data.get("title", title)
             p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
             overlay_text = gemini_data.get("overlay_text", title)
             alt_text = gemini_data.get("alt_text", p_title)
+            image_prompt = gemini_data.get("image_prompt")
+            secondary_image_prompt = gemini_data.get("secondary_image_prompt")
         else:
             p_title, p_desc, overlay_text = title, description, title
             alt_text = p_title
+            image_prompt = None
+            secondary_image_prompt = None
 
-        image_prompt = gemini_data.get("image_prompt") if gemini_data else None
         if not image_prompt:
             image_prompt = f"{angle} of {title}"
 
+        # 50% chance of attempting a two-image collage
+        collage_mode = random.choice([True, False])
+        sec_img_path = None
+
         if generate_image_master(image_prompt, raw_img):
-            design_pin_premium(raw_img, overlay_text, final_img)
+            if collage_mode and secondary_image_prompt:
+                print(f"   [Collage] Attempting to generate secondary image for collage variant...")
+                if generate_image_master(secondary_image_prompt, sec_img):
+                    sec_img_path = sec_img
+                else:
+                    print(f"   [Collage Warning] Secondary image generation failed. Falling back to extreme zoom.")
+
+            design_pin_premium(raw_img, overlay_text, final_img, secondary_image_path=sec_img_path)
             b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
-            if publish_pin(final_img, p_title, p_desc, b_url, board_id, alt_text=alt_text): success += 1
+            if publish_pin(final_img, p_title, p_desc, b_url, board_id, alt_text=alt_text): 
+                success += 1
+                
+            # Cleanup
             if os.path.exists(raw_img): os.remove(raw_img)
+            if sec_img_path and os.path.exists(sec_img_path): os.remove(sec_img_path)
             if os.getenv("MOCK_MODE", "false").lower() != "true" and os.path.exists(final_img):
                 os.remove(final_img)
     print(f"--- Finished: {success} Pins Published ---")
@@ -891,15 +946,20 @@ def run_pin_worker():
     final_img = f"final_pin_{iter_slug}.jpg"
     
     # --- GENERATE PREMIUM CONTENT ---
-    gemini_data = generate_pin_content_with_gemini(title)
+    # Pass pin_index to guarantee unique overlays and descriptions per pin
+    gemini_data = generate_pin_content_with_gemini(title, pin_index=pin_index)
     if gemini_data:
         p_title = gemini_data.get("title", title)
         p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
         overlay_text = gemini_data.get("overlay_text", title)
         alt_text = gemini_data.get("alt_text", p_title)
+        image_prompt = gemini_data.get("image_prompt")
+        secondary_image_prompt = gemini_data.get("secondary_image_prompt")
     else:
         p_title, p_desc, overlay_text = title, description, title
         alt_text = p_title
+        image_prompt = None
+        secondary_image_prompt = None
 
     # BOARD SELECTION LOGIC (Specialized - FoodTrendsBlog)
     board_mapping = {
@@ -924,18 +984,30 @@ def run_pin_worker():
     
     selected_board = board_mapping[board_key]
     
-    image_prompt = gemini_data.get("image_prompt") if gemini_data else None
     if not image_prompt:
         image_prompt = f"{angle} of {title}"
 
+    # 50% chance of attempting a two-image collage
+    collage_mode = random.choice([True, False])
+    sec_img = f"temp_raw_{iter_slug}_sec.jpg"
+    sec_img_path = None
+
     if generate_image_master(image_prompt, raw_img):
-        design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key)
+        if collage_mode and secondary_image_prompt:
+            print(f"   [Collage] Attempting to generate secondary image for collage variant...")
+            if generate_image_master(secondary_image_prompt, sec_img):
+                sec_img_path = sec_img
+            else:
+                print(f"   [Collage Warning] Secondary image generation failed. Falling back to extreme zoom.")
+
+        design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key, secondary_image_path=sec_img_path)
         b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
         if publish_pin(final_img, p_title, p_desc, b_url, selected_board, alt_text=alt_text):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
         if os.path.exists(raw_img): os.remove(raw_img)
+        if sec_img_path and os.path.exists(sec_img_path): os.remove(sec_img_path)
         if os.getenv("MOCK_MODE", "false").lower() != "true" and os.path.exists(final_img):
             os.remove(final_img)
     else:
