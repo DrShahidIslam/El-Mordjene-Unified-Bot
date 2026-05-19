@@ -455,11 +455,12 @@
   {
     "topic": "Salmon Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/perfect-pan-seared-lemon-herb-salmon/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-19T21:10:16.350510"
   },
   {
     "topic": "Pork Chop Recipes",
