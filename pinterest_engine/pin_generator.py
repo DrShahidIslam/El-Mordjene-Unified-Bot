@@ -862,8 +862,11 @@ def run_pin_worker():
         return
 
     title = target["topic"]
-    slug = target.get("topic", "").lower().replace(" ", "-")
-    url = target.get("wp_url")
+    url = target.get("wp_url", "")
+    wp_slug = ""
+    if url:
+        wp_slug = url.rstrip('/').split('/')[-1]
+    slug = wp_slug if wp_slug else target.get("topic", "").lower().replace(" ", "-")
     description = f"Check out this amazing {title} recipe and guide on el-mordjene.info!"
     pin_index = target.get("pin_count", 0)
     
