@@ -425,11 +425,12 @@
   {
     "topic": "Easy Dinner Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/simple-one-pan-mediterranean-lemon-chicken-orzo/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-19T06:18:52.117591"
   },
   {
     "topic": "Healthy Dinner Recipes",
