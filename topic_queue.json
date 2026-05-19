@@ -445,11 +445,12 @@
   {
     "topic": "Ground Beef Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-beef-and-vegetable-skillet-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-19T17:55:55.876304"
   },
   {
     "topic": "Salmon Recipes",
