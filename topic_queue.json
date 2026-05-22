@@ -505,11 +505,12 @@
   {
     "topic": "Mediterranean Diet Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/mediterranean-chickpea-vegetable-stew/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-22T10:40:27.407035"
   },
   {
     "topic": "Breakfast",
