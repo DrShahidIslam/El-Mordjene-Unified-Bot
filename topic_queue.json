@@ -515,11 +515,12 @@
   {
     "topic": "Breakfast",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-breakfast-nutrition-myths/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-22T21:02:45.355009"
   },
   {
     "topic": "Easy Summer Dinners",
