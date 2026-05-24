@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="p:domain_verify" content="1d84ab991c1cde74229effaeb1932e8c"/>
     <title>Food Trends | Discover the World's Best Culinary Concepts</title>
+    <script>
+        // Redirect legacy Pinterest traffic from root to /bridge_page/
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) {
+                window.location.href = './bridge_page/' + window.location.search;
+            }
+        })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {

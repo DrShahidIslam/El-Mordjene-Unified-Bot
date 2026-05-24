@@ -118,7 +118,7 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
     return None
 
 BRIDGE_PAGE_ROOT = Path("bridge_page")
-BRIDGE_PAGE_URL_BASE = os.getenv("BRIDGE_PAGE_URL", "https://drshahidislam.github.io/Food-Trends-Blog/")
+BRIDGE_PAGE_URL_BASE = os.getenv("BRIDGE_PAGE_URL", "https://drshahidislam.github.io/Food-Trends-Blog/bridge_page/")
 MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
 
 WEEKLY_MAGAZINE_CSS = """
