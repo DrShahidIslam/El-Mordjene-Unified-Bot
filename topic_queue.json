@@ -555,11 +555,12 @@
   {
     "topic": "Chicken Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/essential-lemon-herb-roasted-chicken-recipe/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-24T09:46:31.644210"
   },
   {
     "topic": "Chocolate Chip Cookies",
