@@ -545,11 +545,12 @@
   {
     "topic": "Dinner Recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/one-pan-lemon-herb-roasted-chicken-potatoes/",
     "pin_count": 0,
     "priority": 20,
-    "source": "Pinterest API"
+    "source": "Pinterest API",
+    "published_at": "2026-05-24T07:07:42.387560"
   },
   {
     "topic": "Chicken Recipes",
