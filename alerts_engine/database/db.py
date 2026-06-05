@@ -212,6 +212,20 @@ def is_topic_already_covered(conn, new_title, threshold=0.4):
     Returns (is_duplicate, closest_match_title, similarity_score).
     """
     published = get_published_titles(conn)
+    try:
+        import os
+        import json
+        db_dir = os.path.dirname(os.path.dirname(__file__))
+        posts_path = os.path.join(db_dir, "published_posts.json")
+        if os.path.exists(posts_path):
+            with open(posts_path, "r", encoding="utf-8") as f:
+                json_data = json.load(f)
+                for post_info in json_data.values():
+                    anchor = post_info.get("anchor")
+                    if anchor:
+                        published.append((anchor, ""))
+    except Exception as e:
+        logger.error(f"Failed to load published_posts.json for deduplication: {e}")
     if not published:
         return False, "", 0.0
 

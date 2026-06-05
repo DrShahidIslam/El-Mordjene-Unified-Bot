@@ -328,7 +328,11 @@ def _strip_faq_and_schema_from_content(content):
     # Remove common metadata marker blocks
     markers = ["META_DESCRIPTION:", "SLUG:", "TAGS:", "CATEGORY:", "LANGUAGE:", "TITLE:"]
     for marker in markers:
-        content = re.sub(f"(?m)^{marker}.*$", "", content)
+        # Match optional formatting like <p>, <b>, **, whitespace, before the marker
+        content = re.sub(rf"(?mi)^(?:\s|<[^>]+>|\*\*|\*)*{marker}.*$", "", content)
+
+    # Remove recipe data blocks if they slipped through
+    content = re.sub(r'---RECIPE_DATA_START---.*?---RECIPE_DATA_END---', '', content, flags=re.DOTALL)
 
     # Remove markdown code fences
     content = re.sub(r'```json.*?```', '', content, flags=re.DOTALL | re.IGNORECASE)
@@ -898,6 +902,12 @@ def _parse_article_output(raw_text, intent=None):
         content_match = re.search(r'---CONTENT_START---(.*?)---CONTENT_END---', raw_text, re.DOTALL)
         content = content_match.group(1).strip() if content_match else ""
 
+        # If content wasn't properly wrapped, extract from raw text
+        if not content:
+            content = raw_text
+            # Remove anything before ---CONTENT_START--- if only END is missing
+            content = re.sub(r'^.*?---CONTENT_START---', '', content, flags=re.DOTALL)
+
         schema_json = _extract_faqpage_json(content)
         content = _strip_faq_and_schema_from_content(content)
         content = _downgrade_h1_tags(content)
@@ -940,7 +950,9 @@ def _parse_article_output(raw_text, intent=None):
                 first_line = raw_text.strip().split("\n")[0]
                 result["title"] = re.sub(r'^#+\s*', '', first_line)[:60]
             if not result["content"]:
-                result["content"] = _downgrade_h1_tags(raw_text)
+                fallback_content = _downgrade_h1_tags(raw_text)
+                fallback_content = _strip_faq_and_schema_from_content(fallback_content)
+                result["content"] = fallback_content
                 result["full_content"] = result["content"]
 
         if recipe_like and not _recipe_fields_complete(result["acf_fields"]):
