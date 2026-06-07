@@ -332,7 +332,7 @@ def _strip_faq_and_schema_from_content(content):
         content = re.sub(rf"(?mi)^(?:\s|<[^>]+>|\*\*|\*)*{marker}.*$", "", content)
 
     # Remove recipe data blocks if they slipped through
-    content = re.sub(r'---RECIPE_DATA_START---.*?---RECIPE_DATA_END---', '', content, flags=re.DOTALL)
+    content = re.sub(r'[-—]+RECIPE_DATA_START[-—]+.*?[-—]+RECIPE_DATA_END[-—]+', '', content, flags=re.DOTALL)
 
     # Remove markdown code fences
     content = re.sub(r'```json.*?```', '', content, flags=re.DOTALL | re.IGNORECASE)
@@ -899,14 +899,14 @@ def _parse_article_output(raw_text, intent=None):
         lang_match = re.search(r'LANGUAGE:\s*(en|fr)(?:\n|---)', raw_text, re.IGNORECASE | re.DOTALL)
         result["language"] = lang_match.group(1).strip().lower() if lang_match else "en"
 
-        content_match = re.search(r'---CONTENT_START---(.*?)---CONTENT_END---', raw_text, re.DOTALL)
+        content_match = re.search(r'[-—]+CONTENT_START[-—]+(.*?)[-—]+CONTENT_END[-—]+', raw_text, re.DOTALL)
         content = content_match.group(1).strip() if content_match else ""
 
         # If content wasn't properly wrapped, extract from raw text
         if not content:
             content = raw_text
             # Remove anything before ---CONTENT_START--- if only END is missing
-            content = re.sub(r'^.*?---CONTENT_START---', '', content, flags=re.DOTALL)
+            content = re.sub(r'^.*?[-—]+CONTENT_START[-—]+', '', content, flags=re.DOTALL)
 
         schema_json = _extract_faqpage_json(content)
         content = _strip_faq_and_schema_from_content(content)
@@ -926,7 +926,7 @@ def _parse_article_output(raw_text, intent=None):
         result["full_content"] = content
         result["faq_html"] = ""
 
-        recipe_match = re.search(r'---RECIPE_DATA_START---\s*(.*?)\s*---RECIPE_DATA_END---', raw_text, re.DOTALL)
+        recipe_match = re.search(r'[-—]+RECIPE_DATA_START[-—]+\s*(.*?)\s*[-—]+RECIPE_DATA_END[-—]+', raw_text, re.DOTALL)
         result["acf_fields"] = {}
         if recipe_match:
             recipe_json_str = _strip_code_fences(recipe_match.group(1).strip())
