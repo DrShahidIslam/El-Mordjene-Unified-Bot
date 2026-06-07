@@ -51,19 +51,22 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
     if pin_index == 0:
         angle_instruction = """
         - Visual Focus: A luxury editorial food photography hero shot.
-        - Text Overlay: The actual clean recipe or food item name (e.g. 'DUBAI CHOCOLATE BAR' or 'EL MORDJENE CREPES'). Do not add extra sales pitch hooks. Keep it premium and direct.
+        - Recipe Name: The actual clean recipe or food item name (e.g. 'DUBAI CHOCOLATE BAR' or 'EL MORDJENE CREPES'). Max 4 words, all caps.
+        - Hook: A premium editorial tagline that creates desire (e.g. 'MELT-IN-YOUR-MOUTH PERFECTION', 'THE ULTIMATE INDULGENCE', 'PURE CHOCOLATE BLISS'). Max 6 words, all caps.
         """
         secondary_angle_focus = "A close-up macro texture shot showing melt-in-your-mouth detail."
     elif pin_index == 1:
         angle_instruction = """
         - Visual Focus: A beautiful overhead flat-lay of ingredients, garnishes, and prep.
-        - Text Overlay: A quick-time/simplicity hook focusing on prep ease (e.g. 'READY IN 15 MINS!', 'ONE-BOWL EASY!', 'SIMPLE STEP BY STEP').
+        - Recipe Name: The actual clean recipe or food item name (e.g. 'EASY CREPES' or 'CHOCOLATE COOKIES'). Max 4 words, all caps.
+        - Hook: A quick-time/simplicity hook focusing on prep ease (e.g. 'READY IN JUST 15 MINUTES!', 'ONE-BOWL WONDER!', 'SIMPLE STEP BY STEP'). Max 6 words, all caps.
         """
         secondary_angle_focus = "A luxury editorial food photography hero shot."
     else:
         angle_instruction = """
         - Visual Focus: A close-up macro shot showing glistening texture and delicious details.
-        - Text Overlay: A chef secret, hack, or craving hook (e.g. 'THE SECRET HACK!', 'CHEF'S BEST TRICK!', 'SECRET INGREDIENT!').
+        - Recipe Name: The actual clean recipe or food item name (e.g. 'CREPE RECIPE' or 'CHOCOLATE BARS'). Max 4 words, all caps.
+        - Hook: A chef secret, hack, or craving hook (e.g. 'THE SECRET CHEF TRICK!', 'YOU WON\'T BELIEVE THIS!', 'IRRESISTIBLY CRISPY!'). Max 6 words, all caps.
         """
         secondary_angle_focus = "An overhead flat-lay of ingredients and preparation layout."
 
@@ -86,7 +89,8 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
       "title": "Annotated Keyword: Sensation Curiosity Gap Hook",
       "description": "Sensory-rich description ending in a clear high-intent CTA...",
       "alt_text": "Descriptive visual alt text of the glistening dish texture...",
-      "overlay_text": "TEXT TO OVERLAY ON THE IMAGE (following target angle guidelines exactly)",
+      "recipe_name": "CLEAN RECIPE NAME (max 4 words, all caps, e.g. DUBAI CHOCOLATE BAR)",
+      "hook": "CURIOSITY OR DESIRE HOOK (max 6 words, all caps, e.g. MELT-IN-YOUR-MOUTH PERFECTION)",
       "image_prompt": "Primary visual focus photography prompt...",
       "secondary_image_prompt": "Secondary visual focus photography prompt...",
       "hashtags": "#viral #recipe #food..."
@@ -477,7 +481,7 @@ def generate_image_master(prompt, output_path):
 
 # --- Premium Design Engine ---
 
-def create_split_screen_layout(image_path, title, output_path, board_type="recipe", secondary_image_path=None):
+def create_split_screen_layout(image_path, title, output_path, board_type="recipe", secondary_image_path=None, hook_text=None):
     """
     Creates a premium 1000x1500 px vertical split-screen card:
     - Top 40% (1000x600 px): standard crop of the recipe image (zoom 1.0)
@@ -558,88 +562,116 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
 
     # Fonts
     fonts_dir = root_dir / "fonts"
-    anton_path = str(fonts_dir / "Anton-Regular.ttf")
     montserrat_path = str(fonts_dir / "Montserrat-Bold.ttf")
 
-    font_badge_size = 32
-    font_title_size = 60
+    font_badge_size = 26
+    font_recipe_size = 54
+    font_hook_size = 28
 
     badge_font = None
-    title_font = None
+    recipe_font = None
+    hook_font = None
 
     try:
         if os.path.exists(montserrat_path):
             badge_font = ImageFont.truetype(montserrat_path, font_badge_size)
-            title_font = ImageFont.truetype(montserrat_path, font_title_size)
+            recipe_font = ImageFont.truetype(montserrat_path, font_recipe_size)
+            hook_font = ImageFont.truetype(montserrat_path, font_hook_size)
         else:
             fallbacks = ["C:/Windows/Fonts/arialbd.ttf", "arialbd.ttf"]
             for f_path in fallbacks:
                 if os.path.exists(f_path):
                     badge_font = ImageFont.truetype(f_path, font_badge_size)
-                    title_font = ImageFont.truetype(f_path, font_title_size)
+                    recipe_font = ImageFont.truetype(f_path, font_recipe_size)
+                    hook_font = ImageFont.truetype(f_path, font_hook_size)
                     break
     except Exception as e:
         print(f"   [Layout Font Error] {e}")
 
     if not badge_font: badge_font = ImageFont.load_default()
-    if not title_font: title_font = ImageFont.load_default()
+    if not recipe_font: recipe_font = ImageFont.load_default()
+    if not hook_font: hook_font = ImageFont.load_default()
 
-    # Draw Category Badge Text
+    # --- Three-Tier Magazine Text Layout ---
+    # Tier 1: Category Badge (e.g. "EASY RECIPE")
     badge_text = board_type.upper()
     if badge_text == "RECIPE": badge_text = "EASY RECIPE"
     elif badge_text == "TREND": badge_text = "VIRAL TREND"
 
-    badge_w = draw.textlength(badge_text, font=badge_font)
-
-    # Draw High-Impact Headline Text (all caps, split into lines dynamically)
+    # Tier 2: Recipe Name (hero text — large, bold, white)
     clean_title = title.replace("-", " ").upper()
-    
-    # Safe character wrapping for 60px bold font on 1000px canvas
-    wrapped_lines = textwrap.wrap(clean_title, width=22)
-    
-    # Scale down font size dynamically if the title is very long (4+ lines) to prevent overflow
-    if len(wrapped_lines) > 3:
-        font_title_size = 48
+    recipe_lines = textwrap.wrap(clean_title, width=20)
+
+    # Scale down if recipe name is too long for 2 lines
+    if len(recipe_lines) > 2:
+        font_recipe_size = 44
         try:
             if os.path.exists(montserrat_path):
-                title_font = ImageFont.truetype(montserrat_path, font_title_size)
+                recipe_font = ImageFont.truetype(montserrat_path, font_recipe_size)
             elif os.path.exists("C:/Windows/Fonts/arialbd.ttf"):
-                title_font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", font_title_size)
+                recipe_font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", font_recipe_size)
         except Exception:
             pass
-        wrapped_lines = textwrap.wrap(clean_title, width=28)
-        
-    line_h = font_title_size * 1.15
-    title_height = len(wrapped_lines[:3]) * line_h
-    
-    # Symmetrically center the entire block (badge + spacing + title) in the 300px vertical space (y = 600 to 900)
-    badge_height = font_badge_size
-    spacing = 15
-    total_content_height = badge_height + spacing + title_height
-    
-    block_start_y = 600 + (300 - total_content_height) // 2
-    
-    # Draw badge
+        recipe_lines = textwrap.wrap(clean_title, width=26)
+    recipe_lines = recipe_lines[:2]  # Max 2 lines for recipe name
+
+    # Tier 3: Hook Text (contextual curiosity/desire subtitle)
+    hook_lines = []
+    if hook_text:
+        hook_display = hook_text.replace("-", " ").upper()
+        hook_lines = textwrap.wrap(hook_display, width=30)
+        hook_lines = hook_lines[:2]  # Max 2 lines for hook
+
+    # --- Calculate vertical layout for perfect centering in 300px box ---
+    recipe_line_h = font_recipe_size * 1.15
+    hook_line_h = font_hook_size * 1.15
+
+    badge_h = font_badge_size
+    gap_badge_recipe = 10
+    recipe_block_h = len(recipe_lines) * recipe_line_h
+    gap_recipe_hook = 16  # includes space for decorative separator
+    hook_block_h = len(hook_lines) * hook_line_h if hook_lines else 0
+
+    total_content_h = badge_h + gap_badge_recipe + recipe_block_h
+    if hook_lines:
+        total_content_h += gap_recipe_hook + hook_block_h
+
+    block_start_y = 600 + (300 - total_content_h) / 2
+
+    # Draw Tier 1: Category Badge
+    badge_w = draw.textlength(badge_text, font=badge_font)
     draw.text(((target_w - badge_w) / 2, block_start_y), badge_text, font=badge_font, fill=(216, 116, 57, 255))
-    
-    # Draw title lines starting below badge
-    start_y = block_start_y + badge_height + spacing
-    for line in wrapped_lines[:3]:
-        tw = draw.textlength(line, font=title_font)
-        draw.text(((target_w - tw) / 2, start_y), line, font=title_font, fill=(255, 255, 255, 255))
-        start_y += line_h
+
+    # Draw Tier 2: Recipe Name (hero)
+    y_cursor = block_start_y + badge_h + gap_badge_recipe
+    for line in recipe_lines:
+        tw = draw.textlength(line, font=recipe_font)
+        draw.text(((target_w - tw) / 2, y_cursor), line, font=recipe_font, fill=(255, 255, 255, 255))
+        y_cursor += recipe_line_h
+
+    # Draw Tier 3: Hook with decorative separator
+    if hook_lines:
+        # Thin gold separator line for premium magazine feel
+        sep_y = y_cursor + gap_recipe_hook / 2 - 1
+        sep_w = 80
+        draw.rectangle([((target_w - sep_w) / 2, sep_y), ((target_w + sep_w) / 2, sep_y + 2)], fill=(216, 116, 57, 180))
+        y_cursor += gap_recipe_hook
+        for line in hook_lines:
+            tw = draw.textlength(line, font=hook_font)
+            draw.text(((target_w - tw) / 2, y_cursor), line, font=hook_font, fill=(255, 220, 175, 255))
+            y_cursor += hook_line_h
 
     # Convert canvas back to RGB and save
     canvas.convert("RGB").save(output_path, "JPEG", quality=95)
     print(f"   [Layout] Split-Screen Vertical card compiled successfully at: {output_path}")
     return True
 
-def design_pin_premium(image_path, title, output_path, board_type="recipe", secondary_image_path=None):
+def design_pin_premium(image_path, title, output_path, board_type="recipe", secondary_image_path=None, hook_text=None):
     force_split = os.getenv("FORCE_SPLIT_SCREEN", "true").lower() == "true"
     
     # If forced, use split screen format
     if force_split:
-        if create_split_screen_layout(image_path, title, output_path, board_type, secondary_image_path):
+        if create_split_screen_layout(image_path, title, output_path, board_type, secondary_image_path, hook_text=hook_text):
             return
             
     img = Image.open(image_path).convert("RGBA")
@@ -862,12 +894,14 @@ def process_new_pin(title, slug, url, description, board_id):
         if gemini_data:
             p_title = gemini_data.get("title", title)
             p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
-            overlay_text = gemini_data.get("overlay_text", title)
+            recipe_name = gemini_data.get("recipe_name", title)
+            hook_text = gemini_data.get("hook", "")
             alt_text = gemini_data.get("alt_text", p_title)
             image_prompt = gemini_data.get("image_prompt")
             secondary_image_prompt = gemini_data.get("secondary_image_prompt")
         else:
-            p_title, p_desc, overlay_text = title, description, title
+            p_title, p_desc, recipe_name = title, description, title
+            hook_text = ""
             alt_text = p_title
             image_prompt = None
             secondary_image_prompt = None
@@ -887,7 +921,7 @@ def process_new_pin(title, slug, url, description, board_id):
                 else:
                     print(f"   [Collage Warning] Secondary image generation failed. Falling back to extreme zoom.")
 
-            design_pin_premium(raw_img, overlay_text, final_img, secondary_image_path=sec_img_path)
+            design_pin_premium(raw_img, recipe_name, final_img, secondary_image_path=sec_img_path, hook_text=hook_text)
             b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
             if publish_pin(final_img, p_title, p_desc, b_url, board_id, alt_text=alt_text): 
                 success += 1
@@ -951,12 +985,14 @@ def run_pin_worker():
     if gemini_data:
         p_title = gemini_data.get("title", title)
         p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
-        overlay_text = gemini_data.get("overlay_text", title)
+        recipe_name = gemini_data.get("recipe_name", title)
+        hook_text = gemini_data.get("hook", "")
         alt_text = gemini_data.get("alt_text", p_title)
         image_prompt = gemini_data.get("image_prompt")
         secondary_image_prompt = gemini_data.get("secondary_image_prompt")
     else:
-        p_title, p_desc, overlay_text = title, description, title
+        p_title, p_desc, recipe_name = title, description, title
+        hook_text = ""
         alt_text = p_title
         image_prompt = None
         secondary_image_prompt = None
@@ -1000,7 +1036,7 @@ def run_pin_worker():
             else:
                 print(f"   [Collage Warning] Secondary image generation failed. Falling back to extreme zoom.")
 
-        design_pin_premium(raw_img, overlay_text, final_img, board_type=board_key, secondary_image_path=sec_img_path)
+        design_pin_premium(raw_img, recipe_name, final_img, board_type=board_key, secondary_image_path=sec_img_path, hook_text=hook_text)
         b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
         if publish_pin(final_img, p_title, p_desc, b_url, selected_board, alt_text=alt_text):
             target["pin_count"] = pin_index + 1
