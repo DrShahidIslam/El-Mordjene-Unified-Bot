@@ -854,9 +854,12 @@ def pin_request(method, endpoint, **kwargs):
         return pin_session.post(url, **kwargs)
     except: return None
 
-def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=None):
+def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=None, retry=True):
     if MOCK_MODE: return True
-    if not PINTEREST_ACCESS_TOKEN: return False
+    global PINTEREST_ACCESS_TOKEN
+    if not PINTEREST_ACCESS_TOKEN: 
+        print("   [Pinterest API] ERROR: No PINTEREST_ACCESS_TOKEN found.", flush=True)
+        return False
     with open(image_path, "rb") as f: img_b64 = base64.b64encode(f.read()).decode()
     if not alt_text: alt_text = title
     payload = {
@@ -867,7 +870,64 @@ def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=N
     }
     headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}", "Content-Type": "application/json"}
     res = pin_request("POST", "/pins", headers=headers, json=payload, timeout=60)
-    return res and res.status_code in (200, 201)
+    
+    if res and res.status_code in (200, 201):
+        return True
+    elif res and res.status_code == 401 and retry:
+        print("   [Pinterest API] Token expired (401). Attempting automatic refresh...", flush=True)
+        if refresh_pinterest_token():
+            return publish_pin(image_path, title, description, bridge_url, board_id, alt_text, retry=False)
+        else:
+            return False
+    else:
+        error_msg = res.text if res else "No response"
+        status_code = res.status_code if res else "N/A"
+        print(f"   [Pinterest API] ERROR Publishing Pin: HTTP {status_code} - {error_msg}", flush=True)
+        return False
+
+def refresh_pinterest_token():
+    global PINTEREST_ACCESS_TOKEN
+    # Try to get refresh token
+    refresh_token = os.getenv("PINTEREST_REFRESH_TOKEN")
+    if not refresh_token:
+        # Check token_file
+        try:
+            with open(token_file, "r") as f:
+                token_data = json.load(f)
+                refresh_token = token_data.get("refresh_token")
+        except: pass
+
+    app_id = os.getenv("PINTEREST_APP_ID")
+    app_secret = os.getenv("PINTEREST_APP_SECRET")
+
+    if not refresh_token or not app_id or not app_secret:
+        print("   [Pinterest API] Cannot refresh token: Missing PINTEREST_REFRESH_TOKEN, APP_ID, or APP_SECRET.")
+        return False
+
+    auth = base64.b64encode(f"{app_id.strip()}:{app_secret.strip()}".encode()).decode()
+    try:
+        response = requests.post("https://api.pinterest.com/v5/oauth/token", headers={
+            "Authorization": f"Basic {auth}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        }, data={
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token.strip()
+        }, timeout=30)
+
+        if response.status_code == 200:
+            data = response.json()
+            PINTEREST_ACCESS_TOKEN = data.get("access_token")
+            # Save the new token data to file
+            with open(token_file, "w") as f:
+                json.dump(data, f, indent=2)
+            print("   [Pinterest API] Successfully refreshed token and saved to pinterest_token.json")
+            return True
+        else:
+            print(f"   [Pinterest API] Failed to refresh token: {response.status_code} - {response.text}")
+            return False
+    except Exception as e:
+        print(f"   [Pinterest API] Error during token refresh: {e}")
+        return False
 
 def get_board_id(board_name):
     if not PINTEREST_ACCESS_TOKEN: return None
@@ -1042,12 +1102,21 @@ def run_pin_worker():
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
+        else:
+            print(f"FAILURE: Pinterest API rejected the pin (e.g. token expired) for {title}", flush=True)
+            if os.path.exists(raw_img): os.remove(raw_img)
+            if sec_img_path and os.path.exists(sec_img_path): os.remove(sec_img_path)
+            import sys
+            sys.exit(1)
+            
         if os.path.exists(raw_img): os.remove(raw_img)
         if sec_img_path and os.path.exists(sec_img_path): os.remove(sec_img_path)
         if os.getenv("MOCK_MODE", "false").lower() != "true" and os.path.exists(final_img):
             os.remove(final_img)
     else:
         print(f"FAILURE: Could not generate image for {title}")
+        import sys
+        sys.exit(1)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
