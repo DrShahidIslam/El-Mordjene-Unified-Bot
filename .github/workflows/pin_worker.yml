@@ -50,7 +50,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add topic_queue.json bridge_page/discovery/ index.html pinterest_token.json
+          git add topic_queue.json bridge_page/discovery/ index.html
+          if [ -f pinterest_token.json ]; then git add pinterest_token.json; fi
           git commit -m "Automation: Update pin counts and bridge site [skip ci]" || echo "No changes to commit"
           git pull --rebase origin main
           git push origin main
