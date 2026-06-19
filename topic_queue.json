@@ -925,12 +925,12 @@
   {
     "topic": "Grill Recipes Dinner",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/herb-crusted-grilled-lamb-chops/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-19T11:21:39.223420"
   },
   {
     "topic": "Donuts Recipe Easy",
