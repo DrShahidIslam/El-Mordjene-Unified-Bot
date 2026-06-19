@@ -591,5 +591,685 @@
     "priority": 1,
     "source": "manual",
     "published_at": "2026-05-15T07:35:40.741518"
+  },
+  {
+    "topic": "El-Mordjene.info",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "What is El Mordjene?",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/what-is-el-mordjene/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Why is El Mordjene banned?",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/why-is-el-mordjene-banned/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "El Mordjene calories and ingredients",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-ingredients/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "homemade El Mordjene spread recipe",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/how-to-make-el-mordjene-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Cebon: the company behind El Mordjene",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/cebon/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "candy making at home",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/candy-making-home/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Dubai Chocolate Strawberries recipe",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/dubai-chocolate-strawberries/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "chocolate spread recipes from scratch",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/chocolate-spread-recipes/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "homemade chocolate recipes",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/homemade-chocolate-recipes/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Kinder Bueno spread alternatives",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/kinder-bueno-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Tamina: ancient Algerian superfood",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/tamina-algerian-postpartum-recipe/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "banned snacks list and Red 40 update",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/2027-banned-snacks-list-red-40-update/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "American snacks banned in Europe",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/american-snacks-banned-in-europe/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "El Mordjene on TikTok",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-tiktok/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Quick and Savory Chicken Caesar Wraps Recipes",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/chicken-caesar-wraps-recipes-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Ultimate Rotel Dip Recipe: A Simple Cheese Classic",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/rotel-dip-recipe/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The El Mordjene Hunt: Paris Chases Banned Hazelnut Spread",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/the-el-mordjene-hunt-paris-chases-banned-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "El Mordjene: The Algerian Spread Making Global Headlines",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-algerian-spread-market-impact-7/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Status of El Mordjene: Navigating the Market Controversy",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/the-truth-behind-the-el-mordjene-spread-controversy-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "El Mordjene: The Algerian Spread Shaking Up The Market",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-market-impact-analysis-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Understanding the El Mordjene Spread Controversy",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-el-mordjene-spread-controversy/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Truth Behind the Banned El Mordjene Spread",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/the-truth-behind-the-banned-el-mordjene-spread-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Understanding the El Mordjene Spread Controversy",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-the-el-mordjene-spread-controversy-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Reality Behind the El Mordjene Spread Controversy",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/the-reality-behind-el-mordjene-spread-controversy/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Understanding the Controversy Surrounding El Mordjene Spread",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-the-controversy-surrounding-el-mordjene-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Understanding the Global Buzz Around El Mordjene Spread",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-the-global-buzz-around-el-mordjene-spread-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Reality of the El Mordjene Spread Controversy",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/the-reality-of-the-el-mordjene-spread-controversy/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "El Mordjene: The Algerian Spread Making Global Headlines",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-algerian-spread-controversy/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "El Mordjene: The Algerian Spread Facing Global Scrutiny",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-algerian-spread-scrutiny/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Understanding the Global Buzz Around El Mordjene",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-the-global-buzz-around-el-mordjene/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Current Status of the Banned Algerian Spread",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/status-of-the-banned-algerian-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "The Reality of the Banned El Mordjene Spread",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/the-reality-of-the-banned-el-mordjene-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "manual_recovery",
+    "published_at": "2026-06-19T11:12:48.549465"
+  },
+  {
+    "topic": "Grill Recipes Dinner",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Donuts Recipe Easy",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Salsa Recipes Homemade",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Tostadas Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Eggplant Parmesan Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Quinoa Recipes Healthy",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Blueberry Muffins Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Coffee Cake Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Beets Recipe Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Sweet Potato Recipes Healthy",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Imitated Crab Recipes Easy",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Tilapia Fish Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Watermelon Margarita Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Quinoa Recipes Easy",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Summer Cookie Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Cake Flavor Ideas",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Peach Dessert Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Taziki Sauce Recipe Tzatziki",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Homemade Pop Tarts",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Meatballs Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Icebox Cake Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Blackberry Jam Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Peach Dessert",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Garlic Scapes Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Brownies Recipe Homemade",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Protein Dessert",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Squash And Zucchini Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Cabbage Recipes Healthy",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Cod Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Ice Cream Recipes For Ice Cream Maker",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Dill Pickle Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Apricot Recipes",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Father\u2019S Day Cake",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Italian Love Cake",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
+  },
+  {
+    "topic": "Gazpacho Recipe",
+    "intent": "trend",
+    "wp_status": "pending",
+    "wp_url": "",
+    "pin_count": 0,
+    "priority": 10,
+    "source": "Pinterest API (Trends)",
+    "published_at": ""
   }
 ]

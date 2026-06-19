@@ -288,6 +288,20 @@ def run_scan(state):
                 save_topic_to_cache(conn, story_hash, topic)
 
                 if auto_pilot_process(topic, state):
+                    # NEW: Add to topic queue so Pinterest worker can pin it
+                    new_queue_entry = {
+                        "topic": topic["topic"],
+                        "intent": "trend",
+                        "wp_status": "done",
+                        "wp_url": state.get("last_published_url", ""),
+                        "pin_count": 0,
+                        "priority": 20,
+                        "source": "Auto-Pilot",
+                        "published_at": datetime.utcnow().isoformat()
+                    }
+                    queue.append(new_queue_entry)
+                    _save_queue(queue)
+                    
                     published_count += 1
                     time.sleep(10)
             conn.close()

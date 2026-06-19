@@ -455,6 +455,8 @@ def _try_kolors(prompt, output_path):
                 img_data = requests.get(img_url).content
                 with open(output_path, "wb") as f: f.write(img_data)
                 return True
+        else:
+            print(f"DEBUG: Kolors API error: {response.status_code} - {response.text}")
     except Exception as e:
         print(f"DEBUG: Kolors fallback failed: {e}")
     return False
