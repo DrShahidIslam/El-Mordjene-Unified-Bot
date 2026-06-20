@@ -965,12 +965,12 @@
   {
     "topic": "Eggplant Parmesan Recipe",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-eggplant-parmesan-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-20T21:00:39.421377"
   },
   {
     "topic": "Quinoa Recipes Healthy",
