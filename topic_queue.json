@@ -985,12 +985,12 @@
   {
     "topic": "Blueberry Muffins Recipe",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-bakery-style-blueberry-muffins-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-21T21:01:29.960656"
   },
   {
     "topic": "Coffee Cake Recipe",
