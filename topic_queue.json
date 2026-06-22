@@ -597,7 +597,7 @@
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/",
-    "pin_count": 0,
+    "pin_count": 3,
     "priority": 20,
     "source": "manual_recovery",
     "published_at": "2026-06-19T11:12:48.549465"
@@ -607,7 +607,7 @@
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/what-is-el-mordjene/",
-    "pin_count": 0,
+    "pin_count": 3,
     "priority": 20,
     "source": "manual_recovery",
     "published_at": "2026-06-19T11:12:48.549465"
@@ -617,7 +617,7 @@
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/why-is-el-mordjene-banned/",
-    "pin_count": 0,
+    "pin_count": 3,
     "priority": 20,
     "source": "manual_recovery",
     "published_at": "2026-06-19T11:12:48.549465"
@@ -627,7 +627,7 @@
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/el-mordjene-ingredients/",
-    "pin_count": 0,
+    "pin_count": 3,
     "priority": 20,
     "source": "manual_recovery",
     "published_at": "2026-06-19T11:12:48.549465"
@@ -637,7 +637,7 @@
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/how-to-make-el-mordjene-spread/",
-    "pin_count": 0,
+    "pin_count": 3,
     "priority": 20,
     "source": "manual_recovery",
     "published_at": "2026-06-19T11:12:48.549465"
@@ -647,7 +647,7 @@
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/cebon/",
-    "pin_count": 0,
+    "pin_count": 2,
     "priority": 20,
     "source": "manual_recovery",
     "published_at": "2026-06-19T11:12:48.549465"
@@ -925,72 +925,72 @@
   {
     "topic": "Grill Recipes Dinner",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/herb-crusted-grilled-lamb-chops/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-19T11:21:39.223420"
   },
   {
     "topic": "Donuts Recipe Easy",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/donuts-recipe-easy/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-19T11:57:20.177568"
   },
   {
     "topic": "Salsa Recipes Homemade",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/salsa-recipes-homemade/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-19T20:59:03.625834"
   },
   {
     "topic": "Tostadas Recipes",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/authentic-tostadas-recipes/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-20T10:24:39.899098"
   },
   {
     "topic": "Eggplant Parmesan Recipe",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-eggplant-parmesan-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-20T21:00:39.421377"
   },
   {
     "topic": "Quinoa Recipes Healthy",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/nutritious-quinoa-salad-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-21T10:57:45.567368"
   },
   {
     "topic": "Blueberry Muffins Recipe",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-bakery-style-blueberry-muffins-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-21T21:01:29.960656"
   },
   {
     "topic": "Coffee Cake Recipe",
