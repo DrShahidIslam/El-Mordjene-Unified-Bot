@@ -995,12 +995,12 @@
   {
     "topic": "Coffee Cake Recipe",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-sour-cream-coffee-cake-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-22T06:23:30.943251"
   },
   {
     "topic": "Beets Recipe Ideas",
