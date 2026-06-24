@@ -1075,12 +1075,12 @@
   {
     "topic": "Cake Flavor Ideas",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/creative-cake-flavor-ideas/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-24T21:15:23.447290"
   },
   {
     "topic": "Peach Dessert Recipes",
