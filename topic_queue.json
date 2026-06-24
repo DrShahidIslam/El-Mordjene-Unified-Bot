@@ -1065,12 +1065,12 @@
   {
     "topic": "Summer Cookie Recipes",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/summer-cookie-recipes-lemon-shortbread/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-24T10:38:40.492540"
   },
   {
     "topic": "Cake Flavor Ideas",
