@@ -1095,12 +1095,12 @@
   {
     "topic": "Taziki Sauce Recipe Tzatziki",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/authentic-greek-tzatziki-sauce-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-25T21:20:15.666910"
   },
   {
     "topic": "Homemade Pop Tarts",
