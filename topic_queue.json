@@ -1125,12 +1125,12 @@
   {
     "topic": "Icebox Cake Recipes",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-chocolate-wafer-icebox-cake/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-27T09:54:23.906983"
   },
   {
     "topic": "Blackberry Jam Recipe",
