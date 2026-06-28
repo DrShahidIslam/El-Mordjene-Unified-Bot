@@ -1155,12 +1155,12 @@
   {
     "topic": "Garlic Scapes Recipes",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/garlic-scapes-recipes/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-28T20:48:46.672785"
   },
   {
     "topic": "Brownies Recipe Homemade",
