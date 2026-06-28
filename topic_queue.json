@@ -1145,12 +1145,12 @@
   {
     "topic": "Peach Dessert",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/how-to-choose-best-peach-dessert/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-28T10:18:29.312212"
   },
   {
     "topic": "Garlic Scapes Recipes",
