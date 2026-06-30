@@ -1195,12 +1195,12 @@
   {
     "topic": "Cabbage Recipes Healthy",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/ginger-lime-cabbage-slaw-recipe/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-06-30T21:21:14.099189"
   },
   {
     "topic": "Cod Recipe",
