@@ -1215,12 +1215,12 @@
   {
     "topic": "Ice Cream Recipes For Ice Cream Maker",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-ice-cream-recipes-for-ice-cream-maker/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-07-01T21:14:55.017008"
   },
   {
     "topic": "Dill Pickle Recipe",
