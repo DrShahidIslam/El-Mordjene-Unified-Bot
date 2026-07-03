@@ -1245,12 +1245,12 @@
   {
     "topic": "Father\u2019S Day Cake",
     "intent": "trend",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/crafting-perfect-fathers-day-cake/",
     "pin_count": 0,
     "priority": 10,
     "source": "Pinterest API (Trends)",
-    "published_at": ""
+    "published_at": "2026-07-03T10:23:39.258832"
   },
   {
     "topic": "Italian Love Cake",
