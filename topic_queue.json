@@ -1291,5 +1291,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-05T10:01:08.192410"
+  },
+  {
+    "topic": "French officers raid importers of banned El Mordjene spread - The Times",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/french-officers-raid-importers-of-banned-el-mordjene-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-05T20:44:31.851159"
   }
 ]
