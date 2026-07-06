@@ -1311,5 +1311,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-06T11:52:32.788916"
+  },
+  {
+    "topic": "EU bans Algerian hazelnut spread after social media uproar - The Arab Weekly",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/eu-ban-algerian-hazelnut-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-06T21:17:33.711040"
   }
 ]
