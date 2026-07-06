@@ -1301,5 +1301,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-05T20:44:31.851159"
+  },
+  {
+    "topic": "El Mordjene: Social media meltdown in France as EU bans popular Algerian spread - Middle East Eye",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-the-eu-import-ban-on-el-mordjene-spread/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-06T11:52:32.788916"
   }
 ]
