@@ -1351,5 +1351,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-08T10:02:49.412484"
+  },
+  {
+    "topic": "EU Bans Algerian Spread El Mordjene Amid Social Media Frenzy - Morocco World News",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-eu-ban-algerian-spread-el-mordjene/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-08T20:52:31.887213"
   }
 ]
