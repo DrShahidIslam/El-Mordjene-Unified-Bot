@@ -1371,5 +1371,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-09T10:42:42.066985"
+  },
+  {
+    "topic": "EU bans Algeria\u2019s popular El Mordjene spread over dairy compliance failures - Dairy Business Middle East & Africa",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/eu-ban-el-mordjene-spread-dairy-compliance/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-09T21:09:05.856290"
   }
 ]
