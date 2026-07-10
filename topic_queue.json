@@ -1381,5 +1381,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-09T21:09:05.856290"
+  },
+  {
+    "topic": "Frustration grows in France over El Mordjene chocolate spread ban - Roya News",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-el-mordjene-spread-import-ban/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-10T10:41:46.997939"
   }
 ]
