@@ -1401,5 +1401,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-11T09:12:55.832536"
+  },
+  {
+    "topic": "Banned in the EU: Craze for Algerian hazelnut spread hits Luxembourg - RTL Today",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/banned-algerian-hazelnut-spread-luxembourg-explained/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-11T20:36:03.585232"
   }
 ]
