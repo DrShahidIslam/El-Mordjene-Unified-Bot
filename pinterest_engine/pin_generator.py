@@ -1012,7 +1012,7 @@ def run_pin_worker():
     """Pick a topic from queue that needs pins (1:3 ratio) and publish 1 pin."""
     queue = _load_queue()
     # Filter: WP is done and needs more pins
-    target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 3), None)
+    target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 1), None)
     
     if not target:
         print("No topics in queue waiting for pins.")
@@ -1027,7 +1027,7 @@ def run_pin_worker():
     description = f"Check out this amazing {title} recipe and guide on el-mordjene.info!"
     pin_index = target.get("pin_count", 0)
     
-    print(f"--- PIN WORKER: Processing '{title}' (Pin {pin_index + 1}/3) ---")
+    print(f"--- PIN WORKER: Processing '{title}' (Pin {pin_index + 1}/1) ---")
     
     # Rotate angles based on which pin we are on
     angles = [
