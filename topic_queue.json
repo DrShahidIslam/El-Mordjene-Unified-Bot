@@ -1411,5 +1411,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-07-11T20:36:03.585232"
+  },
+  {
+    "topic": "El Mordjene: The Algerian Spread Taking France by Storm - \u062f\u0632\u0627\u064a\u0631 \u062a\u0648\u0628",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-algerian-spread-trend-analysis/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-07-12T09:39:36.231302"
   }
 ]
