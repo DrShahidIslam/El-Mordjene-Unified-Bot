@@ -29,7 +29,7 @@ PINTEREST_API_BASE = "https://api.pinterest.com/v5"
 
 # Priority: Load token from dashboard OAuth first
 PINTEREST_ACCESS_TOKEN = os.getenv("PINTEREST_ACCESS_TOKEN", "").strip()
-token_file = root_dir / "pinterest_token.json"
+token_file = root_dir / "pinterest_auth.json"
 if token_file.exists():
     try:
         with open(token_file, "r") as f:
@@ -924,7 +924,7 @@ def refresh_pinterest_token():
             # Save the new token data to file
             with open(token_file, "w") as f:
                 json.dump(data, f, indent=2)
-            print("   [Pinterest API] Successfully refreshed token and saved to pinterest_token.json")
+            print("   [Pinterest API] Successfully refreshed token and saved to pinterest_auth.json")
             return True
         else:
             print(f"   [Pinterest API] Failed to refresh token: {response.status_code} - {response.text}")
