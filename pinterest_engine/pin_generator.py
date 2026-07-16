@@ -854,7 +854,9 @@ def pin_request(method, endpoint, **kwargs):
     try:
         if method == "GET": return pin_session.get(url, **kwargs)
         return pin_session.post(url, **kwargs)
-    except: return None
+    except Exception as e:
+        print(f"   [Pinterest API] Request Exception: {e}", flush=True)
+        return None
 
 def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=None, retry=True):
     if MOCK_MODE: return True
@@ -873,17 +875,17 @@ def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=N
     headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}", "Content-Type": "application/json"}
     res = pin_request("POST", "/pins", headers=headers, json=payload, timeout=60)
     
-    if res and res.status_code in (200, 201):
+    if res is not None and res.status_code in (200, 201):
         return True
-    elif res and res.status_code == 401 and retry:
+    elif res is not None and res.status_code == 401 and retry:
         print("   [Pinterest API] Token expired (401). Attempting automatic refresh...", flush=True)
         if refresh_pinterest_token():
             return publish_pin(image_path, title, description, bridge_url, board_id, alt_text, retry=False)
         else:
             return False
     else:
-        error_msg = res.text if res else "No response"
-        status_code = res.status_code if res else "N/A"
+        error_msg = res.text if res is not None else "No response"
+        status_code = res.status_code if res is not None else "N/A"
         print(f"   [Pinterest API] ERROR Publishing Pin: HTTP {status_code} - {error_msg}", flush=True)
         return False
 
@@ -935,7 +937,7 @@ def get_board_id(board_name):
     if not PINTEREST_ACCESS_TOKEN: return None
     headers = {"Authorization": f"Bearer {PINTEREST_ACCESS_TOKEN}"}
     res = pin_request("GET", "/boards", headers=headers)
-    if res and res.status_code == 200:
+    if res is not None and res.status_code == 200:
         for b in res.json().get("items", []):
             if b.get("name", "").lower().strip() == board_name.lower().strip():
                 return b.get("id")
