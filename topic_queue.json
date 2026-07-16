@@ -79,12 +79,13 @@
   {
     "topic": "raspberry recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-raspberry-frangipane-tart/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-16T09:56:29.468371"
   },
   {
     "topic": "peach jam recipe",
