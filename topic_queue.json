@@ -134,12 +134,13 @@
   {
     "topic": "cherry recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-cherry-almond-clafoutis-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-17T09:42:34.256309"
   },
   {
     "topic": "baked zucchini recipes",
