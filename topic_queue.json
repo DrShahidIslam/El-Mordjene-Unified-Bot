@@ -145,12 +145,13 @@
   {
     "topic": "baked zucchini recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/oven-baked-zucchini-recipes/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-18T09:13:51.357186"
   },
   {
     "topic": "basil recipes",
