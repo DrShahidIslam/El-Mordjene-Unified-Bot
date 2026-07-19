@@ -167,12 +167,13 @@
   {
     "topic": "watermelon recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/refreshing-watermelon-feta-salad-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-19T20:35:22.085482"
   },
   {
     "topic": "bread and butter pickle recipe",
