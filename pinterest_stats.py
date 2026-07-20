@@ -9,21 +9,20 @@ load_dotenv()
 
 def get_pinterest_stats():
     token = os.getenv("PINTEREST_ACCESS_TOKEN")
+    # Priority: Load token from file first if available
+    root_dir = Path(__file__).parent
+    token_file = root_dir / "pinterest_auth.json"
+    if token_file.exists():
+        try:
+            with open(token_file, "r") as f:
+                token_data = json.load(f)
+                token = token_data.get("access_token", token)
+        except:
+            pass
+    
     if not token:
-        # Check for token file as in pin_generator.py
-        root_dir = Path(__file__).parent
-        token_file = root_dir / "pinterest_token.json"
-        if token_file.exists():
-            try:
-                with open(token_file, "r") as f:
-                    token_data = json.load(f)
-                    token = token_data.get("access_token")
-            except:
-                pass
-        
-        if not token:
-            print("Error: PINTEREST_ACCESS_TOKEN not found in .env or pinterest_token.json")
-            return
+        print("Error: PINTEREST_ACCESS_TOKEN not found in .env or pinterest_auth.json")
+        return
 
     headers = {
         "Authorization": f"Bearer {token}",
