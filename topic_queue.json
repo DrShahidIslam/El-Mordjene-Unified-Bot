@@ -189,12 +189,13 @@
   {
     "topic": "lobster cake",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-the-lobster-cake/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-20T10:36:47.425527"
   },
   {
     "topic": "fresh peach recipes",
