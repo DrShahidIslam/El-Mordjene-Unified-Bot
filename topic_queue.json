@@ -222,12 +222,13 @@
   {
     "topic": "fresh peach cobbler recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/fresh-peach-cobbler-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-21T20:55:50.420114"
   },
   {
     "topic": "peach salsa recipe",
