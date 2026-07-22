@@ -244,22 +244,25 @@
   {
     "topic": "watermelon feta mint salad",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/refreshing-watermelon-feta-salad-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-22T20:50:43.740623",
+    "note": "Auto-linked to existing: Refreshing Watermelon Feta Salad with Mint"
   },
   {
     "topic": "peach desserts",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/art-of-peach-desserts-trends/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-22T20:51:25.812256"
   },
   {
     "topic": "basil salt recipe",
