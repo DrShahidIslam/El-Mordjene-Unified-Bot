@@ -278,12 +278,13 @@
   {
     "topic": "zuchinis bread recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-zucchini-bread-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-23T20:48:14.577210"
   },
   {
     "topic": "peach crisp recipe",
