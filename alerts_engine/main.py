@@ -110,7 +110,7 @@ def auto_pilot_process(topic, state):
     try:
         source_url = topic.get("top_url", "")
         webp_path, jpg_path = generate_featured_image(article["title"], source_url=source_url)
-        image_path = jpg_path or webp_path
+        image_path = webp_path or jpg_path
     except Exception as e:
         logger.warning(f"Auto-Pilot Image failure: {e}")
 

@@ -89,12 +89,48 @@ def get_pinterest_stats():
         print(f"Total Outbound Clicks: {total_outbound_clicks}")
         print(f"Total Saves:           {total_saves}")
         
-        # Calculate CTRs
+        # Calculate CTRs and Save Ratios
         pin_ctr = (total_pin_clicks / total_impressions * 100) if total_impressions > 0 else 0.0
         out_ctr = (total_outbound_clicks / total_impressions * 100) if total_impressions > 0 else 0.0
+        save_rate = (total_saves / total_impressions * 100) if total_impressions > 0 else 0.0
+        save_to_click = (total_saves / total_pin_clicks * 100) if total_pin_clicks > 0 else 0.0
+        
         print(f"Pin Click CTR:         {pin_ctr:.2f}%")
         print(f"Outbound Click CTR:    {out_ctr:.2f}%")
+        print(f"Save Rate:             {save_rate:.2f}% {'[LOW - Target >1.0%]' if save_rate < 1.0 else '[HEALTHY]'}")
+        print(f"Save-to-Click Ratio:   {save_to_click:.2f}%")
         print(f"Active Days with Activity: {active_days} / {len(daily_data)}")
+        
+        # Save snapshot to pinterest_history.json
+        history_path = root_dir / "pinterest_history.json"
+        history = []
+        if history_path.exists():
+            try:
+                with open(history_path, "r") as hf:
+                    history = json.load(hf)
+            except: history = []
+        
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        snapshot = {
+            "date": today_str,
+            "start_date": start_date,
+            "end_date": end_date,
+            "impressions": total_impressions,
+            "pin_clicks": total_pin_clicks,
+            "outbound_clicks": total_outbound_clicks,
+            "saves": total_saves,
+            "pin_ctr": round(pin_ctr, 2),
+            "outbound_ctr": round(out_ctr, 2),
+            "save_rate": round(save_rate, 2),
+            "save_to_click_ratio": round(save_to_click, 2)
+        }
+        
+        # Append or update today's snapshot
+        history = [h for h in history if h.get("date") != today_str]
+        history.append(snapshot)
+        with open(history_path, "w") as hf:
+            json.dump(history, hf, indent=2)
+        print(f"Stats snapshot saved to {history_path.name}")
     else:
         print(f"Error fetching user analytics: {res.status_code} - {res.text}")
 

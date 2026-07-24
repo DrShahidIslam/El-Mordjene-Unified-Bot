@@ -71,26 +71,27 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
         secondary_angle_focus = "An overhead flat-lay of ingredients and preparation layout."
 
     prompt = f"""
-    You are a viral Pinterest marketing expert specializing in high-CTR food photography. Your task is to generate high-performance content for Pin #{pin_index + 1} about: "{topic}".
+    You are a top-tier viral Pinterest marketing expert for high-performing food brands like Tasty, Delish, and Half Baked Harvest. Your task is to generate high-performance content for Pin #{pin_index + 1} about: "{topic}".
     
     Adhere strictly to these targeted angle guidelines for this pin variation:
     {angle_instruction}
     
-    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that people search for in the food/recipe niche (e.g., 'easy dessert recipes', 'viral food trends').
-    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword, followed by an irresistible curiosity hook (e.g. 'Easy Crepes Recipe: The Secret To Ultra-Fluffy Crepes').
-    3. Create an SEO-optimized Description (250-400 chars) that naturally weaves in sensory food adjectives (e.g., glistening, velvety, crispy, melt-in-your-mouth), incorporates your keywords naturally, and ends with a definitive high-intent Call-To-Action (e.g. 'Click to view the full printable recipe and chef tips on our blog!').
-    4. Create an accessibility and search-optimized Alt Text (150-300 chars) that strictly describes the visual food details, glistening textures, garnishes, and aesthetic presentation of the dish (for Pinterest & Google Image Search crawlability). Do not include promotion or call to action in the alt text.
-    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars) matching the Visual Focus described above. Focus on Pinterest-viral aesthetics: macro close-ups, vibrant high-contrast colors, and dramatic professional lighting (softbox, rim light, volumetric shadows). Specify professional camera gear (Sony A7R IV, 90mm f/2.8 Macro lens), intricate textures (glistening glazes, crispy caramelized edges, creamy interiors), and an artfully styled composition with scattered garnishes. DO NOT mention people, hands, text, or graphics. The food must be the absolute hero.
-    6. Create a secondary complementary Image Prompt (400-600 chars) focusing on: "{secondary_angle_focus}". Apply the same hyper-realistic styling rules. This will be used to build a two-image collage.
+    Reverse-engineering rules from top competitor viral pins:
+    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that real users type into the Pinterest search bar (e.g., 'easy dinner recipes', 'viral food trends', 'air fryer snacks').
+    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword, followed by a competitor viral curiosity hook (e.g. 'Easy Crepes Recipe: Better Than Bakery Secret!').
+    3. Create an SEO-optimized Description (250-400 chars) that weaves sensory food adjectives (glistening, velvety, crispy, melt-in-your-mouth), incorporates keywords naturally, and ends with an explicit dual SAVE + CLICK CTA: "📌 SAVE THIS RECIPE to your board for later, then tap through to view full printable ingredients & chef tips!"
+    4. Create an accessibility and search-optimized Alt Text (150-300 chars) strictly describing visual food details, textures, and presentation.
+    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars) for professional Sony A7R IV 90mm Macro food photography.
+    6. Create a secondary complementary Image Prompt (400-600 chars) focusing on: "{secondary_angle_focus}".
     
     Return ONLY valid JSON:
     {{
       "annotated_keywords": ["keyword1", "keyword2", "keyword3"],
       "title": "Annotated Keyword: Sensation Curiosity Gap Hook",
-      "description": "Sensory-rich description ending in a clear high-intent CTA...",
+      "description": "Sensory-rich description ending in explicit Save + Click CTA...",
       "alt_text": "Descriptive visual alt text of the glistening dish texture...",
       "recipe_name": "CLEAN RECIPE NAME (max 4 words, all caps, e.g. DUBAI CHOCOLATE BAR)",
-      "hook": "CURIOSITY OR DESIRE HOOK (max 6 words, all caps, e.g. MELT-IN-YOUR-MOUTH PERFECTION)",
+      "hook": "VIRAL HOOK (max 6 words, all caps, e.g. BETTER THAN BAKERY SECRET!)",
       "image_prompt": "Primary visual focus photography prompt...",
       "secondary_image_prompt": "Secondary visual focus photography prompt...",
       "hashtags": "#viral #recipe #food..."
@@ -376,11 +377,11 @@ DEEP_LINK_JS = """
 # --- Niche CTA Options ---
 
 CTA_OPTIONS = {
-    "viral": ["Click For The Secret ➔", "Tap To See The Trend", "Get The Full Guide Now", "Find Out How Here"],
-    "healthy": ["Get The Healthy Recipe ➔", "Eat Better Today", "Clean Eating Guide", "Healthy & Delicious"],
-    "dinner": ["What's For Dinner? ➔", "Easy Weeknight Meal", "Family Favorite Recipe", "Cook This Tonight"],
-    "dessert": ["Sweet Tooth Heaven ➔", "Decadent & Delicious", "The Best Dessert Ever", "Try This Treat"],
-    "recipe": ["Click For Full Recipe ➔", "Step-By-Step Guide", "Master This Dish", "The Only Recipe You Need"]
+    "viral": ["SAVE THIS RECIPE 📌", "Tap To See The Trend", "SAVE For Later! 📌", "Find Out How Here"],
+    "healthy": ["SAVE THIS RECIPE 📌", "Eat Better Today", "SAVE For Meal Prep! 📌", "Healthy & Easy"],
+    "dinner": ["SAVE FOR DINNER 📌", "Easy Weeknight Meal", "SAVE For Tonight! 📌", "Cook This Tonight"],
+    "dessert": ["SAVE THIS RECIPE 📌", "Decadent & Delicious", "SAVE For Dessert Night! 📌", "Try This Treat"],
+    "recipe": ["SAVE THIS RECIPE 📌", "Step-By-Step Guide", "SAVE For Weekend Cooking! 📌", "Master This Dish"]
 }
 
 # --- Multi-Backend Generation ---
@@ -663,18 +664,33 @@ def create_split_screen_layout(image_path, title, output_path, board_type="recip
             draw.text(((target_w - tw) / 2, y_cursor), line, font=hook_font, fill=(255, 220, 175, 255))
             y_cursor += hook_line_h
 
+    # Draw Save Pill Badge overlay on top-right of the image
+    save_badge_text = "📌 SAVE FOR LATER"
+    save_badge_w = draw.textlength(save_badge_text, font=badge_font)
+    pill_px, pill_py = 18, 8
+    pill_x2 = target_w - 30
+    pill_x1 = pill_x2 - (save_badge_w + pill_px * 2)
+    pill_y1 = 30
+    pill_y2 = pill_y1 + (font_badge_size + pill_py * 2)
+    draw.rounded_rectangle([(pill_x1, pill_y1), (pill_x2, pill_y2)], radius=15, fill=(143, 31, 40, 230))
+    draw.text((pill_x1 + pill_px, pill_y1 + pill_py), save_badge_text, font=badge_font, fill=(255, 255, 255, 255))
+
     # Convert canvas back to RGB and save
     canvas.convert("RGB").save(output_path, "JPEG", quality=95)
     print(f"   [Layout] Split-Screen Vertical card compiled successfully at: {output_path}")
     return True
 
 def design_pin_premium(image_path, title, output_path, board_type="recipe", secondary_image_path=None, hook_text=None):
+    if not os.path.exists(image_path):
+        print(f"   [Layout Error] Image file not found: {image_path}")
+        return False
+
     force_split = os.getenv("FORCE_SPLIT_SCREEN", "true").lower() == "true"
     
     # If forced, use split screen format
     if force_split:
         if create_split_screen_layout(image_path, title, output_path, board_type, secondary_image_path, hook_text=hook_text):
-            return
+            return True
             
     img = Image.open(image_path).convert("RGBA")
     width, height = img.size
@@ -864,10 +880,14 @@ def publish_pin(image_path, title, description, bridge_url, board_id, alt_text=N
     if not PINTEREST_ACCESS_TOKEN: 
         print("   [Pinterest API] ERROR: No PINTEREST_ACCESS_TOKEN found.", flush=True)
         return False
+    
+    if not board_id:
+        board_id = os.getenv("PINTEREST_BOARD_RECIPES") or os.getenv("PINTEREST_BOARD_ID") or "976859044115152343"
+
     with open(image_path, "rb") as f: img_b64 = base64.b64encode(f.read()).decode()
     if not alt_text: alt_text = title
     payload = {
-        "board_id": board_id, "title": title[:100], "description": description[:500],
+        "board_id": str(board_id), "title": title[:100], "description": description[:500],
         "link": bridge_url,
         "alt_text": alt_text[:500],
         "media_source": {"source_type": "image_base64", "content_type": "image/jpeg", "data": img_b64}

@@ -1,0 +1,15 @@
+[
+  {
+    "date": "2026-07-24",
+    "start_date": "2026-06-22",
+    "end_date": "2026-07-22",
+    "impressions": 3309,
+    "pin_clicks": 94,
+    "outbound_clicks": 49,
+    "saves": 15,
+    "pin_ctr": 2.84,
+    "outbound_ctr": 1.48,
+    "save_rate": 0.45,
+    "save_to_click_ratio": 15.96
+  }
+]

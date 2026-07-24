@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="meta-title">El Mordjene - Discover Premium Recipes</title>
     
-    <!-- SEO Meta -->
-    <meta name="description" content="Discover premium viral recipes, curated directly from our food trends database.">
-    <meta name="robots" content="noindex, follow">
+    <!-- SEO & Open Graph Rich Pin Meta -->
+    <meta name="description" id="meta-desc" content="Discover premium viral recipes, curated directly from our food trends database.">
+    <meta property="og:title" id="og-title" content="El Mordjene - Discover Premium Recipes">
+    <meta property="og:description" id="og-desc" content="Discover premium viral recipes, curated directly from our food trends database.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" id="og-url" content="https://drshahidislam.github.io/Food-Trends-Blog/bridge_page/">
+    <meta property="og:image" id="og-image" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
 
     <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -149,11 +155,39 @@
             background: linear-gradient(135deg, var(--accent) 0%, #e68a4d 100%);
         }
 
+        .btn-secondary {
+            background: rgba(143, 31, 40, 0.1);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(143, 31, 40, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .recipe-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
         /* Lead Capture Section */
         .email-capture {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
 
         .email-capture h4 {
@@ -253,9 +287,20 @@
             <img id="recipe-img" class="recipe-thumb" src="" alt="Recipe Preview">
             <div class="trend-badge">VERIFIED MATCH</div>
             <h2 id="recipe-title">Loading...</h2>
+            
+            <div class="recipe-stats">
+                <span>⚡ 15 MIN PREP</span>
+                <span>•</span>
+                <span>EASY</span>
+                <span>•</span>
+                <span>★ 4.9 (120+)</span>
+            </div>
+
             <div id="recipe-excerpt" class="excerpt"></div>
             
-            <a href="https://el-mordjene.info" id="recipe-btn" class="btn">VIEW FULL RECIPE</a>
+            <!-- Dual Action CTAs -->
+            <a href="https://el-mordjene.info" id="recipe-btn" class="btn">GET PRINTABLE INGREDIENTS & RECIPE ➔</a>
+            <button type="button" id="save-pin-btn" onclick="saveToPinterest()" class="btn btn-secondary">📌 SAVE THIS RECIPE TO PINTEREST</button>
 
             <!-- Soft Email Lead Capture -->
             <div class="email-capture">
@@ -274,6 +319,19 @@
     </div>
 
     <script>
+        let currentRecipeTitle = "";
+        let currentRecipeImg = "";
+        let currentRecipeUrl = "https://el-mordjene.info";
+
+        function saveToPinterest() {
+            const pageUrl = encodeURIComponent(window.location.href);
+            const mediaUrl = encodeURIComponent(currentRecipeImg);
+            const description = encodeURIComponent(`📌 ${currentRecipeTitle} - Save this amazing viral recipe for later!`);
+            
+            const pUrl = `https://www.pinterest.com/pin/create/button/?url=${pageUrl}&media=${mediaUrl}&description=${description}`;
+            window.open(pUrl, '_blank', 'width=750,height=600');
+        }
+
         async function fetchRecipe() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
@@ -281,6 +339,15 @@
             const loader = document.getElementById('loader');
             const content = document.getElementById('post-content');
             
+            // Check Session Storage cache for instant zero-latency load
+            if(id && sessionStorage.getItem('recipe_' + id)) {
+                try {
+                    const cached = JSON.parse(sessionStorage.getItem('recipe_' + id));
+                    renderRecipe(cached);
+                    return;
+                } catch(e) {}
+            }
+
             // Fallback immediately if no ID is passed
             if(!id) {
                 document.getElementById('recipe-title').innerText = "Explore Premium Food Trends";
@@ -299,38 +366,29 @@
                     if(posts.length > 0) {
                         const post = posts[0];
                         
-                        // Populate Text & Link
-                        document.getElementById('recipe-title').innerHTML = post.title.rendered;
-                        document.getElementById('meta-title').innerText = post.title.rendered + " - El Mordjene";
-                        
-                        // Clean up excerpt (remove HTML tags)
-                        let rawExcerpt = post.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "");
-                        document.getElementById('recipe-excerpt').innerText = rawExcerpt;
-                        
-                        document.getElementById('recipe-btn').href = post.link;
-
+                        let imgUrl = "";
                         // Fetch Featured Image
                         if(post.featured_media) {
                             try {
                                 const imgRes = await fetch(`https://el-mordjene.info/wp-json/wp/v2/media/${post.featured_media}`);
                                 if(imgRes.ok) {
                                     const imgData = await imgRes.json();
-                                    const imgUrl = imgData.source_url;
-                                    
-                                    const imgEl = document.getElementById('recipe-img');
-                                    imgEl.src = imgUrl;
-                                    imgEl.style.display = 'block';
-                                    
-                                    const backdrop = document.getElementById('backdrop');
-                                    backdrop.style.backgroundImage = `url('${imgUrl}')`;
-                                    backdrop.style.opacity = '0.3';
+                                    imgUrl = imgData.source_url;
                                 }
                             } catch(e) { console.error("Image fetch failed", e); }
                         }
 
-                        // Reveal Content
-                        loader.style.display = 'none';
-                        content.style.display = 'block';
+                        let rawExcerpt = post.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "");
+                        const recipeData = {
+                            title: post.title.rendered,
+                            excerpt: rawExcerpt,
+                            link: post.link,
+                            image: imgUrl
+                        };
+
+                        // Cache for instant load next time
+                        sessionStorage.setItem('recipe_' + id, JSON.stringify(recipeData));
+                        renderRecipe(recipeData);
                         return;
                     }
                 }
@@ -340,8 +398,38 @@
 
             // Error Fallback
             document.getElementById('recipe-title').innerText = "Recipe Found!";
-            document.getElementById('recipe-excerpt').innerText = "Click below to view the full details and instructions on our main site.";
+            document.getElementById('recipe-excerpt').innerText = "Click below to view full details, ingredients, and instructions on our main blog.";
             document.getElementById('recipe-btn').href = "https://el-mordjene.info";
+            loader.style.display = 'none';
+            content.style.display = 'block';
+        }
+
+        function renderRecipe(data) {
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('post-content');
+
+            currentRecipeTitle = data.title;
+            currentRecipeUrl = data.link;
+            currentRecipeImg = data.image;
+
+            document.getElementById('recipe-title').innerHTML = data.title;
+            document.getElementById('meta-title').innerText = data.title + " - El Mordjene";
+            document.getElementById('og-title').setAttribute("content", data.title + " - El Mordjene");
+            document.getElementById('recipe-excerpt').innerText = data.excerpt;
+            document.getElementById('og-desc').setAttribute("content", data.excerpt);
+            document.getElementById('recipe-btn').href = data.link;
+
+            if(data.image) {
+                const imgEl = document.getElementById('recipe-img');
+                imgEl.src = data.image;
+                imgEl.style.display = 'block';
+                document.getElementById('og-image').setAttribute("content", data.image);
+                
+                const backdrop = document.getElementById('backdrop');
+                backdrop.style.backgroundImage = `url('${data.image}')`;
+                backdrop.style.opacity = '0.3';
+            }
+
             loader.style.display = 'none';
             content.style.display = 'block';
         }

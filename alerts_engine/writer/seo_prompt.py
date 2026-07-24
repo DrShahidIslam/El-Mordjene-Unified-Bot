@@ -215,9 +215,11 @@ STYLE REQUIREMENTS:
 - Prefer concrete specifics over generic adjectives. Every major section should add new information.
 
 RECIPE ARTICLE RULES (ONLY IF THIS IS A RECIPE):
-- Use a full recipe structure with clear sections for Ingredients and Instructions.
-- Present ingredients as a <ul><li> list, and instructions as an <ol><li> list.
-- Include a concise "Recipe Snapshot" section with yield and prep/cook/total time.
+- Include a prominent 'Jump to Recipe 🍳' top button right under the intro paragraph: `<a href="#recipe-card" style="display:inline-block; background:#8f1f28; color:white; padding:10px 22px; border-radius:50px; text-decoration:none; font-weight:bold; margin:15px 0;">Jump to Recipe 🍳</a>`
+- Use a full recipe structure wrapped in `<div id="recipe-card" style="background:#fffaf5; border:2px solid #8f1f28; border-radius:16px; padding:25px; margin:30px 0;">`.
+- Present ingredients as a <ul><li> list with checkboxes, and instructions as a numbered <ol><li> list.
+- Include a concise "Recipe Snapshot" section with yield, prep time, cook time, and total time.
+- Include a complete Schema.org JSON-LD `<script type="application/ld+json">` block inside the HTML output containing `@type`: `Recipe`, `name`, `prepTime`, `cookTime`, `recipeYield`, `recipeIngredient`, and `recipeInstructions` array for Google Rich Recipe Results and Pinterest Rich Pins!
 - Provide substitutions, variations, and storage guidance when supported by sources.
 - Do not invent nutrition facts or timings if they are not supported by sources.
 - Category MUST be "Recipes" (or "Recettes" if the output language is French).
