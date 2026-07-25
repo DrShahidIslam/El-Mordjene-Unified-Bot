@@ -31,12 +31,11 @@ jobs:
 
       - name: Run WordPress Publisher
         env:
-          WP_BASE_URL: ${{ secrets.WP_URL }}
+          WP_BASE_URL: ${{ secrets.WP_BASE_URL || secrets.WP_URL }}
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
-          WP_APP_PASSWORD: ${{ secrets.WP_PASSWORD }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD || secrets.WP_PASSWORD }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
           HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
-          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           POSTS_PER_RUN: 1
@@ -46,7 +45,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add topic_queue.json alerts_engine/published_posts.json
+          git add topic_queue.json alerts_engine/published_posts.json || true
           git commit -m "Automation: Update queue and published posts [skip ci]" || echo "No changes to commit"
           git pull --rebase origin main
-          git push origin main
+          git push origin main || echo "Git push skipped or non-fatal"
