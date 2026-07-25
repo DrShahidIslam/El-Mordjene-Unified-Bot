@@ -355,12 +355,13 @@
   {
     "topic": "cornbread recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-golden-cornbread-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-25T18:11:22.995697"
   },
   {
     "topic": "strawberry pretzel dessert",
