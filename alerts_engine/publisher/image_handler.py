@@ -248,58 +248,7 @@ def _try_source_image(source_url, output_path_webp, output_path_jpg):
     return None, None
 
 
-def _try_kolors_image(article_title, output_path_webp, output_path_jpg):
-    """Generate image via SiliconFlow Kolors API."""
-    api_key = os.getenv("SILICONFLOW_API_KEY")
-    if not api_key:
-        return None, None
-        
-    try:
-        logger.info(f"    Trying Kolors (SiliconFlow): {article_title[:40]}...")
-        prompt = build_image_prompt(article_title)
-        
-        payload = {
-            "model": os.getenv("SILICONFLOW_MODEL", "Kwai-Kolors/Kolors"),
-            "prompt": f"{prompt}, hyper-realistic food photography, professional studio lighting, 8k, highly detailed textures, masterpiece, high quality, Sony A7R IV, 90mm Macro, vibrant colors",
 
-            "negative_prompt": "text, watermark, low quality, blurry",
-            "image_size": "1024x1024",
-            "batch_size": 1,
-            "num_inference_steps": 25
-        }
-        
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
-        }
-        
-        response = requests.post(
-            "https://api.siliconflow.cn/v1/images/generations",
-            headers=headers,
-            json=payload,
-            timeout=60
-        )
-        
-        if response.status_code == 200:
-            data = response.json()
-            image_url = data.get("images", [{}])[0].get("url")
-            if not image_url:
-                # Some versions of the API return 'data' list
-                image_url = data.get("data", [{}])[0].get("url")
-                
-            if image_url:
-                img_res = requests.get(image_url, timeout=30)
-                image_bytes = img_res.content
-                result_webp = _compress_to_webp(image_bytes, output_path_webp)
-                result_jpg = _compress_to_jpg(image_bytes, output_path_jpg)
-                if result_webp and result_jpg:
-                    logger.info("    Images ready from Kolors")
-                    return result_webp, result_jpg
-        else:
-            logger.warning(f"    Kolors API error: {response.text}")
-    except Exception as e:
-        logger.warning(f"    Kolors failed: {e}")
-    return None, None
 
 
 def _try_pollinations_image(article_title, output_path_webp, output_path_jpg):
@@ -437,27 +386,22 @@ def generate_featured_image(article_title, save_dir=None, source_url=None):
 
     logger.info(f"  Generating featured image for: {article_title[:60]}")
 
-    # 1. Hugging Face - WordPress Priority #1
+    # 1. Hugging Face - Priority #1
     webp, jpg = _try_huggingface_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 2. Kolors (SiliconFlow) - WordPress Priority #2
-    webp, jpg = _try_kolors_image(article_title, output_path_webp, output_path_jpg)
-    if webp and jpg:
-        return webp, jpg
-
-    # 3. Cloudflare Workers AI (SDXL) - WordPress Priority #3
+    # 2. Cloudflare Workers AI (SDXL) - Priority #2
     webp, jpg = _try_cloudflare_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 4. Pollinations (Free Fallback) - WordPress Priority #4
+    # 3. Pollinations AI - Priority #3
     webp, jpg = _try_pollinations_image(article_title, output_path_webp, output_path_jpg)
     if webp and jpg:
         return webp, jpg
 
-    # 5. Source article
+    # 4. Source article
     if source_url:
         webp, jpg = _try_source_image(source_url, output_path_webp, output_path_jpg)
         if webp and jpg:

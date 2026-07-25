@@ -23,8 +23,6 @@ env_path = root_dir / ".env"
 load_dotenv(dotenv_path=env_path, override=True)
 
 # API Configurations
-SILICONFLOW_API_URL = "https://api.siliconflow.cn/v1/images/generations"
-SILICONFLOW_MODEL = os.getenv("SILICONFLOW_MODEL", "Kwai-Kolors/Kolors")
 PINTEREST_API_BASE = "https://api.pinterest.com/v5"
 
 # Priority: Load token from dashboard OAuth first
@@ -430,41 +428,9 @@ def _try_cloudflare(prompt, output_path):
         print(f"DEBUG: Cloudflare SDXL failed: {e}")
     return False
 
-def _try_kolors(prompt, output_path):
-    api_key = os.getenv("SILICONFLOW_API_KEY")
-    if not api_key: return False
-    try:
-        print(f"DEBUG: Trying Kolors Fallback...", flush=True)
-        enhanced_prompt = f"{prompt}, professional food photography, commercial quality, hyper-realistic, natural lighting, 1024x1024"
-            
-        payload = {
-            "model": SILICONFLOW_MODEL,
-            "prompt": enhanced_prompt,
-            "image_size": "1024x1024"
-        }
-        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-        response = requests.post(SILICONFLOW_API_URL, headers=headers, json=payload, timeout=60)
-        if response.status_code == 200:
-            resp_json = response.json()
-            img_url = None
-            if "images" in resp_json and resp_json["images"]:
-                img_url = resp_json["images"][0].get("url")
-            elif "data" in resp_json and resp_json["data"]:
-                img_url = resp_json["data"][0].get("url")
-            
-            if img_url:
-                img_data = requests.get(img_url).content
-                with open(output_path, "wb") as f: f.write(img_data)
-                return True
-        else:
-            print(f"DEBUG: Kolors API error: {response.status_code} - {response.text}")
-    except Exception as e:
-        print(f"DEBUG: Kolors fallback failed: {e}")
-    return False
-
 def _try_pollinations(prompt, output_path):
     try:
-        print(f"DEBUG: Trying Pollinations Last Resort...", flush=True)
+        print(f"DEBUG: Trying Pollinations AI...", flush=True)
         encoded = urllib.parse.quote(prompt)
         url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&model=flux&nologo=true&seed={random.randint(1,999999)}"
         res = requests.get(url, timeout=30)
@@ -477,7 +443,6 @@ def _try_pollinations(prompt, output_path):
 
 def generate_image_master(prompt, output_path):
     if _try_huggingface(prompt, output_path): return True
-    if _try_kolors(prompt, output_path): return True
     if _try_cloudflare(prompt, output_path): return True
     if _try_pollinations(prompt, output_path): return True
     return False
