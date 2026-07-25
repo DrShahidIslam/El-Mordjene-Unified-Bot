@@ -17,3 +17,7 @@ agent_state.json
 !bridge_page/discovery/assets/*.png
 !bridge_page/discovery/assets/*.webp
 pinterest_auth.json
+*.json
+!topic_queue.json
+!pinterest_history.json
+!alerts_engine/published_posts.json
