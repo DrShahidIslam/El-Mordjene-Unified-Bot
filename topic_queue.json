@@ -333,12 +333,13 @@
   {
     "topic": "elote corn recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/authentic-elote-corn-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-25T14:28:08.954624"
   },
   {
     "topic": "pina colada recipe",
