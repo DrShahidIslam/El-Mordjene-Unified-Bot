@@ -6,7 +6,7 @@ on:
   workflow_dispatch:      # Manual trigger from GitHub Actions tab
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   index:
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,3 +32,12 @@ jobs:
           GSC_SERVICE_ACCOUNT_KEY: ${{ secrets.GSC_SERVICE_ACCOUNT_KEY }}
           WP_BASE_URL: ${{ secrets.WP_BASE_URL || secrets.WP_URL || 'https://el-mordjene.info' }}
         run: python alerts_engine/gsc_indexer.py
+
+      - name: Commit and Push Indexing State
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add alerts_engine/indexed_state.json || true
+          git commit -m "Automation: Update Google Indexing state [skip ci]" || echo "No state changes to commit"
+          git pull --rebase origin main
+          git push origin main || echo "Git push skipped or non-fatal"
