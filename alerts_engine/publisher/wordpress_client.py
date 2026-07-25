@@ -170,6 +170,9 @@ def create_post(article, featured_image_path=None, status=None):
             "_rank_math_title": article.get("title", ""),
             "_rank_math_description": article.get("meta_description", ""),
             "_rank_math_focus_keyword": article.get("matched_keyword", "") or (article.get("tags") or [""])[0],
+            "_yoast_wpseo_title": article.get("title", ""),
+            "_yoast_wpseo_metadesc": article.get("meta_description", ""),
+            "_yoast_wpseo_focuskw": article.get("matched_keyword", "") or (article.get("tags") or [""])[0],
         }
     }
 

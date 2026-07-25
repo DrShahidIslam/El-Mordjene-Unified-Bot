@@ -200,29 +200,24 @@ INTENT GUIDANCE:
 - Intent: {intent}
 - {_intent_guidance(intent)}
 
-STYLE REQUIREMENTS:
+STYLE & ARCHITECTURE REQUIREMENTS (SEO, AEO, GEO, SILO & PINTEREST):
 - Output clean HTML only for the article body.
-- Do not use <h1> anywhere in the article body. WordPress title is already the only H1.
-- Start visible section headings at <h2> and use <h3> only for subsections.
-- Use natural heading hierarchy with varied section names.
-- Keep paragraphs short and readable.
-- Include one key-takeaways box and one practical tip box.
-- Include one CTA section near the end with wording that matches the topic.
-- Begin with a strong 2-3 sentence hook that matches search intent and gives readers a reason to continue.
-- In the first 120 words, give a direct answer or clear summary before expanding into details.
-- The article body must not repeat the exact title as a visible heading.
-- Cover the topic comprehensively: definition/context, what matters now, practical details, caveats, alternatives or variations, and a concise conclusion.
-- Prefer concrete specifics over generic adjectives. Every major section should add new information.
+- Do not use <h1> anywhere in the article body. WordPress title is the only H1.
+- Heading Hierarchy: Start visible section headings at <h2> and use <h3> only for subsections. Keep keyword density under 0.8%.
+- AEO (ANSWER ENGINE OPTIMIZATION & ALP): Right after the first <h2> heading, provide a 40-60 word concise, factual "Direct Answer Paragraph" (ALP) wrapped in a styled answer box:
+  `<div style="background:#fffaf5; border-left:4px solid #8f1f28; padding:18px 22px; border-radius:10px; margin:20px 0;"><strong>Direct Answer:</strong> [Concise 40-60 word answer paragraph optimized for voice search and AI answer engines]</div>`
+- GEO (GENERATIVE ENGINE OPTIMIZATION): Include at least one responsive HTML comparison table (`<table style="width:100%; border-collapse:collapse; margin:20px 0;">`) comparing measurements, preparation steps, nutritional metrics, or ingredient substitutions to provide high-density factual signals for AI search engines (SearchGPT, Perplexity, Gemini).
+- PINTEREST OPTIMIZATION: 
+  - Place a prominent 'Jump to Recipe 🍳' top button right under the intro paragraph: `<a href="#recipe-card" style="display:inline-block; background:#8f1f28; color:white; padding:12px 24px; border-radius:50px; text-decoration:none; font-weight:bold; margin:15px 0;">Jump to Recipe 🍳</a>`
+  - Include an in-content Pinterest Save Banner midway through the article: `<div style="background:#fff0f0; border:1px dashed #8f1f28; padding:16px; border-radius:12px; margin:25px 0; text-align:center;">📌 <strong>Loved this recipe?</strong> <a href="https://www.pinterest.com/FoodTrendsBlog/" target="_blank" style="color:#8f1f28; font-weight:bold; text-decoration:underline;">Save & Follow on Pinterest</a> for daily viral food trends!</div>`
+  - Wrap the printable recipe box in `<div id="recipe-card" style="background:#fffaf5; border:2px solid #8f1f28; border-radius:16px; padding:25px; margin:30px 0;">`.
+  - Format ingredients as a checkbox list `<ul style="list-style:none; padding-left:0;"><li><label><input type="checkbox"> [Ingredient & Quantity]</label></li></ul>` and instructions as a numbered `<ol><li>` list.
+  - Include a complete Schema.org JSON-LD `<script type="application/ld+json">` block inside the HTML output containing `@type`: `Recipe`, `name`, `prepTime`, `cookTime`, `recipeYield`, `recipeIngredient`, and `recipeInstructions` array for Google Rich Recipe Results and Pinterest Rich Pins!
 
 RECIPE ARTICLE RULES (ONLY IF THIS IS A RECIPE):
-- Include a prominent 'Jump to Recipe 🍳' top button right under the intro paragraph: `<a href="#recipe-card" style="display:inline-block; background:#8f1f28; color:white; padding:10px 22px; border-radius:50px; text-decoration:none; font-weight:bold; margin:15px 0;">Jump to Recipe 🍳</a>`
-- Use a full recipe structure wrapped in `<div id="recipe-card" style="background:#fffaf5; border:2px solid #8f1f28; border-radius:16px; padding:25px; margin:30px 0;">`.
-- Present ingredients as a <ul><li> list with checkboxes, and instructions as a numbered <ol><li> list.
-- Include a concise "Recipe Snapshot" section with yield, prep time, cook time, and total time.
-- Include a complete Schema.org JSON-LD `<script type="application/ld+json">` block inside the HTML output containing `@type`: `Recipe`, `name`, `prepTime`, `cookTime`, `recipeYield`, `recipeIngredient`, and `recipeInstructions` array for Google Rich Recipe Results and Pinterest Rich Pins!
-- Provide substitutions, variations, and storage guidance when supported by sources.
-- Do not invent nutrition facts or timings if they are not supported by sources.
-- Category MUST be "Recipes" (or "Recettes" if the output language is French).
+- Provide substitutions, variations, and storage guidance supported by sources.
+- Do not invent nutrition facts or timings if unsupported by sources.
+- Category MUST be "Recipes" (or "Recettes" if language is French).
 
 SEARCH AND HELPFULNESS REQUIREMENTS:
 - Treat PRIMARY KEYWORD as a guidance signal, not something to force unnaturally.
