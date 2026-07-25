@@ -21,3 +21,4 @@ pinterest_auth.json
 !topic_queue.json
 !pinterest_history.json
 !alerts_engine/published_posts.json
+!alerts_engine/indexed_state.json
