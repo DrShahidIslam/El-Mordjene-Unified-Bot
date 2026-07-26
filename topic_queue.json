@@ -443,12 +443,13 @@
   {
     "topic": "pineapple upside down cake recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/pineapple-upside-down-cake-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-26T11:01:30.846501"
   },
   {
     "topic": "blueberry recipes",
