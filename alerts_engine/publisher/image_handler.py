@@ -191,7 +191,11 @@ def _try_huggingface_image(article_title, output_path_webp, output_path_jpg):
                 logger.info(f"    Images ready from HuggingFace (Key {i+1})")
                 return result_webp, result_jpg
         except Exception as e:
-            logger.warning(f"    HuggingFace Key {i+1} failed: {e}")
+            err_str = str(e)
+            logger.warning(f"    HuggingFace Key {i+1} failed: {err_str}")
+            if "402" in err_str or "Payment Required" in err_str or "depleted" in err_str:
+                logger.warning("    HuggingFace credits depleted. Skipping remaining HF keys...")
+                break
             continue
             
     return None, None

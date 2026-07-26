@@ -397,7 +397,11 @@ def _try_huggingface(prompt, output_path):
             image.save(output_path)
             return True
         except Exception as e:
-            print(f"HuggingFace Key {i+1} Error: {e}")
+            err_str = str(e)
+            print(f"HuggingFace Key {i+1} Error: {err_str}")
+            if "402" in err_str or "Payment Required" in err_str or "depleted" in err_str:
+                print("HuggingFace credits depleted on account. Skipping remaining HF keys...", flush=True)
+                break
             continue
     return False
 
