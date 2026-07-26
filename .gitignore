@@ -22,3 +22,6 @@ pinterest_auth.json
 !pinterest_history.json
 !alerts_engine/published_posts.json
 !alerts_engine/indexed_state.json
+
+# Google Service Account keys
+*-e2b06405bfe0.json
