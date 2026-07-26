@@ -432,12 +432,13 @@
   {
     "topic": "cake pops recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/easy-homemade-cake-pops-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-26T10:51:10.796927"
   },
   {
     "topic": "pineapple upside down cake recipe",
