@@ -465,12 +465,13 @@
   {
     "topic": "strawberry recipes",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-fresh-strawberry-shortcake-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-07-27T20:58:12.997811"
   },
   {
     "topic": "ninja slushie recipes",
