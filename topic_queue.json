@@ -575,12 +575,13 @@
   {
     "topic": "cowboy caviar recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/cowboy-caviar-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-08-01T20:38:05.918747"
   },
   {
     "topic": "peach cobbler recipe",
