@@ -1003,7 +1003,7 @@ def run_pin_worker():
     """Pick a topic from queue that needs pins (1:3 ratio) and publish 1 pin."""
     queue = _load_queue()
     # Filter: WP is done and needs more pins
-    target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 3), None)
+    target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 1), None)
     
     if not target:
         print("No topics in queue waiting for pins.")
