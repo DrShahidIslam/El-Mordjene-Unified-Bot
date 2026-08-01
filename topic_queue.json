@@ -564,12 +564,13 @@
   {
     "topic": "dutch bros drinks",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/understanding-dutch-bros-drinks/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-08-01T10:00:24.805352"
   },
   {
     "topic": "cowboy caviar recipe",
