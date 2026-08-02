@@ -586,22 +586,25 @@
   {
     "topic": "peach cobbler recipe",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/classic-spiced-peach-cobbler-recipe/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-08-02T09:46:07.344035",
+    "note": "Auto-linked to existing: Classic Spiced Peach Cobbler Recipe"
   },
   {
     "topic": "7 brew drinks",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/7-brew-drinks-guide/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest API Trends",
-    "retries": 0
+    "retries": 0,
+    "published_at": "2026-08-02T09:46:40.885674"
   },
   {
     "topic": "Dubai Chocolate Bar with Pistachio Cream",
