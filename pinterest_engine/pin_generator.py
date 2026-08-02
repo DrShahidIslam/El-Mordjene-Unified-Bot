@@ -69,30 +69,29 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
         secondary_angle_focus = "An overhead flat-lay of ingredients and preparation layout."
 
     prompt = f"""
-    You are a top-tier viral Pinterest marketing expert for high-performing food brands like Tasty, Delish, and Half Baked Harvest. Your task is to generate high-performance content for Pin #{pin_index + 1} about: "{topic}".
+    You are a top-tier viral Pinterest marketing expert. Your task is to generate high-performance content for Pin #{pin_index + 1} about: "{topic}".
     
     Adhere strictly to these targeted angle guidelines for this pin variation:
     {angle_instruction}
     
-    Reverse-engineering rules from top competitor viral pins:
-    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that real users type into the Pinterest search bar (e.g., 'easy dinner recipes', 'viral food trends', 'air fryer snacks').
-    2. Create a high-CTR 'Click-Gap' Title (max 100 chars). It MUST start with the primary annotated keyword, followed by a competitor viral curiosity hook (e.g. 'Easy Crepes Recipe: Better Than Bakery Secret!').
-    3. Create an SEO-optimized Description (250-400 chars) that weaves sensory food adjectives (glistening, velvety, crispy, melt-in-your-mouth), incorporates keywords naturally, and ends with an explicit dual SAVE + CLICK CTA: "📌 SAVE THIS RECIPE to your board for later, then tap through to view full printable ingredients & chef tips!"
-    4. Create an accessibility and search-optimized Alt Text (150-300 chars) strictly describing visual food details, textures, and presentation.
-    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars) for professional Sony A7R IV 90mm Macro food photography.
-    6. Create a secondary complementary Image Prompt (400-600 chars) focusing on: "{secondary_angle_focus}".
+    Reverse-engineering rules from the Quiet 27-Blog strategy:
+    1. Identify 3 highly specific 'Pinterest Annotated Keywords' that real users type into the Pinterest search bar.
+    2. Create a Title (max 100 chars). It MUST name the specific audience identity (e.g., "for beginners", "women over 40", "busy moms"). It MUST create a curiosity gap (e.g., "The Secret Ingredient for..."). NO generic phrases like "amazing" or "beautiful".
+    3. Create a Description (Exactly 50-75 words). Tone must be warm and conversational, like a knowledgeable friend. Naturally weave in 4-6 related search phrases into real sentences. NO HASHTAGS (they are algorithm-negative). End with a soft CTA (e.g., "Save this for your next dinner").
+    4. Create an accessibility and search-optimized Alt Text (150-300 chars) strictly describing visual food details.
+    5. Create a HYPER-REALISTIC Image Prompt (400-600 chars). It MUST explicitly state "NO TEXT IN THE IMAGE".
+    6. Create a secondary complementary Image Prompt (400-600 chars) focusing on: "{secondary_angle_focus}". MUST explicitly state "NO TEXT IN THE IMAGE".
     
     Return ONLY valid JSON:
     {{
       "annotated_keywords": ["keyword1", "keyword2", "keyword3"],
-      "title": "Annotated Keyword: Sensation Curiosity Gap Hook",
-      "description": "Sensory-rich description ending in explicit Save + Click CTA...",
-      "alt_text": "Descriptive visual alt text of the glistening dish texture...",
-      "recipe_name": "CLEAN RECIPE NAME (max 4 words, all caps, e.g. DUBAI CHOCOLATE BAR)",
-      "hook": "VIRAL HOOK (max 6 words, all caps, e.g. BETTER THAN BAKERY SECRET!)",
-      "image_prompt": "Primary visual focus photography prompt...",
-      "secondary_image_prompt": "Secondary visual focus photography prompt...",
-      "hashtags": "#viral #recipe #food..."
+      "title": "Audience Identity: Curiosity Gap Hook",
+      "description": "50-75 word sensory description ending in soft Save CTA. NO HASHTAGS...",
+      "alt_text": "Descriptive visual alt text...",
+      "recipe_name": "CLEAN RECIPE NAME (max 4 words, all caps)",
+      "hook": "3-6 WORD OVERLAY (identity/result language, e.g., 'For Picky Eaters', '5-Minute Prep')",
+      "image_prompt": "Primary visual focus photography prompt. NO TEXT...",
+      "secondary_image_prompt": "Secondary visual focus photography prompt. NO TEXT..."
     }}
     """
     
@@ -387,7 +386,7 @@ CTA_OPTIONS = {
 def _try_huggingface(prompt, output_path):
     if not hf_keys: return False
     # Use a highly realistic static photography string
-    full_prompt = f"{prompt}, high-end food photography, award-winning, ultra-realistic, 8k resolution, shot on 100mm macro lens, f/2.8, cinematic soft lighting, detailed textures, professional food styling, bokeh background, 768x1024"
+    full_prompt = f"{prompt}, high-end food photography, award-winning, ultra-realistic, 8k resolution, shot on 100mm macro lens, f/2.8, cinematic soft lighting, detailed textures, professional food styling, bokeh background, 768x1365"
     
     for i, key in enumerate(hf_keys):
         try:
@@ -436,7 +435,7 @@ def _try_pollinations(prompt, output_path):
     try:
         print(f"DEBUG: Trying Pollinations AI...", flush=True)
         encoded = urllib.parse.quote(prompt)
-        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1024&model=flux&nologo=true&seed={random.randint(1,999999)}"
+        url = f"https://image.pollinations.ai/prompt/{encoded}?width=768&height=1365&model=flux&nologo=true&seed={random.randint(1,999999)}"
         res = requests.get(url, timeout=30)
         if res.status_code == 200:
             with open(output_path, "wb") as f: f.write(res.content)
@@ -999,11 +998,37 @@ def _save_queue(queue):
     queue_path = root_dir / "topic_queue.json"
     with open(queue_path, "w") as f: json.dump(queue, f, indent=2)
 
+def _load_pin_log():
+    log_path = root_dir / "pinterest_engine" / "pin_log.json"
+    if log_path.exists():
+        try:
+            with open(log_path, "r") as f: return json.load(f)
+        except: return {}
+    return {}
+
+def _save_pin_log(log):
+    log_path = root_dir / "pinterest_engine" / "pin_log.json"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(log_path, "w") as f: json.dump(log, f, indent=2)
+
 def run_pin_worker():
     """Pick a topic from queue that needs pins (1:3 ratio) and publish 1 pin."""
     queue = _load_queue()
-    # Filter: WP is done and needs more pins
-    target = next((t for t in queue if t.get("wp_status") == "done" and t.get("pin_count", 0) < 1), None)
+    pin_log = _load_pin_log()
+    
+    # 7-day cooldown (168 hours)
+    cooldown_seconds = 7 * 24 * 3600
+    now = datetime.datetime.now().timestamp()
+    
+    # Filter: WP is done and needs more pins, AND URL is not in 7-day cooldown
+    target = None
+    for t in queue:
+        if t.get("wp_status") == "done" and t.get("pin_count", 0) < 1:
+            url = t.get("wp_url", "")
+            last_pinned = pin_log.get(url, 0)
+            if now - last_pinned >= cooldown_seconds:
+                target = t
+                break
     
     if not target:
         print("No topics in queue waiting for pins.")
@@ -1037,7 +1062,7 @@ def run_pin_worker():
     gemini_data = generate_pin_content_with_gemini(title, pin_index=pin_index)
     if gemini_data:
         p_title = gemini_data.get("title", title)
-        p_desc = gemini_data.get("description", description) + f" {gemini_data.get('hashtags', '')}"
+        p_desc = gemini_data.get("description", description)
         recipe_name = gemini_data.get("recipe_name", title)
         hook_text = gemini_data.get("hook", "")
         alt_text = gemini_data.get("alt_text", p_title)
@@ -1094,6 +1119,11 @@ def run_pin_worker():
         if publish_pin(final_img, p_title, p_desc, b_url, selected_board, alt_text=alt_text):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
+            
+            # Log the pin timestamp for the 7-day cooldown safety protocol
+            pin_log[url] = now
+            _save_pin_log(pin_log)
+            
             print(f"SUCCESS: Pin {pin_index + 1} published for {title}")
         else:
             print(f"FAILURE: Pinterest API rejected the pin (e.g. token expired) for {title}", flush=True)
