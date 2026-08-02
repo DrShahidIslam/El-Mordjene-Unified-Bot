@@ -2038,5 +2038,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-02T10:03:23.211609"
+  },
+  {
+    "topic": "El Mordjene Ban in Europe: Cebon\u2019s Commercial Director Speaks Out - dzair-tube.dz",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-ban-europe-cebon-director-speaks-out/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-02T10:52:11.421402"
   }
 ]
