@@ -2068,5 +2068,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-03T11:01:34.716382"
+  },
+  {
+    "topic": "France seizes El Mordjene jars amid clampdown on Algerian spread - newarab.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-seizure-france-facts/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-03T20:50:27.537019"
   }
 ]
