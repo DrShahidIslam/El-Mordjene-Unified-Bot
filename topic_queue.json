@@ -2078,5 +2078,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-03T20:50:27.537019"
+  },
+  {
+    "topic": "EU Bans Algeria's El Mordjene Chocolate Spread: Plan to Protect Nutella? - firstpost.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-eu-export-status-facts/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-04T10:24:03.085221"
   }
 ]
