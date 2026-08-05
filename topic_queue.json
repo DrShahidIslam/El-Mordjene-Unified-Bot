@@ -2108,5 +2108,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-05T10:19:55.338958"
+  },
+  {
+    "topic": "Butter ice cream is summer\u2019s strangest viral dessert, and it\u2019s dividing the internet - vogueadria.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/butter-ice-cream-viral-dessert-analysis/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-05T20:53:17.761895"
   }
 ]
