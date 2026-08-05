@@ -2098,5 +2098,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-04T20:59:27.504926"
+  },
+  {
+    "topic": "How a Hazelnut Spread Became a Sticking Point in Franco-Algerian Relations - newyorker.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/hazelnut-spread-franco-algerian-relations/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-05T10:19:55.338958"
   }
 ]
