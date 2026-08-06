@@ -2118,5 +2118,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-05T20:53:17.761895"
+  },
+  {
+    "topic": "France bans the entry of Algerian chocolate El Mordjene Cebon - atalayar.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/france-bans-el-mordjene-facts/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-06T10:21:28.679681"
   }
 ]
