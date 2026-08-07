@@ -2128,5 +2128,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-06T10:21:28.679681"
+  },
+  {
+    "topic": "El Mordjene: The banned Algerian spread threatening to upset Nutella - monocle.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/el-mordjene-algerian-spread-market-impact-11/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-07T00:50:07.918863"
   }
 ]
