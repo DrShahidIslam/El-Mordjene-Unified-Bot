@@ -2148,5 +2148,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-07T08:43:17.339257"
+  },
+  {
+    "topic": "Tokyo\u2019s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - soranews24.com",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/tokyo-viral-parfait-bread-bun-trend-2/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-07T20:25:50.875306"
   }
 ]
