@@ -1609,7 +1609,7 @@
     "published_at": "2026-07-02T20:49:05.382700"
   },
   {
-    "topic": "Father’S Day Cake",
+    "topic": "Father\u2019S Day Cake",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/crafting-perfect-fathers-day-cake/",
@@ -1639,7 +1639,7 @@
     "published_at": "2026-07-04T09:57:28.777979"
   },
   {
-    "topic": "Tokyo’s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - SoraNews24",
+    "topic": "Tokyo\u2019s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - SoraNews24",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/tokyo-viral-parfait-bread-bun-trend/",
@@ -1649,7 +1649,7 @@
     "published_at": "2026-08-03T11:01:34.716382"
   },
   {
-    "topic": "Butter ice cream is summer’s strangest viral dessert, and it’s dividing the internet - vogueadria.com",
+    "topic": "Butter ice cream is summer\u2019s strangest viral dessert, and it\u2019s dividing the internet - vogueadria.com",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/butter-ice-cream-viral-dessert-analysis/",
@@ -1659,7 +1659,7 @@
     "published_at": "2026-08-05T20:53:17.761895"
   },
   {
-    "topic": "Tokyo’s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - soranews24.com",
+    "topic": "Tokyo\u2019s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - soranews24.com",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/tokyo-viral-parfait-bread-bun-trend-2/",
@@ -1667,5 +1667,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-07T20:25:50.875306"
+  },
+  {
+    "topic": "What's a Dot Cake? All About the Viral Dessert - E! News",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/what-is-a-dot-cake/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-08T05:44:26.565440"
   }
 ]
