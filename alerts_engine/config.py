@@ -62,14 +62,15 @@ YOUTUBE_API_KEY = get_env_manual("YOUTUBE_API_KEY", "").strip()
 
 # RSS Feeds
 RSS_FEEDS = {
-    "Google News El Mordjene": "https://news.google.com/rss/search?q=el+mordjene+OR+mordjane+OR+cebon+spread&hl=en-US&gl=US&ceid=US:en",
     "Google News Chocolate Trends": "https://news.google.com/rss/search?q=chocolate+trend+OR+filled+chocolate+bar+OR+pistachio+cream&hl=en-US&gl=US&ceid=US:en",
     "Google News Viral Desserts": "https://news.google.com/rss/search?q=viral+dessert+OR+viral+sweet+OR+tiktok+dessert&hl=en-US&gl=US&ceid=US:en",
     "Google News Confectionery": "https://news.google.com/rss/search?q=confectionery+news+OR+candy+industry+OR+chocolate+launch&hl=en-US&gl=US&ceid=US:en",
 }
 
-BRAND_KEYWORDS = ["el mordjene", "cebon"]
-CHOCOLATE_PRODUCT_KEYWORDS = ["chocolate spread", "hazelnut spread", "pistachio cream"]
+EXCLUDE_KEYWORDS = ["el mordjene", "mordjene", "cebon", "hazelnut spread", "algerian spread"]
+
+BRAND_KEYWORDS = []
+CHOCOLATE_PRODUCT_KEYWORDS = ["chocolate spread", "pistachio cream"]
 SWEETS_TREND_KEYWORDS = ["viral dessert", "viral sweet", "tiktok dessert"]
 FRENCH_CULINARY_KEYWORDS = ["french pastry", "viennoiserie"]
 NORTH_AFRICAN_KEYWORDS = ["algerian dessert", "maghreb cuisine"]

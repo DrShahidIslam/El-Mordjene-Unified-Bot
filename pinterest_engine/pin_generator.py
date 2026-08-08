@@ -1019,9 +1019,15 @@ def run_pin_worker():
     cooldown_seconds = 7 * 24 * 3600
     now = datetime.datetime.now().timestamp()
     
-    # Filter: WP is done and needs more pins, AND URL is not in 7-day cooldown
+    # Filter: WP is done and needs more pins, AND URL is not in 7-day cooldown, AND topic is not excluded
+    EXCLUDED_TOPIC_KEYWORDS = ["mordjene", "el-mordjene", "el mordjene", "cebon", "hazelnut spread", "algerian spread"]
     target = None
     for t in queue:
+        topic_title = t.get("topic", "").lower()
+        url_path = t.get("wp_url", "").replace("https://el-mordjene.info/", "").lower()
+        if any(ex in topic_title or ex in url_path for ex in EXCLUDED_TOPIC_KEYWORDS):
+            continue
+
         if t.get("wp_status") == "done" and t.get("pin_count", 0) < 1:
             url = t.get("wp_url", "")
             last_pinned = pin_log.get(url, 0)
