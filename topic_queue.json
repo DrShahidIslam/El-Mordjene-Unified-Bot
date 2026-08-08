@@ -1677,5 +1677,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-08T05:44:26.565440"
+  },
+  {
+    "topic": "Publix's Bakery Is Making A Viral Dessert That Has Customers Ready To 'Move Back To Florida' - The Takeout",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/viral-publix-bakery-dessert-trend/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-08T20:14:32.798723"
   }
 ]
