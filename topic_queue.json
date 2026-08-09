@@ -1697,5 +1697,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-09T08:27:08.935780"
+  },
+  {
+    "topic": "Pistachio Cream Dessert Sandwiches: The Chocolate, Strawberry & Pistachio Cream Sandwich\u2026 - Trend Hunter",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/pistachio-cream-dessert-sandwiches/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-09T20:16:52.181752"
   }
 ]
