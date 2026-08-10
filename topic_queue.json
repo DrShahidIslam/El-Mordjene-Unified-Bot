@@ -1707,5 +1707,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-09T20:16:52.181752"
+  },
+  {
+    "topic": "Publix's Bakery Is Making A Viral Dessert That Has Customers Ready To 'Move Back To Florida' - Yahoo",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/publix-viral-dessert-trend/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-10T09:03:25.956202"
   }
 ]
