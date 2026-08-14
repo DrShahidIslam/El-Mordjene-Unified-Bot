@@ -1747,5 +1747,15 @@
     "priority": 20,
     "source": "Auto-Pilot",
     "published_at": "2026-08-13T08:59:16.736131"
+  },
+  {
+    "topic": "Why\u2019s Everyone Talking About Chili\u2019s New Viral Dessert? - Sporked",
+    "intent": "trend",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/chilis-new-viral-dessert-analysis/",
+    "pin_count": 0,
+    "priority": 20,
+    "source": "Auto-Pilot",
+    "published_at": "2026-08-14T08:54:39.107039"
   }
 ]
