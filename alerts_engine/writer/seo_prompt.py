@@ -81,9 +81,9 @@ def _intent_guidance(intent):
     return intent_map.get((intent or "").strip().lower(), intent_map["explainer"])
 
 
-def build_article_prompt(topic_title, source_texts, matched_keyword="", intent="general", min_words=1000):
+def build_article_prompt(topic_title, source_texts, matched_keyword="", intent="general", min_words=1800):
     """
-    Build the master SEO prompt for Gemini article generation.
+    Build the master SEO prompt for Gemini article generation with high-retention structure.
     """
     is_recipe = (intent or "").strip().lower() == "recipe"
     sources_block = ""
@@ -153,47 +153,49 @@ def build_article_prompt(topic_title, source_texts, matched_keyword="", intent="
     outline = "\n".join(f"  - {item}" for item in variant["outline"])
     if is_recipe:
         variant = {
-            "name": "Recipe Format",
+            "name": "Comprehensive High-Retention Recipe Authority Guide",
             "outline": [
-                "Short hook and quick summary",
-                "Recipe snapshot (yield, times, key notes)",
-                "Ingredients list",
-                "Step-by-step instructions",
-                "Tips, substitutions, and variations",
-                "Storage and make-ahead guidance",
-                "Serving suggestions and brief FAQ if useful",
+                "1. Inspiring Hook & 'Why You'll Love This Recipe' (Audience identity, flavor profile, texture overview)",
+                "2. Recipe Snapshot Box & Direct Answer (Yield, prep/cook/chill times, difficulty, calorie estimate)",
+                "3. Key Ingredients Deep-Dive & Smart Substitutions (Why each ingredient matters + gluten-free, dairy-free, vegan swaps)",
+                "4. Dual Measurements Table (US Customary Cups vs. Metric Grams/ml comparison table)",
+                "5. Step-by-Step Culinary Walkthrough (Granular stages: Prep -> Mixing -> Cooking/Baking -> Cooling with sensory & browning indicators)",
+                "6. Pro Chef Secrets & Critical Mistakes to Avoid (3-5 highlighted callout boxes for common pitfalls)",
+                "7. 4-6 Creative Flavor Variations, Mix-Ins & Dietary Twists (Seasonal, spicy, low-carb, extra decadent)",
+                "8. Make-Ahead, Storage, Freezing, Thawing & Reheating Protocols (Shelf life, freezer instructions, optimal reheat methods)",
+                "9. What to Serve With This / Menu Builder (Side dishes, sauces, and drink pairings with internal links)",
+                "10. Chef's Troubleshooting Guide & Comprehensive FAQs (5-7 questions formatted with FAQPage Schema)",
+                "11. Interactive Printable Recipe Card with Checkbox Ingredients & Pinterest Save Banner",
             ],
         }
         outline = "\n".join(f"  - {item}" for item in variant["outline"])
 
-    prompt = f"""You are an expert food journalist and recipe writer for el-mordjene.info.
-Write one complete, publish-ready article with high factual reliability and high user value.
+    prompt = f"""You are a world-class culinary authority and expert food journalist for el-mordjene.info.
+Write one exhaustive, publish-ready, high-retention article (Target: {min_words} – 2,500+ words). Pinterest and search readers should stay engaged for 3-5+ minutes reading this comprehensive guide.
 
 TASK:
 - TRENDING TOPIC: {topic_title}
 - PRIMARY KEYWORD: {matched_keyword or topic_title}
 - SECONDARY KEYWORDS: {secondary_keywords}
 - SUPPORTING KEYWORDS / ENTITIES: {supporting_keywords}
-- TARGET LENGTH: At least {min_words} words. Be comprehensive and dive deep into subtopics, cultural context, and variations to reach this length naturally.
+- TARGET LENGTH: At least {min_words} words (aim for 1,800 – 2,500+ words). Provide exhaustive culinary mechanics, food chemistry, techniques, and practical troubleshooting to reach this length naturally without filler.
 
-SOURCE MATERIAL (use only these facts):
+SOURCE MATERIAL (use these facts as foundation):
 {sources_block}
 
-NON-NEGOTIABLE RULES:
-1. Do not fabricate facts, prices, legal claims, ingredient data, or nutrition details.
-2. If sources conflict, mention that explicitly and present both sides.
-3. Use one language for the entire article: English OR French, never mixed.
-4. Keep primary keyword density under 0.8 percent in paragraph text.
-5. No emojis in body copy.
-6. Do not output WordPress block comments like <!-- wp:... -->.
-7. Write original synthesis for readers, not stitched or lightly rewritten source passages.
-8. If source evidence is thin or uncertain, say so plainly instead of padding the article.
-9. Do not create sections, FAQs, or claims whose main purpose is ranking rather than helping the reader.
-10. Do not talk about search popularity, Google Trends, "people are searching for", or "this topic is trending" unless the article is specifically about search/marketing data.
+NON-NEGOTIABLE CONTENT & RETENTION RULES:
+1. Do not fabricate facts, legal claims, or unsafe food practices.
+2. Use one language for the entire article: English OR French, never mixed.
+3. Keep primary keyword density under 0.8 percent in paragraph text.
+4. No emojis in body copy paragraphs (styled badges and cards can use clean accents).
+5. Do not output WordPress block comments like <!-- wp:... -->.
+6. Write original synthesis for readers with rich culinary prose, not stitched source passages.
+7. Do not talk about search popularity, Google Trends, or "people are searching for" unless specifically relevant.
+8. Structure for maximum visual engagement: Use responsive tables, styled tip callout boxes, checklists, and dual measurements.
 
 LAYOUT VARIANT TO USE:
 - Variant: {variant['name']}
-- Outline:
+- Outline (Follow every section thoroughly):
 {outline}
 
 INTENT GUIDANCE:
@@ -203,21 +205,31 @@ INTENT GUIDANCE:
 STYLE & ARCHITECTURE REQUIREMENTS (SEO, AEO, GEO, SILO & PINTEREST):
 - Output clean HTML only for the article body.
 - Do not use <h1> anywhere in the article body. WordPress title is the only H1.
-- Heading Hierarchy: Start visible section headings at <h2> and use <h3> only for subsections. Keep keyword density under 0.8%.
-- AEO (ANSWER ENGINE OPTIMIZATION & ALP): Right after the first <h2> heading, provide a 40-60 word concise, factual "Direct Answer Paragraph" (ALP) wrapped in a styled answer box:
-  `<div style="background:#fffaf5; border-left:4px solid #8f1f28; padding:18px 22px; border-radius:10px; margin:20px 0;"><strong>Direct Answer:</strong> [Concise 40-60 word answer paragraph optimized for voice search and AI answer engines]</div>`
-- GEO (GENERATIVE ENGINE OPTIMIZATION): Include at least one responsive HTML comparison table (`<table style="width:100%; border-collapse:collapse; margin:20px 0;">`) comparing measurements, preparation steps, nutritional metrics, or ingredient substitutions to provide high-density factual signals for AI search engines (SearchGPT, Perplexity, Gemini).
-- PINTEREST OPTIMIZATION: 
-  - Place a prominent 'Jump to Recipe 🍳' top button right under the intro paragraph: `<a href="#recipe-card" style="display:inline-block; background:#8f1f28; color:white; padding:12px 24px; border-radius:50px; text-decoration:none; font-weight:bold; margin:15px 0;">Jump to Recipe 🍳</a>`
+- Heading Hierarchy: Start visible section headings at <h2> and use <h3> only for subsections.
+- AEO (ANSWER ENGINE OPTIMIZATION & DIRECT ANSWER): Right after the first <h2> heading, provide a 40-60 word concise, factual "Direct Answer Paragraph" wrapped in a styled answer box:
+  `<div style="background:#fffaf5; border-left:4px solid #8f1f28; padding:18px 22px; border-radius:10px; margin:20px 0;"><strong>Quick Answer:</strong> [Concise 40-60 word answer summary optimized for voice search and AI answer engines]</div>`
+- GEO (GENERATIVE ENGINE OPTIMIZATION & COMPARISON TABLES): Include at least TWO responsive HTML tables:
+  1. Ingredient Substitution & Dietary Swaps Table
+  2. Dual Measurement Conversion Table (US Cups vs Metric Grams/ml)
+  Format: `<table style="width:100%; border-collapse:collapse; margin:20px 0;">`
+- PINTEREST DWELL-TIME & RETENTION OPTIMIZATION: 
+  - Place a prominent 'Jump to Recipe 🍳' top button right under the intro: `<a href="#recipe-card" style="display:inline-block; background:#8f1f28; color:white; padding:12px 24px; border-radius:50px; text-decoration:none; font-weight:bold; margin:15px 0;">Jump to Recipe 🍳</a>`
   - Include an in-content Pinterest Save Banner midway through the article: `<div style="background:#fff0f0; border:1px dashed #8f1f28; padding:16px; border-radius:12px; margin:25px 0; text-align:center;">📌 <strong>Loved this recipe?</strong> <a href="https://www.pinterest.com/FoodTrendsBlog/" target="_blank" style="color:#8f1f28; font-weight:bold; text-decoration:underline;">Save & Follow on Pinterest</a> for daily viral food trends!</div>`
+  - PRO CHEF TIP CALLOUT BOXES: Add 2-3 highlighted tip boxes throughout the instructions:
+    `<div style="background:#f7fbf8; border-left:4px solid #2e7d32; padding:16px 20px; border-radius:8px; margin:20px 0;"><strong>👨‍🍳 Chef's Secret:</strong> [Specific technique tip on browning, temperature, or ingredient handling]</div>`
   - Wrap the printable recipe box in `<div id="recipe-card" style="background:#fffaf5; border:2px solid #8f1f28; border-radius:16px; padding:25px; margin:30px 0;">`.
   - Format ingredients as a checkbox list `<ul style="list-style:none; padding-left:0;"><li><label><input type="checkbox"> [Ingredient & Quantity]</label></li></ul>` and instructions as a numbered `<ol><li>` list.
   - Include a complete Schema.org JSON-LD `<script type="application/ld+json">` block inside the HTML output containing `@type`: `Recipe`, `name`, `prepTime`, `cookTime`, `recipeYield`, `recipeIngredient`, and `recipeInstructions` array for Google Rich Recipe Results and Pinterest Rich Pins!
 
 RECIPE ARTICLE RULES (ONLY IF THIS IS A RECIPE):
-- Provide substitutions, variations, and storage guidance supported by sources.
+- Provide comprehensive substitutions, variations, and storage guidance supported by sources.
 - Do not invent nutrition facts or timings if unsupported by sources.
 - Category MUST be "Recipes" (or "Recettes" if language is French).
+
+FAQ AND SCHEMA RULES:
+- Add a highly readable visible FAQ section at the end using a single <h2>Frequently Asked Questions</h2> heading.
+- Include 5-7 high-search intent questions, writing each question in an <h3> tag and the answer in a <p> tag.
+- Include matching, valid FAQPage JSON-LD schema wrapped in `<script type="application/ld+json"> ... </script>`.
 
 SEARCH AND HELPFULNESS REQUIREMENTS:
 - Treat PRIMARY KEYWORD as a guidance signal, not something to force unnaturally.
