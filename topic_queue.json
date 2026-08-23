@@ -1793,13 +1793,14 @@
   {
     "topic": "One-Pot Creamy Marry Me Chicken Pasta",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/one-pot-creamy-marry-me-chicken-pasta/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-08-23T17:41:58.196594"
   },
   {
     "topic": "Air Fryer Honey Garlic Salmon Bites",
