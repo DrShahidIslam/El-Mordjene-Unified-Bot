@@ -1817,13 +1817,14 @@
   {
     "topic": "20-Minute Korean Beef and Rice Bowls",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/20-minute-korean-beef-and-rice-bowls/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-08-24T20:15:37.273856"
   },
   {
     "topic": "Sheet Pan Garlic Herb Butter Steak Bites and Potatoes",
