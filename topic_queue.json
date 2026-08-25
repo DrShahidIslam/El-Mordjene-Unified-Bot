@@ -1841,13 +1841,14 @@
   {
     "topic": "Creamy Sun-Dried Tomato Gnocchi with Spinach",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/creamy-sun-dried-tomato-gnocchi-with-spinach/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-08-25T20:14:02.903220"
   },
   {
     "topic": "Crispy Parmesan Crusted Chicken Cutlets",
