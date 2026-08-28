@@ -1901,13 +1901,14 @@
   {
     "topic": "20-Minute Spicy Sesame Garlic Noodles",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/20-minute-spicy-sesame-garlic-noodles/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-08-28T19:39:23.116439"
   },
   {
     "topic": "Sheet Pan Greek Lemon Herb Chicken with Roasted Potatoes",
