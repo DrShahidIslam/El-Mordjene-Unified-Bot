@@ -1973,13 +1973,14 @@
   {
     "topic": "Creamy Spinach Artichoke Chicken Skillet",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/creamy-spinach-artichoke-chicken-skillet/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-08-31T23:28:10.857364"
   },
   {
     "topic": "15-Minute Sweet and Sour Chicken Meatballs",
