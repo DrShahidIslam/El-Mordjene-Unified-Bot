@@ -1985,13 +1985,14 @@
   {
     "topic": "15-Minute Sweet and Sour Chicken Meatballs",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/15-minute-sweet-and-sour-chicken-meatballs/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-09-01T12:49:45.552039"
   },
   {
     "topic": "Garlic Butter Salmon with Lemon Asparagus",
