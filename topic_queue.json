@@ -2021,13 +2021,14 @@
   {
     "topic": "Crispy Coconut Shrimp with Sweet Chili Dip",
     "intent": "recipe",
-    "wp_status": "pending",
-    "wp_url": "",
+    "wp_status": "done",
+    "wp_url": "https://el-mordjene.info/crispy-coconut-shrimp-with-sweet-chili-dip/",
     "pin_count": 0,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
-    "created_at": "2026-08-23T17:37:08.450997"
+    "created_at": "2026-08-23T17:37:08.450997",
+    "published_at": "2026-09-03T12:17:32.104349"
   },
   {
     "topic": "One-Pan Mediterranean Baked Cod with Cherry Tomatoes",
