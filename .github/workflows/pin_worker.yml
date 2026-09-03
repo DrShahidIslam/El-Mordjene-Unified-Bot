@@ -54,7 +54,8 @@ jobs:
           if [ -f pinterest_history.json ]; then git add -f pinterest_history.json; fi
           if [ -f pinterest_engine/pin_log.json ]; then git add -f pinterest_engine/pin_log.json; fi
           git commit -m "Automation: Update pin counts and bridge site [skip ci]" || echo "No changes to commit"
-          git stash || true
-          git pull --rebase origin main
-          git stash pop || true
-          git push origin main || echo "Git push skipped or non-fatal"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase -X theirs origin/main || (git rebase --abort && git pull --no-rebase -s ort -X ours origin main -m "Merge remote changes")
+            git push origin main && echo "Successfully pushed changes!" && break || sleep 3
+          done
