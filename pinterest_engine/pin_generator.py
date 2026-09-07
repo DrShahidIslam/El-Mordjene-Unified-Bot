@@ -104,10 +104,12 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
 
     for key in GEMINI_API_KEYS:
         clean_key = key.strip().strip("'").strip('"')
+        if not clean_key:
+            continue
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={clean_key}"
         try:
             payload = {"contents": [{"parts": [{"text": prompt}]}]}
-            res = requests.post(url, json=payload, headers={'Content-Type': 'application/json'}, timeout=30)
+            res = requests.post(url, json=payload, headers={'Content-Type': 'application/json'}, timeout=60)
             if res.status_code == 200:
                 text = res.json()['candidates'][0]['content']['parts'][0]['text']
                 text = text.strip().replace("```json", "").replace("```", "")

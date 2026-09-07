@@ -1053,7 +1053,7 @@
     "intent": "recipe",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/perfect-pan-seared-lemon-herb-salmon/",
-    "pin_count": 3,
+    "pin_count": 1,
     "priority": 20,
     "source": "Pinterest API",
     "published_at": "2026-05-19T21:10:16.350510"
@@ -1609,7 +1609,7 @@
     "published_at": "2026-07-02T20:49:05.382700"
   },
   {
-    "topic": "Father\u2019S Day Cake",
+    "topic": "Father’S Day Cake",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/crafting-perfect-fathers-day-cake/",
@@ -1639,7 +1639,7 @@
     "published_at": "2026-07-04T09:57:28.777979"
   },
   {
-    "topic": "Tokyo\u2019s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - SoraNews24",
+    "topic": "Tokyo’s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - SoraNews24",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/tokyo-viral-parfait-bread-bun-trend/",
@@ -1649,7 +1649,7 @@
     "published_at": "2026-08-03T11:01:34.716382"
   },
   {
-    "topic": "Butter ice cream is summer\u2019s strangest viral dessert, and it\u2019s dividing the internet - vogueadria.com",
+    "topic": "Butter ice cream is summer’s strangest viral dessert, and it’s dividing the internet - vogueadria.com",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/butter-ice-cream-viral-dessert-analysis/",
@@ -1659,7 +1659,7 @@
     "published_at": "2026-08-05T20:53:17.761895"
   },
   {
-    "topic": "Tokyo\u2019s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - soranews24.com",
+    "topic": "Tokyo’s newest viral dessert is like a Japanese parfait inside a bread bun [Taste test] - soranews24.com",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/tokyo-viral-parfait-bread-bun-trend-2/",
@@ -1689,7 +1689,7 @@
     "published_at": "2026-08-08T20:14:32.798723"
   },
   {
-    "topic": "Butter ice cream is summer\u2019s strangest viral dessert, and it\u2019s dividing the internet - Vogue Adria",
+    "topic": "Butter ice cream is summer’s strangest viral dessert, and it’s dividing the internet - Vogue Adria",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/butter-ice-cream-viral-dessert-analysis-2/",
@@ -1699,7 +1699,7 @@
     "published_at": "2026-08-09T08:27:08.935780"
   },
   {
-    "topic": "Pistachio Cream Dessert Sandwiches: The Chocolate, Strawberry & Pistachio Cream Sandwich\u2026 - Trend Hunter",
+    "topic": "Pistachio Cream Dessert Sandwiches: The Chocolate, Strawberry & Pistachio Cream Sandwich… - Trend Hunter",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/pistachio-cream-dessert-sandwiches/",
@@ -1739,7 +1739,7 @@
     "published_at": "2026-08-12T08:57:13.426670"
   },
   {
-    "topic": "Pistachio Cream Dessert Sandwiches: The Chocolate, Strawberry & Pistachio Cream Sandwich\u2026 - trendhunter.com",
+    "topic": "Pistachio Cream Dessert Sandwiches: The Chocolate, Strawberry & Pistachio Cream Sandwich… - trendhunter.com",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/pistachio-cream-dessert-sandwiches-trend-analysis/",
@@ -1749,7 +1749,7 @@
     "published_at": "2026-08-13T08:59:16.736131"
   },
   {
-    "topic": "Why\u2019s Everyone Talking About Chili\u2019s New Viral Dessert? - Sporked",
+    "topic": "Why’s Everyone Talking About Chili’s New Viral Dessert? - Sporked",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/chilis-new-viral-dessert-analysis/",
@@ -1759,7 +1759,7 @@
     "published_at": "2026-08-14T08:54:39.107039"
   },
   {
-    "topic": "Why\u2019s Everyone Talking About Chili\u2019s New Viral Dessert? - sporked.com",
+    "topic": "Why’s Everyone Talking About Chili’s New Viral Dessert? - sporked.com",
     "intent": "trend",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/chilis-new-viral-dessert-analysis-2/",
@@ -1999,7 +1999,7 @@
     "intent": "recipe",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/garlic-butter-salmon-with-lemon-asparagus/",
-    "pin_count": 0,
+    "pin_count": 1,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
@@ -2172,7 +2172,7 @@
     "created_at": "2026-08-23T17:37:08.450997"
   },
   {
-    "topic": "Fluffy Japanese Souffl\u00e9 Pancakes from Scratch",
+    "topic": "Fluffy Japanese Soufflé Pancakes from Scratch",
     "intent": "recipe",
     "wp_status": "pending",
     "wp_url": "",
@@ -2205,7 +2205,7 @@
     "created_at": "2026-08-23T17:37:08.450997"
   },
   {
-    "topic": "Classic French Cr\u00e8me Br\u00fbl\u00e9e with Caramelized Sugar Crust",
+    "topic": "Classic French Crème Brûlée with Caramelized Sugar Crust",
     "intent": "recipe",
     "wp_status": "pending",
     "wp_url": "",
@@ -2528,7 +2528,7 @@
     "intent": "recipe",
     "wp_status": "pending",
     "wp_url": "",
-    "pin_count": 0,
+    "pin_count": 1,
     "priority": 1,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
@@ -3162,7 +3162,7 @@
     "created_at": "2026-08-23T17:37:08.450997"
   },
   {
-    "topic": "Caramelized Onion and Gruy\u00e8re Puff Pastry Tartlets",
+    "topic": "Caramelized Onion and Gruyère Puff Pastry Tartlets",
     "intent": "recipe",
     "wp_status": "pending",
     "wp_url": "",
@@ -3195,7 +3195,7 @@
     "created_at": "2026-08-23T17:37:08.450997"
   },
   {
-    "topic": "Creamy Jalape\u00f1o Popper Dip with Bacon",
+    "topic": "Creamy Jalapeño Popper Dip with Bacon",
     "intent": "recipe",
     "wp_status": "pending",
     "wp_url": "",
