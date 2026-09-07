@@ -56,13 +56,34 @@ def generate_recipe_bridge_page(
     # 1. Image handling
     dest_img_filename = f"{clean_slug}.jpg"
     dest_img_path = ASSETS_DIR / dest_img_filename
-    if image_path and os.path.exists(image_path):
+    if image_path and os.path.exists(image_path) and os.path.abspath(image_path) != os.path.abspath(dest_img_path):
         try:
             shutil.copy2(image_path, dest_img_path)
         except Exception as e:
             print(f"   [Bridge Generator] Warning: could not copy image {image_path}: {e}")
-    
+
+    wp_fallback_img = ""
+    if not dest_img_path.exists() or os.path.getsize(dest_img_path) == 0:
+        # Automatically recover high-res featured image from WordPress REST API
+        try:
+            import requests
+            wp_res = requests.get(f"https://el-mordjene.info/wp-json/wp/v2/posts?slug={clean_slug}", timeout=8)
+            if wp_res.status_code == 200 and wp_res.json():
+                feat_id = wp_res.json()[0].get("featured_media")
+                if feat_id:
+                    m_res = requests.get(f"https://el-mordjene.info/wp-json/wp/v2/media/{feat_id}", timeout=8)
+                    if m_res.status_code == 200:
+                        wp_fallback_img = m_res.json().get("source_url", "")
+                        if wp_fallback_img:
+                            img_bytes = requests.get(wp_fallback_img, timeout=15).content
+                            dest_img_path.write_bytes(img_bytes)
+                            print(f"   [Bridge Generator] Recovered recipe image from WordPress ({len(img_bytes)} bytes)")
+        except Exception as e:
+            print(f"   [Bridge Generator] WP image recovery error: {e}")
+
     public_img_url = f"{BASE_URL}/assets/{dest_img_filename}"
+    if not wp_fallback_img:
+        wp_fallback_img = public_img_url
     public_page_url = f"{BASE_URL}/recipes/{clean_slug}.html"
 
     # 2. Extract recipe fields
@@ -565,7 +586,7 @@ def generate_recipe_bridge_page(
     <main class="container">
         <article class="recipe-card">
             <div class="hero-wrapper">
-                <img src="{public_img_url}" alt="{clean_title}" class="hero-img" loading="eager">
+                <img src="{public_img_url}" alt="{clean_title}" class="hero-img" loading="eager" onerror="if(!this.dataset.tried){{this.dataset.tried=1; this.src='{wp_fallback_img}';}}">
                 <div class="badge-verified">
                     <span>★</span> Verified Recipe
                 </div>
