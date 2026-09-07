@@ -553,6 +553,48 @@ def _attach_recipe_schema_fields(article):
         acf_fields[field] = schema_json
 
 
+def _inject_recipe_schema_into_content(result):
+    """Inject schema.org/Recipe JSON-LD block into the WordPress post HTML body.
+    
+    This is essential for Pinterest Recipe Rich Pins and Google Recipe Rich Results:
+    Pinterest crawls the post URL and reads the <script type="application/ld+json">
+    block to populate cook time, servings, and ingredient drawer in the feed.
+    """
+    schema = _build_recipe_schema_from_acf(result)
+    if not schema:
+        return
+
+    # Add datePublished for schema completeness
+    import datetime
+    if "datePublished" not in schema:
+        schema["datePublished"] = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+
+    # Ensure image is set if we have a featured image URL
+    if "image" not in schema:
+        # Provide a placeholder that the WP plugin can override
+        schema.setdefault("image", ["https://el-mordjene.info/wp-content/uploads/recipe-placeholder.jpg"])
+
+    schema_json = json.dumps(schema, indent=2, ensure_ascii=False)
+
+    recipe_schema_block = (
+        '\n\n<!-- wp:html -->\n'
+        '<script type="application/ld+json">\n'
+        + schema_json
+        + '\n</script>\n'
+        '<!-- /wp:html -->'
+    )
+
+    # Append to content (appears before FAQ schema block which is already there)
+    content = result.get("full_content") or result.get("content", "")
+    # Don't inject if Recipe schema already present
+    if '"@type": "Recipe"' in content or '"@type":"Recipe"' in content:
+        return
+
+    result["full_content"] = content.rstrip() + recipe_schema_block
+    result["content"] = result["full_content"]
+    logger.info("   Injected schema.org/Recipe JSON-LD block into post HTML body for Pinterest Rich Pins")
+
+
 def _content_has_recipe_structure(content):
     text = _content_to_line_text(content)
     if not text:
@@ -976,6 +1018,8 @@ def _parse_article_output(raw_text, intent=None):
             }
             result["acf_fields"] = _merge_recipe_fields(result.get("acf_fields", {}), _normalize_recipe_fields(default_fields))
             _attach_recipe_schema_fields(result)
+            # === PINTEREST RICH PINS: Inject schema.org/Recipe JSON-LD into post HTML body ===
+            _inject_recipe_schema_into_content(result)
             acf_keys = sorted((result.get("acf_fields") or {}).keys())
             logger.info(f"   Recipe article detected with ACF keys: {acf_keys}")
 

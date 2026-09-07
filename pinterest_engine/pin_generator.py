@@ -81,6 +81,7 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
     4. Create an accessibility and search-optimized Alt Text (150-300 chars) strictly describing visual food details.
     5. Create a HYPER-REALISTIC Image Prompt (400-600 chars). It MUST explicitly state "NO TEXT IN THE IMAGE".
     6. Create a secondary complementary Image Prompt (400-600 chars) focusing on: "{secondary_angle_focus}". MUST explicitly state "NO TEXT IN THE IMAGE".
+    7. Generate accurate, structured recipe data for Pinterest Recipe Rich Pins (prep/cook times in minutes, servings, exact ingredient quantities, and step-by-step instructions).
     
     Return ONLY valid JSON:
     {{
@@ -91,7 +92,23 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
       "recipe_name": "CLEAN RECIPE NAME (max 4 words, all caps)",
       "hook": "3-6 WORD OVERLAY (identity/result language, e.g., 'For Picky Eaters', '5-Minute Prep')",
       "image_prompt": "Primary visual focus photography prompt. NO TEXT...",
-      "secondary_image_prompt": "Secondary visual focus photography prompt. NO TEXT..."
+      "secondary_image_prompt": "Secondary visual focus photography prompt. NO TEXT...",
+      "prep_time_minutes": 10,
+      "cook_time_minutes": 15,
+      "recipe_yield": "4 servings",
+      "ingredients": [
+        "1 1/2 lbs main ingredient, prepped",
+        "1/2 tsp garlic powder",
+        "2 tbsp olive oil",
+        "1 tsp salt and black pepper"
+      ],
+      "instructions": [
+        "Prepare and season all ingredients thoroughly.",
+        "Cook over medium-high heat until golden brown and tender.",
+        "Rest for 3 minutes and serve hot."
+      ],
+      "recipe_category": "Dinner",
+      "recipe_cuisine": "American"
     }}
     """
     
@@ -833,6 +850,37 @@ def update_weekly_magazine(slug, title, target_url, excerpt, image_file_name):
 
     return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/discovery/{week_slug}.html#{slug}"
 
+def _build_and_generate_bridge_url(slug, title, gemini_data, raw_img, target_wp_url):
+    """Generate static recipe bridge page with Schema.org/Recipe JSON-LD for Pinterest Rich Pins."""
+    recipe_dict = {
+        "recipe_name": (gemini_data.get("recipe_name") if gemini_data else "") or title,
+        "description": (gemini_data.get("description") if gemini_data else "") or f"Delicious {title} recipe guide.",
+        "prep_time_minutes": gemini_data.get("prep_time_minutes", 10) if gemini_data else 10,
+        "cook_time_minutes": gemini_data.get("cook_time_minutes", 15) if gemini_data else 15,
+        "recipe_yield": gemini_data.get("recipe_yield", "4 servings") if gemini_data else "4 servings",
+        "ingredients": gemini_data.get("ingredients") if gemini_data else [],
+        "instructions": gemini_data.get("instructions") if gemini_data else [],
+        "recipe_category": gemini_data.get("recipe_category", "Dinner") if gemini_data else "Dinner",
+        "recipe_cuisine": gemini_data.get("recipe_cuisine", "American") if gemini_data else "American",
+    }
+    try:
+        import sys
+        if str(root_dir) not in sys.path:
+            sys.path.insert(0, str(root_dir))
+        from bridge_page.generator import generate_recipe_bridge_page
+        b_url = generate_recipe_bridge_page(
+            slug=slug,
+            title=title,
+            recipe_data=recipe_dict,
+            image_path=raw_img,
+            target_wp_url=target_wp_url or f"https://el-mordjene.info/{slug}/"
+        )
+        print(f"   [Rich Pin Bridge] Created pre-rendered static recipe page: {b_url}")
+        return b_url
+    except Exception as e:
+        print(f"   [Rich Pin Bridge Warning] Generator failed: {e}. Falling back to default URL.")
+        return f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
+
 pin_session = requests.Session()
 def pin_request(method, endpoint, **kwargs):
     url = f"https://api.pinterest.com/v5{endpoint}"
@@ -975,7 +1023,7 @@ def process_new_pin(title, slug, url, description, board_id):
                     print(f"   [Collage Warning] Secondary image generation failed. Falling back to extreme zoom.")
 
             design_pin_premium(raw_img, recipe_name, final_img, secondary_image_path=sec_img_path, hook_text=hook_text)
-            b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
+            b_url = _build_and_generate_bridge_url(slug, title, gemini_data, raw_img, url)
             if publish_pin(final_img, p_title, p_desc, b_url, board_id, alt_text=alt_text): 
                 success += 1
                 
@@ -1122,7 +1170,7 @@ def run_pin_worker():
                 print(f"   [Collage Warning] Secondary image generation failed. Falling back to extreme zoom.")
 
         design_pin_premium(raw_img, recipe_name, final_img, board_type=board_key, secondary_image_path=sec_img_path, hook_text=hook_text)
-        b_url = f"{BRIDGE_PAGE_URL_BASE.strip('/')}/?id={slug}"
+        b_url = _build_and_generate_bridge_url(slug, title, gemini_data, raw_img, url)
         if publish_pin(final_img, p_title, p_desc, b_url, selected_board, alt_text=alt_text):
             target["pin_count"] = pin_index + 1
             _save_queue(queue)
