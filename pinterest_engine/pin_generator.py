@@ -68,8 +68,20 @@ def generate_pin_content_with_gemini(topic, pin_index=0):
         """
         secondary_angle_focus = "An overhead flat-lay of ingredients and preparation layout."
 
+    seasonal_context = ""
+    try:
+        import sys
+        if str(root_dir) not in sys.path:
+            sys.path.insert(0, str(root_dir))
+        from alerts_engine.sources.seasonal_calendar import get_seasonal_pin_context
+        seasonal_context = get_seasonal_pin_context()
+    except Exception:
+        pass
+
     prompt = f"""
     You are a top-tier viral Pinterest marketing expert. Your task is to generate high-performance content for Pin #{pin_index + 1} about: "{topic}".
+    
+    {seasonal_context}
     
     Adhere strictly to these targeted angle guidelines for this pin variation:
     {angle_instruction}

@@ -2175,12 +2175,264 @@
     "published_at": "2026-09-07T18:06:39.359971"
   },
   {
+    "topic": "Slow Cooker Creamy Chicken and Wild Rice Soup",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Comfort",
+    "seasonal_tag": "Fall Comfort",
+    "retries": 0
+  },
+  {
+    "topic": "One-Pot Creamy Butternut Squash Sausage Gnocchi",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Comfort",
+    "seasonal_tag": "Fall Comfort",
+    "retries": 0
+  },
+  {
+    "topic": "Crockpot Melt-in-Your-Mouth Mississippi Pot Roast",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Comfort",
+    "seasonal_tag": "Fall Comfort",
+    "retries": 0
+  },
+  {
+    "topic": "Cozy Brown Butter Apple Cider Donuts with Cinnamon Sugar",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Baking",
+    "seasonal_tag": "Fall Baking",
+    "retries": 0
+  },
+  {
+    "topic": "Soft Swirled Pumpkin Cream Cheese Loaf with Spiced Glaze",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Baking",
+    "seasonal_tag": "Fall Baking",
+    "retries": 0
+  },
+  {
+    "topic": "Crispy Skillet Apple Crisp with Salted Caramel Drizzle",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Baking",
+    "seasonal_tag": "Fall Baking",
+    "retries": 0
+  },
+  {
+    "topic": "Creamy Tuscan White Bean and Sausage Soup",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Comfort",
+    "seasonal_tag": "Fall Comfort",
+    "retries": 0
+  },
+  {
+    "topic": "One-Pan Maple Dijon Roasted Chicken Thighs and Sweet Potatoes",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Comfort",
+    "seasonal_tag": "Fall Comfort",
+    "retries": 0
+  },
+  {
+    "topic": "Fudgy Pumpkin Spice Swirl Brownies",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Baking",
+    "seasonal_tag": "Fall Baking",
+    "retries": 0
+  },
+  {
+    "topic": "Slow Cooker Cheesy Crack Chicken Tater Tot Casserole",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Fall Comfort",
+    "seasonal_tag": "Fall Comfort",
+    "retries": 0
+  },
+  {
+    "topic": "Slow Cooker Buffalo Chicken Dip with Crispy Tortilla Chips",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Cheesy Hot Roast Beef and Cheddar Hawaiian Roll Sliders",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Crispy Air Fryer Garlic Parmesan Wings with Ranch Dip",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Baked Jalape\u00f1o Popper Dip with Bacon Breadcrumb Crust",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Sheet Pan Loaded Cheesy Taco Nachos with Fresh Guacamole",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Cheesy Garlic Herb Pull-Apart Sourdough Bread",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Sweet and Spicy Slow Cooker BBQ Meatballs",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Game Day",
+    "seasonal_tag": "Game Day",
+    "retries": 0
+  },
+  {
+    "topic": "Spooky Ghost Meringue Cupcakes with Rich Chocolate Base",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Halloween",
+    "seasonal_tag": "Halloween",
+    "retries": 0
+  },
+  {
+    "topic": "Crescent Roll Mummy Jalape\u00f1o Poppers with Cream Cheese",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Halloween",
+    "seasonal_tag": "Halloween",
+    "retries": 0
+  },
+  {
+    "topic": "Fudgy Halloween Graveyard Brownies with Cookie Tombstones",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Halloween",
+    "seasonal_tag": "Halloween",
+    "retries": 0
+  },
+  {
+    "topic": "Chewy Monster Eyeball Chocolate Chip Cookies",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Halloween",
+    "seasonal_tag": "Halloween",
+    "retries": 0
+  },
+  {
+    "topic": "Warm Spooky Apple Cider Witch's Brew Mocktail",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Halloween",
+    "seasonal_tag": "Halloween",
+    "retries": 0
+  },
+  {
+    "topic": "Creamy Spooky Pumpkin Cheesecake Dip with Ginger Snaps",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Halloween",
+    "seasonal_tag": "Halloween",
+    "retries": 0
+  },
+  {
+    "topic": "Brown Sugar Pecan Crunch Sweet Potato Casserole",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Thanksgiving",
+    "seasonal_tag": "Thanksgiving",
+    "retries": 0
+  },
+  {
+    "topic": "Classic Herb Sausage and Sourdough Stuffing from Scratch",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Thanksgiving",
+    "seasonal_tag": "Thanksgiving",
+    "retries": 0
+  },
+  {
+    "topic": "Creamy Cheddar Green Bean Casserole with Crispy Fried Onions",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Thanksgiving",
+    "seasonal_tag": "Thanksgiving",
+    "retries": 0
+  },
+  {
+    "topic": "Warm Baked Cranberry Pecan Brie Bites with Flaky Pastry",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Thanksgiving",
+    "seasonal_tag": "Thanksgiving",
+    "retries": 0
+  },
+  {
+    "topic": "Mile-High Classic Southern Pecan Pie with Flaky Butter Crust",
+    "intent": "recipe",
+    "wp_status": "pending",
+    "priority": 1,
+    "source": "Seasonal Trend: Thanksgiving",
+    "seasonal_tag": "Thanksgiving",
+    "retries": 0
+  },
+  {
     "topic": "Fluffy Japanese Souffl\u00e9 Pancakes from Scratch",
     "intent": "recipe",
     "wp_status": "done",
     "wp_url": "https://el-mordjene.info/fluffy-japanese-souffle-pancakes-from-scratch/",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997",
@@ -2215,7 +2467,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2226,7 +2478,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2237,7 +2489,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2248,7 +2500,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2259,7 +2511,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2281,7 +2533,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2292,7 +2544,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2303,7 +2555,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2314,7 +2566,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2336,7 +2588,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2358,7 +2610,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2369,7 +2621,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2391,7 +2643,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2402,7 +2654,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2413,7 +2665,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2457,7 +2709,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2468,7 +2720,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2479,7 +2731,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2490,7 +2742,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2501,7 +2753,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2512,7 +2764,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2523,7 +2775,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2534,7 +2786,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 1,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2545,7 +2797,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2556,7 +2808,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2567,7 +2819,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2578,7 +2830,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2589,7 +2841,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2600,7 +2852,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2611,7 +2863,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2622,7 +2874,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2633,7 +2885,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2644,7 +2896,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2655,7 +2907,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2666,7 +2918,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2677,7 +2929,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2688,7 +2940,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2699,7 +2951,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2710,7 +2962,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2721,7 +2973,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2732,7 +2984,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2743,7 +2995,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2787,7 +3039,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2809,7 +3061,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2820,7 +3072,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2919,7 +3171,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2941,7 +3193,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -2996,7 +3248,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3007,7 +3259,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3029,7 +3281,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3040,7 +3292,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3051,7 +3303,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3062,7 +3314,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3073,7 +3325,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3095,7 +3347,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3106,7 +3358,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3117,7 +3369,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3128,7 +3380,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3139,7 +3391,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3150,7 +3402,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3161,7 +3413,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3172,7 +3424,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3183,7 +3435,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3194,7 +3446,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3205,7 +3457,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3216,7 +3468,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3227,7 +3479,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3238,7 +3490,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3260,7 +3512,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3271,7 +3523,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3282,7 +3534,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"
@@ -3293,7 +3545,7 @@
     "wp_status": "pending",
     "wp_url": "",
     "pin_count": 0,
-    "priority": 1,
+    "priority": 2,
     "source": "Pinterest Psychology Splinter Engine",
     "retries": 0,
     "created_at": "2026-08-23T17:37:08.450997"

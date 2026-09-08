@@ -20,8 +20,18 @@ def fetch_pinterest_trends():
     headers = {"Authorization": f"Bearer {token}"}
     trending_topics = []
     
-    # Filter keywords to ensure they are related to food/sweets/recipes
+    # Filter keywords to ensure they are related to food/sweets/recipes and active seasonal themes
     food_keywords = ["cake", "cookie", "recipe", "dessert", "sweet", "chocolate", "bake", "pie", "tart", "bread", "pastry", "dinner", "lunch", "breakfast"]
+    seasonal_keywords = []
+    try:
+        from alerts_engine.sources.seasonal_calendar import get_active_seasonal_themes
+        for theme in get_active_seasonal_themes():
+            for kw in theme.get("keywords", []):
+                seasonal_keywords.append(kw.lower())
+        food_keywords.extend(seasonal_keywords)
+    except Exception as e:
+        logger.debug(f"Could not load seasonal calendar: {e}")
+    food_keywords = list(set(food_keywords))
 
     for trend_type in ["monthly", "growing"]:
         url = f"https://api.pinterest.com/v5/trends/keywords/US/top/{trend_type}"
@@ -38,12 +48,16 @@ def fetch_pinterest_trends():
                     keyword = trend.get("keyword", "").lower()
                     # Apply safety filter to guarantee relevance
                     if any(w in keyword for w in food_keywords):
-                        # Format as a topic dict for main.py detection logic
+                        base_score = trend.get("pct_growth_yoy", 100)
+                        # Boost score if matching current seasonal festivity
+                        if any(sk in keyword for sk in seasonal_keywords):
+                            base_score += 500
+
                         topic_data = {
                             "topic": keyword.title(),
                             "matched_keyword": keyword,
                             "type": trend_type,
-                            "score": trend.get("pct_growth_yoy", 100),
+                            "score": base_score,
                             "stories": [{
                                 "title": f"Pinterest Trend: {keyword.title()}",
                                 "url": f"https://www.pinterest.com/search/pins/?q={keyword}",
