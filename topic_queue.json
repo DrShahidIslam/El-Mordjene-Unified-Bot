@@ -2188,11 +2188,13 @@
   {
     "topic": "One-Pot Creamy Butternut Squash Sausage Gnocchi",
     "intent": "recipe",
-    "wp_status": "pending",
+    "wp_status": "done",
     "priority": 1,
     "source": "Seasonal Trend: Fall Comfort",
     "seasonal_tag": "Fall Comfort",
-    "retries": 0
+    "retries": 0,
+    "wp_url": "https://el-mordjene.info/one-pot-creamy-butternut-squash-sausage-gnocchi/",
+    "published_at": "2026-09-08T12:19:42.129842"
   },
   {
     "topic": "Crockpot Melt-in-Your-Mouth Mississippi Pot Roast",
