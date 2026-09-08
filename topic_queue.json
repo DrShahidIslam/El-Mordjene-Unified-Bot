@@ -2199,11 +2199,13 @@
   {
     "topic": "Crockpot Melt-in-Your-Mouth Mississippi Pot Roast",
     "intent": "recipe",
-    "wp_status": "pending",
+    "wp_status": "done",
     "priority": 1,
     "source": "Seasonal Trend: Fall Comfort",
     "seasonal_tag": "Fall Comfort",
-    "retries": 0
+    "retries": 0,
+    "wp_url": "https://el-mordjene.info/crockpot-melt-in-your-mouth-mississippi-pot-roast/",
+    "published_at": "2026-09-08T22:04:30.303751"
   },
   {
     "topic": "Cozy Brown Butter Apple Cider Donuts with Cinnamon Sugar",
