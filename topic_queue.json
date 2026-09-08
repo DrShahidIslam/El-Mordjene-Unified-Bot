@@ -2177,11 +2177,13 @@
   {
     "topic": "Slow Cooker Creamy Chicken and Wild Rice Soup",
     "intent": "recipe",
-    "wp_status": "pending",
+    "wp_status": "done",
     "priority": 1,
     "source": "Seasonal Trend: Fall Comfort",
     "seasonal_tag": "Fall Comfort",
-    "retries": 0
+    "retries": 0,
+    "wp_url": "https://el-mordjene.info/slow-cooker-creamy-chicken-and-wild-rice-soup/",
+    "published_at": "2026-09-08T07:05:59.766910"
   },
   {
     "topic": "One-Pot Creamy Butternut Squash Sausage Gnocchi",
